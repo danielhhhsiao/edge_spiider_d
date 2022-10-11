@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF8"></meta>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/tool_20220706.js"></script>
+    <script type="text/javascript" src="js/language_20220801.js"></script>
+    <script type="text/javascript" src="js/topBar_20220706.js"></script>
+    <script type="text/javascript" src="js/form_20220706.js"></script>
+    <script type="text/javascript" src="js/system_20220706.js"></script>
+    <script type="text/javascript" src="js/md5.js"></script>
+    <script>
+        $(function(){
+            //initTopBar("Device status");
+            initTopBar(_language.html.status.topBar);
+        });
+    </script>
+    <link href="/css/RWD_20220706.css" rel="stylesheet">
+    <link href="/css/topBar_20220706.css" rel="stylesheet">
+    <link href="/css/form_20220706.css" rel="stylesheet">
+    <title>Device status</title>
+</head>
+<body>
+	<div id="view">
+                <div class="item">
+                    <div class="title"><span id="lang_status_system">System</span><div>-</div></div>
+                    <div class="content">
+                        <div class="subTitle version">--</div>
+                        <div class="subTitle systemTime"></div>
+                        <div class="centerOutside">
+                            <input id="OTASubmitSelect" type="file" accept=".bin" style="display:none" onchange="importOTA(this.files)">
+                            <div id="OTASubmit" style="display: inline-block;" class="btn" >Update FW</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="title"><span id="lang_status_network">Network</span><div>-</div></div>
+                    <div class="content">
+                        <div class="subTitle wifiMac">--</div>
+                        <div class="subTitle wifiIP">--</div>
+                        <div class="subTitle eth0Mac">--</div>
+                        <div class="subTitle eth0IP">--</div>
+                        <div class="subTitle eth1Mac">--</div>
+                        <div class="subTitle eth1IP">--</div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="title"><span id="lang_status_update_time">Last upload time</span><div>-</div></div>
+                    <div class="content">
+                        <div class="subTitle uploadTimeAPI">--</div>
+                        <div class="subTitle uploadTimeFTP">--</div>
+                        <div class="subTitle uploadTimeMQTT">--</div>
+                        <div class="subTitle uploadTimeStatus">--</div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="title"><span id="lang_status_edge_data">Edge data</span><div>-</div></div>
+                    <div class="content">
+                        <div class="subTitle localCount">--</div>
+                        <div class="centerOutside">
+                            <input id="clearSubmit" type="button" class="btn" value="Clear file"/>
+                        </div>
+                        <div class="subTitle memoryCount">--</div>
+                        <div class="centerOutside">
+                            <input id="clearMemorySubmit" type="button" class="btn" value="Clear queue"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="title"><span id="lang_status_error">Error msg</span><div>-</div></div>
+                    <div class="content">
+                        <div class="subTitle st1ErrMsg">--</div>
+                        <div class="subTitle st2ErrMsg">--</div>
+                    </div>
+                </div>
+	</div>
+</body>
+</html>

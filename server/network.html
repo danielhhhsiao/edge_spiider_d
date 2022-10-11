@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF8"></meta>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/tool_20220706.js"></script>
+    <script type="text/javascript" src="js/language_20220801.js"></script>
+    <script type="text/javascript" src="js/topBar_20220706.js"></script>
+    <script type="text/javascript" src="js/form_20220706.js"></script>
+    <script type="text/javascript" src="js/system_20220706.js"></script>
+    <script type="text/javascript" src="js/md5.js"></script>
+    <script>
+        $(function(){
+            //initTopBar("Network Setting");
+            initTopBar(_language.html.network.topBar);
+        });
+    </script>
+    <link href="/css/RWD_20220706.css" rel="stylesheet">
+    <link href="/css/topBar_20220706.css" rel="stylesheet">
+    <link href="/css/form_20220706.css" rel="stylesheet">
+    <title>Network setting</title>
+</head>
+<body>
+	<div id="view">
+        <div class="item">
+            <div class="title" ><span id="lang_network_wifi_title">Wi-Fi setting</span><div>-</div></div>
+            <div class="content nestBoxHalf">
+                <div class="centerOutside">
+                    <a href="/wifi">
+                        <div class="btn btn50" id="lang_network_wifi_link">
+                            Wi-Fi select page
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="title"><span id="lang_network_wifi_ip">Wi-Fi IP setting</span><div>-</div></div>
+            <div class="content nestBoxHalf">
+                <label class="leftLabel">
+                    <input type="radio" name="wifiSetting" value="auto" checked><span class="lang_network_auto">Auto settings</span>
+                </label></br>
+                <label class="leftLabel">
+                    <input type="radio" name="wifiSetting" value="manual" ><span class="lang_network_manual">Use manual settings</span>
+                </label></br>
+                <div class="subTitle lang_network_ip_address">IP address:</div>
+                <input id="wifiIp1" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext wifiInput" autocomplete="off" disabled/><div class="dot">.</div><input id="wifiIp2" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext wifiInput" autocomplete="off" disabled/><div class="dot">.</div><input id="wifiIp3" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext wifiInput" autocomplete="off" disabled/><div class="dot">.</div><input id="wifiIp4" type="text" inputmode="numeric" class="input_1_5 autoClean protect3 wifiInput" autocomplete="off" disabled/>
+                <div class="subTitle lang_network_ip_mask">Subnet mask:</div>
+                <input id="wifiMk1" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext wifiInput" autocomplete="off" disabled/><div class="dot">.</div><input id="wifiMk2" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext wifiInput" autocomplete="off" disabled/><div class="dot">.</div><input id="wifiMk3" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext wifiInput" autocomplete="off" disabled/><div class="dot">.</div><input id="wifiMk4" type="text" inputmode="numeric" class="input_1_5 autoClean protect3 wifiInput" autocomplete="off" disabled/>
+                <div class="subTitle lang_network_ip_gw">Default gateway:</div>
+                <input id="wifiGw1" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext wifiInput" autocomplete="off" disabled/><div class="dot">.</div><input id="wifiGw2" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext wifiInput" autocomplete="off" disabled/><div class="dot">.</div><input id="wifiGw3" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext wifiInput" autocomplete="off" disabled/><div class="dot">.</div><input id="wifiGw4" type="text" inputmode="numeric" class="input_1_5 autoClean protect3 wifiInput" autocomplete="off" disabled/>
+                <div class="centerOutside">
+                    <input id="wifiSubmit" type="button" class="btn" value="Submit"/>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="title"><span id="lang_network_lan1_ip">LAN1 IP setting</span><div>-</div></div>
+            <div class="content nestBoxHalf">
+                <label class="leftLabel">
+                    <input type="radio" name="lanSetting" value="auto" checked><span class="lang_network_auto">Auto settings</span>
+                </label></br>
+                <label class="leftLabel">
+                    <input type="radio" name="lanSetting" value="manual" ><span class="lang_network_manual">Use manual settings</span>
+                </label></br>
+                <div class="subTitle lang_network_ip_address">IP address:</div>
+                <input id="lanIp1" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lanInput" autocomplete="off" disabled/><div class="dot">.</div><input id="lanIp2" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lanInput" autocomplete="off" disabled/><div class="dot">.</div><input id="lanIp3" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lanInput" autocomplete="off" disabled/><div class="dot">.</div><input id="lanIp4" type="text" inputmode="numeric" class="input_1_5 autoClean protect3 lanInput" autocomplete="off" disabled/>
+                <div class="subTitle lang_network_ip_mask">Subnet mask:</div>
+                <input id="lanMk1" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lanInput" autocomplete="off" disabled/><div class="dot">.</div><input id="lanMk2" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lanInput" autocomplete="off" disabled/><div class="dot">.</div><input id="lanMk3" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lanInput" autocomplete="off" disabled/><div class="dot">.</div><input id="lanMk4" type="text" inputmode="numeric" class="input_1_5 autoClean protect3 lanInput" autocomplete="off" disabled/>
+                <div class="subTitle lang_network_ip_gw">Default gateway:</div>
+                <input id="lanGw1" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lanInput" autocomplete="off" disabled/><div class="dot">.</div><input id="lanGw2" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lanInput" autocomplete="off" disabled/><div class="dot">.</div><input id="lanGw3" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lanInput" autocomplete="off" disabled/><div class="dot">.</div><input id="lanGw4" type="text" inputmode="numeric" class="input_1_5 autoClean protect3 lanInput" autocomplete="off" disabled/>
+                <div class="centerOutside">
+                    <input id="lanSubmit" type="button" class="btn" value="Submit"/>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="title"><span id="lang_network_lan2_ip">LAN2 IP setting</span><div>-</div></div>
+            <div class="content nestBoxHalf">
+                <label class="leftLabel">
+                    <input type="radio" name="lan2Setting" value="auto" checked><span class="lang_network_auto">Auto settings</span>
+                </label></br>
+                <label class="leftLabel">
+                    <input type="radio" name="lan2Setting" value="manual" ><span class="lang_network_manual">Use manual settings</span>
+                </label></br>
+                <div class="subTitle lang_network_ip_address">IP address:</div>
+                <input id="lan2Ip1" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lan2Input" autocomplete="off" disabled/><div class="dot">.</div><input id="lan2Ip2" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lan2Input" autocomplete="off" disabled/><div class="dot">.</div><input id="lan2Ip3" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lan2Input" autocomplete="off" disabled/><div class="dot">.</div><input id="lan2Ip4" type="text" inputmode="numeric" class="input_1_5 autoClean protect3 lan2Input" autocomplete="off" disabled/>
+                <div class="subTitle lang_network_ip_mask">Subnet mask:</div>
+                <input id="lan2Mk1" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lan2Input" autocomplete="off" disabled/><div class="dot">.</div><input id="lan2Mk2" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lan2Input" autocomplete="off" disabled/><div class="dot">.</div><input id="lan2Mk3" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lan2Input" autocomplete="off" disabled/><div class="dot">.</div><input id="lan2Mk4" type="text" inputmode="numeric" class="input_1_5 autoClean protect3 lan2Input" autocomplete="off" disabled/>
+                <div class="subTitle lang_network_ip_gw">Default gateway:</div>
+                <input id="lan2Gw1" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lan2Input" autocomplete="off" disabled/><div class="dot">.</div><input id="lan2Gw2" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lan2Input" autocomplete="off" disabled/><div class="dot">.</div><input id="lan2Gw3" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext lan2Input" autocomplete="off" disabled/><div class="dot">.</div><input id="lan2Gw4" type="text" inputmode="numeric" class="input_1_5 autoClean protect3 lan2Input" autocomplete="off" disabled/>
+                <div class="centerOutside">
+                    <input id="lan2Submit" type="button" class="btn" value="Submit"/>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="title"><span id="lang_network_ap_title">AP setting</span><div>-</div></div>
+            <div class="content nestBoxHalf">
+                <div class="subTitle" id="lang_network_ap_ssid">AP SSID:</div>
+                <input id="apName" type="text" class="input_1_1"/>
+                <div class="subTitle" id="lang_network_ap_old_pw">AP old password:</div>
+                <input type="password" inputmode="email" class="input_3_4 passwordP"/><!--
+                --><input id="apOldPw" type="text" inputmode="email" class="input_3_4 passwordN"/><!--
+                --><input type="button" class="btn btnShow" value="Show"/>
+                <div class="subTitle" id="lang_network_ap_new_pw">AP new password:</div>
+                <input type="password" inputmode="email" class="input_3_4 passwordP"/><!--
+                --><input id="apNewPw" type="text" inputmode="email" class="input_3_4 passwordN"/><!--
+                --><input type="button" class="btn btnShow" value="Show"/>
+                <div class="subTitle" id="lang_network_ap_confirm">AP password comfirm:</div>
+                <input type="password" inputmode="email" class="input_3_4 passwordP"/><!--
+                --><input id="apCheckPw" type="text" inputmode="email" class="input_3_4 passwordN"/><!--
+                --><input type="button" class="btn btnShow" value="Show"/>
+                </br>
+                <div class="centerOutside">
+                    <input id="apSubmit" type="button" class="btn" value="Submit"/>
+                </div>
+            </div>
+        </div>
+	</div>
+</body>
+</html>

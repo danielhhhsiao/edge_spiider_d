@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF8"></meta>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/tool_20220706.js"></script>
+    <script type="text/javascript" src="js/language_20220801.js"></script>
+    <script type="text/javascript" src="js/topBar_20220706.js"></script>
+    <script type="text/javascript" src="js/form_20220706.js"></script>
+    <script type="text/javascript" src="js/system_20220706.js"></script>
+    <script type="text/javascript" src="js/md5.js"></script>
+    <script>
+        $(function(){
+            //initTopBar("System Setting");
+            initTopBar(_language.html.system.topBar);
+            
+        });
+    </script>
+    <link href="/css/RWD_20220706.css" rel="stylesheet">
+    <link href="/css/topBar_20220706.css" rel="stylesheet">
+    <link href="/css/form_20220706.css" rel="stylesheet">
+    <title>System setting</title>
+</head>
+<body>
+	<div id="view">
+        <div class="item">
+            <div class="title"><span id="lang_system_status">SPIIDER-D Status</span><div>-</div></div>
+            <div class="content nestBoxHalf">
+                <label class="leftLabel">
+                    <input type="radio" name="enableSample" value="enable"/><span class="lang_system_work">Work</span>
+                </label>
+                </br>
+                <label class="leftLabel">
+                    <input type="radio" name="enableSample" value="disable" checked/><span class="lang_system_idle">Idle</span>
+                </label>
+                </br>
+                <div class="centerOutside">
+                    <input id="enableSubmit" type="button" class="btn" value="Submit"/>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="title"><span id="lang_system_model_server">Model server</span><div>-</div></div>
+            <div class="content nestBoxHalf">
+                <div class="subTitle lang_system_hostname">Hostname:</div>
+                <input id="webIp" type="text" class="input_1_1"/>
+                <div class="subTitle lang_system_proxy">Proxy:</div>
+                <input id="webProxy" type="text" class="input_1_1"/>
+                <!--
+                <input id="webIp1" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext"/><div class="dot">.</div><input id="webIp2" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext"/><div class="dot">.</div><input id="webIp3" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext"/><div class="dot">.</div><input id="webIp4" type="text" inputmode="numeric" class="input_1_5 autoClean protect3"/> 
+                -->
+                </br>
+                <div class="subTitle"><span id="lang_system_upload_api">Upload data:</span></div>
+                <label class="leftLabel">
+                    <input type="radio" name="uploadData2Server" value="enable"/><span class="lang_universal_enable">Enable</span>
+                </label>
+                </br>
+                <label class="leftLabel">
+                    <input type="radio" name="uploadData2Server" value="disable" checked/><span class="lang_universal_disable">Disable</span>
+                </label>
+                </br>
+                <div class="centerOutside">
+                    <input id="webSubmit" type="button" class="btn" value="Submit"/>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="title"><span id="lang_system_status_server">Status server</span><div>-</div></div>
+            <div class="content nestBoxHalf">
+                <div class="subTitle lang_system_hostname">Hostname:</div>
+                <input id="statusIp" type="text" class="input_1_1"/>
+                <div class="subTitle lang_system_proxy">Proxy:</div>
+                <input id="statusProxy" type="text" class="input_1_1"/>
+                <div class="centerOutside">
+                    <input id="statusSubmit" type="button" class="btn" value="Submit"/>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="title"><span id="lang_system_smart_grid">Smart Grid (MQTT)server</span><div>-</div></div>
+            <div class="content nestBoxHalf">
+                <div class="subTitle lang_system_hostname">Hostname:</div>
+                <input id="sgIp" type="text" class="input_1_1"/>
+                </br>
+                <div class="subTitle noNewLine lang_system_port">Port:</div>
+                <input id="sgPort" type="text" class="input_1_5"/>
+                </br>
+                <div class="subTitle" id="lang_system_mqtt_topic">Publish Topic:</div>
+                <input id="sgTopic" type="text" class="input_1_1"/>
+                </br>
+                <div class="subTitle" id="lang_system_mqtt_name">User Name:</div>
+                <input id="sgUser" type="text" class="input_1_1"/>
+                </br>
+                <div class="subTitle" id="lang_system_mqtt_passwd">User Password:</div>
+                <input id="sgUserpwView" type="password" inputmode="email" class="input_3_4 passwordP"/><!--
+                --><input id="sgUserpw" type="text" inputmode="email" class="input_3_4 passwordN"/><!--
+                --><input type="button" class="btn btnShow" value="Show"/>
+                </br>
+                <div class="centerOutside">
+                    <input id="sgSubmit" type="button" class="btn" value="Submit"/>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="title"><span id="lang_system_FTP">FTP server</span><div>-</div></div>
+            <div class="content nestBoxHalf">
+                <div class="subTitle lang_system_hostname">Hostname:</div>
+                <input id="ftpIp" type="text" class="input_1_1"/>
+                <div class="subTitle lang_system_proxy">Proxy:</div>
+                <input id="ftpProxy" type="text" class="input_1_1"/>
+                <!--
+                <input id="ftpIp1" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext"/><div class="dot">.</div><input id="ftpIp2" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext"/><div class="dot">.</div><input id="ftpIp3" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext"/><div class="dot">.</div><input id="ftpIp4" type="text" inputmode="numeric" class="input_1_5 autoClean protect3"/>
+                -->
+                </br>
+                <div class="subTitle" id="lang_system_ftp_user">Username:</div>
+                <input id="ftpUsername" type="text" class="input_1_1"/>
+                <div class="subTitle" id="lang_system_ftp_passwd">Password:</div>
+                <input id="ftpUserpwView" type="password" inputmode="email" class="input_3_4 passwordP"/><!--
+                --><input id="ftpUserpw" type="text" inputmode="email" class="input_3_4 passwordN"/><!--
+                --><input type="button" class="btn btnShow" value="Show"/>
+                </br>
+                <div class="subTitle" id="lang_system_ftp_file">FTP file type:</div>
+                <select name="uploadFTPType" class="uploadFTPType selectList">
+                    <option value="0" selected="True">Disable upload</option>
+                    <option value="1">csv</option>
+                    <option value="2">binary</option>
+                    <option value="3">csv & binary</option>
+                </select>
+                </br>
+                <div class="centerOutside">
+                    <input id="ftpTest" type="button" class="btn" value="FTP Test"/>
+                    <input id="ftpSubmit" type="button" class="btn" value="Submit"/>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="title"><span id="lang_system_NTP">NTP server</span><div>-</div></div>
+            <div class="content nestBoxHalf">
+                <div class="subTitle lang_system_hostname">Hostname:</div>
+                <input id="ntpIp" type="text" class="input_1_1"/>
+                <div class="subTitle lang_system_port" style="display:none">Proxy:</div>
+                <input id="ntpProxy" style="display:none" type="text" class="input_1_1"/>
+                <!--
+                <input id="ntpIp1" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext"/><div class="dot">.</div><input id="ntpIp2" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext"/><div class="dot">.</div><input id="ntpIp3" type="text" inputmode="numeric" class="input_1_5 autoClean autoNext"/><div class="dot">.</div><input id="ntpIp4" type="text" inputmode="numeric" class="input_1_5 autoClean protect3"/>
+                -->
+                </br>
+                <div class="centerOutside">
+                    <input id="ntpSubmit" type="button" class="btn" value="Submit"/>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="title"><span id="lang_system_time">System time setting</span><div>-</div></div>
+            <div class="content nestBoxHalf">
+                <div class="centerOutside">
+                    <input id="timeSetting" type="datetime-local" class="input_1_1" />
+                </div>
+                <div class="centerOutside">
+                    <input id="timeSubmit" type="button" class="btn" value="Submit"/>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="title"><span id="lang_system_pin">PIN setting</span><div>-</div></div>
+            <div class="content nestBoxHalf">
+                <div class="subTitle" id="lang_system_pin_remind">New password: 4~20 Numbers</div>
+                <input type="password" inputmode="email" class="input_3_4 passwordP"/><!--
+                --><input id="pinNewPw" type="text" inputmode="email" class="input_3_4 passwordN"/><!--
+                --><input type="button" class="btn btnShow" value="Show"/>
+                <div class="subTitle" id="lang_system_pin_valida">Check password:</div>
+                <input type="password" inputmode="email" class="input_3_4 passwordP"/><!--
+                --><input id="pinCheckPw" type="text" inputmode="email" class="input_3_4 passwordN"/><!--
+                --><input type="button" class="btn btnShow" value="Show"/>
+                </br>
+                <div class="centerOutside">
+                    <input id="pinSubmit" type="button" class="btn" value="Submit"/>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="title"><span id="lang_system_change_language">Language</span><div>-</div></div>
+            <div class="content nestBoxHalf">
+                <select name="changeLanguage" class="selectList">
+                    <option value="english" selected="True">English</option>
+                    <option value="chinese">Chinese</option>
+                    <option value="traditional_chinese">Traditional Chinese</option>
+                </select>
+                </br>
+                <div class="centerOutside">
+                    <input id="langSubmit" type="button" class="btn" value="Submit"/>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="title"><span id="lang_system_reboot">Boot control</span><div>-</div></div>
+            <div class="content nestBoxHalf">
+                <div class="centerOutside">
+                    <input id="rebootSubmit" type="button" class="btn" value="Reboot"/>
+                </div>
+            </div>
+        </div>
+	</div>
+</body>
+</html>

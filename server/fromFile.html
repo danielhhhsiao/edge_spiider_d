@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF8"></meta>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/tool_20220706.js"></script>
+    <script type="text/javascript" src="js/language_20220801.js"></script>
+    <script type="text/javascript" src="js/topBar_20220706.js"></script>
+    <script type="text/javascript" src="js/form_20220706.js"></script>
+    <script type="text/javascript" src="js/fromFile_20220706.js"></script>
+    <script>
+        $(function(){
+            //initTopBar("Import/Export");
+            initTopBar(_language.html.fromFile.topBar);
+        });
+    </script>
+    <link href="/css/RWD_20220706.css" rel="stylesheet">
+    <link href="/css/topBar_20220706.css" rel="stylesheet">
+    <link href="/css/form_20220706.css" rel="stylesheet">
+    <title>Import/Export</title>
+</head>
+<body>
+	<div id="view">
+                <div class="item">
+                    <div class="title"><span id="lang_fromFile_sample">Sample setting</span><div>-</div></div>
+                    <div class="content nestBoxHalf">
+                        <div class="centerOutside">
+                            <input id="ImportSubmitSelectWork" type="file" accept=".ini" style="display:none" onchange="importFilesWork(this.files)">
+                            <div id="ImportSubmitWork" style="display: inline-block;" class="btn lang_fromFile_import" >Import</div>
+                                <a href="/api/work/file" download="work.ini">
+                                <div style="display: inline-block;" class="btn lang_fromFile_export" >Export</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="title"><span id="lang_fromFile_system">System setting</span><div>-</div></div>
+                    <div class="content nestBoxHalf">
+                        <div class="centerOutside">
+                            <input id="ImportSubmitSelectSys" type="file" accept=".ini" style="display:none" onchange="importFilesSys(this.files)">
+                            <div id="ImportSubmitSys" style="display: inline-block;" class="btn lang_fromFile_import" >Import</div>
+                            <a href="/api/system/file" download="system.ini">
+                                <div style="display: inline-block;" class="btn lang_fromFile_export" >Export</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+	</div>
+</body>
+</html>

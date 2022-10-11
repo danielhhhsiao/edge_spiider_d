@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF8"></meta>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <title>Home</title>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/tool_20220706.js"></script>
+    <script type="text/javascript" src="js/language_20220801.js"></script>
+    <script type="text/javascript" src="js/topBar_20220706.js"></script>
+    <script>
+        $(function(){
+            initTopBar("SPIIDER-D");
+        });
+    </script>
+    <link href="/css/RWD_20220706.css" rel="stylesheet">
+    <link href="/css/topBar_20220706.css" rel="stylesheet">
+    <link href="/css/home_20220706.css" rel="stylesheet">
+</head>
+<body>
+    <div id="inbody">
+        <div class="iconBox">
+            <div class="margin1rem">
+                <a href="/sample">
+                    <div class="iconImg secColor" style="background-image:URL('/img/sample.png');"></div>
+                </a>
+            </div>
+            <a href="/sample" class="iconText" id="lang_home_sample">Sample<br>parameter</a>
+        </div>
+        <div class="iconBox">
+            <div class="margin1rem">
+                <a href="/system">
+                    <div class="iconImg secColor" style="background-image:URL('/img/settings.png');"></div>
+                </a>
+            </div>
+            <a href="/system" class="iconText" id="lang_home_system">System<br>setting</a>
+        </div>
+        <div class="iconBox">
+            <div class="margin1rem">
+                <a href="/wifi">
+                    <div class="iconImg secColor" style="background-image:URL('/img/wifi.png');"></div>
+                </a>
+            </div>
+            <a href="/wifi" class="iconText" id="lang_home_wifi">Wi-Fi<br>selection</a>
+        </div>
+        <div class="iconBox">
+            <div class="margin1rem">
+                <a href="/network">
+                    <div class="iconImg secColor" style="background-image:URL('/img/network.png');"></div>
+                </a>
+            </div>
+            <a href="/network" class="iconText" id="lang_home_network">Network<br>setting</a>
+        </div>
+        <div class="iconBox">
+            <div class="margin1rem">
+                <a href="/status">
+                    <div class="iconImg secColor" style="background-image:URL('/img/information.png');"></div>
+                </a>
+            </div>
+            <a href="/status" class="iconText" id="lang_home_device">Device<br>status</a>
+        </div>
+        <div class="iconBox">
+            <div class="margin1rem">
+                <a href="/fromFile">
+                    <div class="iconImg secColor" style="background-image:URL('/img/fromFile.png');"></div>
+                </a>
+            </div>
+            <a href="/fromFile" class="iconText" id="lang_home_export">Export/Import<br>setting</a>
+        </div>
+        
+    </div>
+</body>
+</html>
