@@ -1,0 +1,5 @@
+/home/pi/default/device.ini
+/home/pi/default/work.ini
+/home/pi/default/system.ini
+/home/pi/program/work.ini
+/home/pi/program/system.ini

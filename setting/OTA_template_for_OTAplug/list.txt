@@ -1,0 +1,2 @@
+/home/pi/OTA/setup
+/home/pi/default/device.ini
