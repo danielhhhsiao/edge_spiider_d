@@ -1,0 +1,75 @@
+*{
+    font-family:"MyWebFont",Microsoft JhengHei,arial, helvetica, sans-serif;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+*:not(input) {
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -o-user-select:none;
+    user-select:none;
+}
+*:focus {outline: none}
+body{
+    height:100%;
+    width:100%;
+    background-color:rgba(166,166,166,0.3);
+    padding:0;
+    margin:0;
+}
+a, a:hover, a:visited, a:link, a:active {
+    color:#000;
+    text-decoration:none;
+    outline: none;
+}
+input{
+    background:none;
+    outline:none;
+    border:0px;
+}
+select,input[type="button"]{
+    -ms-appearance:none; 
+    -webkit-appearance: none;  /* Safari 和 Chrome，常用於iOS下移除內建樣式 */
+    -moz-appearance: none;     /* FireFox */
+    appearance: none;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border: 1px solid rgba(98, 152, 234,1);
+    border:rgb(98, 152, 234);
+    border:#6298EA;
+    background: #fff;
+    outline: none;
+}
+.mainColor{
+    background-color:rgba(39,114,225,1);
+    background-color:rgb(39,114,225);
+    background-color:#2472E1;
+    color:#FFF;
+}
+.secColor{
+    background-color:rgba(98, 152, 234,1);
+    background-color:rgb(98, 152, 234);
+    background-color:#6298EA;
+    color:#FFF;
+}
+.niceColor{
+    background-color:rgba(134, 209, 122,1);
+    background-color:rgb(134, 209, 122);
+    background-color:#86D17A;
+    color:#FFF;
+}
+.warnColor{
+    background-color:rgba(252, 186, 3,1);
+    background-color:rgb(252, 186, 3);
+    background-color:#FABA03;
+    color:#FFF;
+}
+.alertColor{
+    background-color:rgba(255, 102, 102,1);
+    background-color:rgb(255, 102, 102);
+    background-color:#FF6666;
+    color:#FFF;
+}

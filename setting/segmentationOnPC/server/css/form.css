@@ -1,0 +1,296 @@
+
+#view{
+    position:relative;
+    left:0;
+    right:0;
+    margin: auto;
+    width:100%;
+    max-width:30rem;
+    min-width:20rem;
+    padding:0.5rem;
+    text-align:center;
+}
+.item{
+    position: relative;
+    width:100%;
+    margin-bottom: 1.5rem;
+}
+.title{
+    position: relative;
+    width:100%;
+    height:2.5rem;
+    font-size: 1.5rem;
+    color:rgba(98, 152, 234,1);
+    color:rgb(98, 152, 234);
+    color:#6298EA;
+    text-align: left;
+    line-height: 2.5rem;
+    border-bottom: 0.2rem solid rgba(98, 152, 234,1);
+    cursor: pointer;
+}
+.title>div{
+    position: absolute;
+    top:0;
+    right:0;
+    width:2.5rem;
+    height:2.5rem;
+    font-size: 2.25rem;
+    color:rgba(98, 152, 234,1);
+    color:rgb(98, 152, 234);
+    color:#6298EA;
+    text-align: center;
+    line-height: 2.5rem;
+}
+.content{
+    position: relative;
+    text-align: left;
+    width:100%;
+    font-size: 1rem;
+    color:#333;
+    font-size: 1.25rem;
+}
+.subTitle{
+    margin-top: 0.5rem;
+    font-size: 1.25rem;
+}
+.noNewLine{
+    display: inline-block;
+}
+.displayBox{
+    display: none;
+}
+.dot{
+    position: relative;
+    font-size: 2rem;
+    width: 6.66%;
+    color: #000;
+    height: 2rem;
+    line-height: 2rem;
+    display: inline-block;
+    text-align: center;
+}
+.input_1_1,
+.input_1_5,
+.input_1_2,
+.input_3_4,
+.selectList,
+.selectList_1_2{
+    position: relative;
+    margin: auto;
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: #000;
+    background-color: #FFF;
+    border-radius: 0.5rem;
+    height:2rem;
+    line-height: 2rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+.input_1_1{
+    width:100%;
+    text-align:left;
+}
+.input_1_5{
+    width:20%;
+    text-align: center;
+}
+.input_1_2{
+    width:50%;
+    text-align:left;
+}
+.input_3_4{
+    width:75%;
+    text-align: left;
+}
+.passwordN{
+    display: none;
+}
+.centerOutside{
+    position: relative;
+    width:100%;
+    text-align: center;
+}
+.btn{
+    position: relative;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    height:2rem;
+    line-height: 2rem;
+    color: #FFF;
+    background-color: rgba(98, 152, 234,1);
+    background-color:rgb(98, 152, 234);
+    background-color:#6298EA;
+    margin: auto;
+    margin-top: 0.5rem;
+    width:30%;
+    text-align: center;
+    cursor: pointer;
+}
+.btnShow{
+    width:23.9%;
+    margin-left: 1%;
+}
+.btn9r{
+    min-width:9rem;
+}
+.btn50{
+    width:50%;
+}
+.showImg{
+    border-radius: 0;
+    background-color: rgba(128, 128, 128,1);
+    background-color:rgb(128, 128, 128);
+    background-color:#808080;
+    width:100%;
+    height:1.5rem;
+    line-height: 1.5rem;
+    display: none;
+}
+.lanInput{
+    opacity: 0.5;
+}
+.lan2Input{
+    opacity: 0.5;
+}
+.wifiInput{
+    opacity: 0.5;
+}
+.selectList{
+    width:100%;
+    text-align: center;
+    border: 1px solid #999;
+}
+.selectList_1_2{
+    width:50%;
+    text-align: left;
+    border: 1px solid #999;
+}
+
+.nestBox{
+    position: relative;
+    width:100%;
+    height:auto;
+    min-height: 2rem;
+    background-color: rgba(175, 175, 175, 0.4);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.nestBoxHalf{
+    position: relative;
+    width:100%;
+    height:auto;
+    min-height: 2rem;
+    background-color: rgba(175, 175, 175, 0.4);
+    border-radius: 0 0 1rem 1rem;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.nestBtn{
+    width:auto;
+    margin: 0.25rem;
+    background-color: #FFF;
+    color: #999;
+    border: 1px solid #999;
+    line-height: 1.8rem;
+
+}
+.img,.resultImg{
+    height:auto;
+    width:100%;
+}
+.dashed{
+    position: relative;
+    width:100%;
+    height:0;
+    margin-top: 2.5rem;
+    margin-bottom: 0.5rem;;
+    border-bottom: 0.2rem dashed rgba(121, 121, 121, 0.582);
+}
+.link{
+    color:blue;
+    text-decoration:underline;
+    cursor: pointer;
+}
+.heddened{
+    display:none;
+}
+.segmentationResult{
+    display:none;
+}
+.version::before{
+    content:"Versoin: ";
+}
+.wifiMac::before{
+    content:"Wi-Fi mac: ";
+}
+.wifiIP::before{
+    content:"Wi-Fi IP: ";
+}
+.eth0Mac::before{
+    content:"LAN1 mac: ";
+}
+.eth0IP::before{
+    content:"LAN1 IP: ";
+}
+.eth1Mac::before{
+    content:"LAN2 mac: ";
+}
+.eth1IP::before{
+    content:"LAN2 IP: ";
+}
+.systemTime::before{
+    content:"Local Time: ";
+}
+.uploadTimeAPI::before{
+    content:"(API) ";
+}
+.uploadTimeFTP::before{
+    content:"(FTP) ";
+}
+.uploadTimeMQTT::before{
+    content:"(MQTT) ";
+}
+.uploadTimeStatus::before{
+    content:"(Status) ";
+}
+.st1ErrMsg::before{
+    content:"(ST1) ";
+}
+.st2ErrMsg::before{
+    content:"(ST2) ";
+}
+.localCount::before{
+    content:"Local file count : ";
+}
+
+.memoryCount::before{
+    content:"Memory queue count : ";
+}
+
+.showAdvanced{
+    position: relative;
+    height:2rem;
+    width:100%;
+    font-size: 1rem;
+    line-height: 2rem;
+    color: #FFF;
+    margin: auto;
+    margin-top: 0.5rem;
+    background-color: rgba(175, 175, 175, 0.4);
+    text-align: center;
+    cursor: pointer;
+}
+.showAdvanced::before{
+    content:"Show advanced";
+}
+.showDetail{
+    display:none;
+}
+

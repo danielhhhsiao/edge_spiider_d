@@ -1,0 +1,66 @@
+#view{
+    position:relative;
+    width:100%;
+    height:auto;
+    padding:0.8rem;
+}
+.box{
+    position:relative;
+    left:0;
+    right:0;
+    width:100%;
+    height:3rem;
+    margin:auto;
+    margin-bottom:0.5rem;
+    max-width:30rem;
+    min-width:12.5rem;
+    cursor:pointer;
+}
+.pre{
+    height:3rem;
+    width:4rem;
+    background-repeat:no-repeat;
+    background-position:center center;
+    background-size:2rem;
+    float:left;
+}
+.SSID{
+    width:calc(100% - 8rem);
+    height:3rem;
+    line-height:3rem;
+    color:#FFF;
+    font-size:1.25rem;
+    float:left;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.next{
+    height:3rem;
+    width:4rem;
+    background-repeat:no-repeat;
+    background-position:center center;
+    background-size:2rem;
+    float:left;
+}
+.lock2{
+    background-image:URL('/img/link.svg');
+}
+.lock1{
+    background-image:URL('/img/lock.svg');
+}
+.lock0{
+    background-image:URL('/img/unlock.svg');
+}
+.wifi0{
+    background-image:URL('/img/w0.svg');
+}
+.wifi1{
+    background-image:URL('/img/w1.svg');
+}
+.wifi2{
+    background-image:URL('/img/w2.svg');
+}
+.wifi3{
+    background-image:URL('/img/w3.svg');
+}
