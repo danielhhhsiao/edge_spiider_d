@@ -1,0 +1,17 @@
+root Software version: 1.0.2
+root Start testing:
+root bus: 0
+root cs: 0
+root fs: 4000
+root sample point: 0
+root ch:111111
+root scale:2,2,2,2,2,2
+root Board connected!
+root Board Version: 1.1.1
+root Scan sensor at device...
+root 	cannel 1 Connected.
+root 	cannel 2 Disconnected.
+root 	cannel 3 Connected.
+root 	cannel 4 Disconnected.
+root 	cannel 5 Connected.
+root 	cannel 6 Disconnected.

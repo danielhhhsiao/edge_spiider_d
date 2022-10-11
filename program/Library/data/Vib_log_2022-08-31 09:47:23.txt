@@ -1,0 +1,78 @@
+root Software version: 1.1.0
+root Start testing:
+root bus: 0
+root cs: 0
+root fs: 8000
+root sample point: 8000
+root ch:101010
+root scale:2,2,2,2,2,2
+root Board connected!
+root Board Version: 1.1.1
+root Scan sensor at device...
+root 	cannel 1 Connected.
+root 	cannel 2 Disconnected.
+root 	cannel 3 Connected.
+root 	cannel 4 Disconnected.
+root 	cannel 5 Connected.
+root 	cannel 6 Disconnected.
+root Scan the type sensor...
+root 	the device type of channel 1 is MPU sensor.
+root 	the device type of channel 2 is un-know.
+root 	the device type of channel 3 is ADXL sensor.
+root 	the device type of channel 4 is un-know.
+root 	the device type of channel 5 is ICM sensor.
+root 	the device type of channel 6 is un-know.
+root Enable sensor at device...
+root 	cannel 1 sensor enable... OK!
+root 	cannel 2 pass.
+root 	cannel 3 sensor enable... OK!
+root 	cannel 4 pass.
+root 	cannel 5 sensor enable... OK!
+root 	cannel 6 pass.
+root Setting scale of sensor...
+root Setting sampling rate...
+root Start sample...
+root Sample interval: 0.030 sec.
+root Get bugger length: 6561 average fs: 7983.14 , finished: 3.04%
+root Get bugger length: 6588 average fs: 7998.50 , finished: 6.09%
+root Get bugger length: 6588 average fs: 8003.27 , finished: 9.14%
+root Get bugger length: 6561 average fs: 7997.56 , finished: 12.17%
+root Get bugger length: 6561 average fs: 7995.29 , finished: 15.21%
+root Get bugger length: 6588 average fs: 7999.25 , finished: 18.26%
+root Get bugger length: 6561 average fs: 7996.97 , finished: 21.30%
+root Get bugger length: 6588 average fs: 7999.59 , finished: 24.35%
+root Get bugger length: 6561 average fs: 7997.99 , finished: 27.39%
+root Get bugger length: 6588 average fs: 8000.07 , finished: 30.44%
+root Get bugger length: 6561 average fs: 7998.75 , finished: 33.48%
+root Get bugger length: 6561 average fs: 7997.77 , finished: 36.51%
+root Get bugger length: 6588 average fs: 7999.53 , finished: 39.56%
+root Get bugger length: 6561 average fs: 7998.67 , finished: 42.60%
+root Get bugger length: 6561 average fs: 7997.96 , finished: 45.64%
+root Get bugger length: 6588 average fs: 7999.41 , finished: 48.69%
+root Get bugger length: 6561 average fs: 7998.72 , finished: 51.73%
+root Get bugger length: 6561 average fs: 7998.16 , finished: 54.76%
+root Get bugger length: 6588 average fs: 7999.32 , finished: 57.81%
+root Get bugger length: 6561 average fs: 7998.58 , finished: 60.85%
+root Get bugger length: 6588 average fs: 7999.48 , finished: 63.90%
+root Get bugger length: 6588 average fs: 8000.13 , finished: 66.95%
+root Get bugger length: 6561 average fs: 7999.55 , finished: 69.99%
+root Get bugger length: 6588 average fs: 8000.04 , finished: 73.04%
+root Get bugger length: 6561 average fs: 7999.28 , finished: 76.08%
+root Get bugger length: 6588 average fs: 7999.82 , finished: 79.12%
+root Get bugger length: 6561 average fs: 7999.10 , finished: 82.16%
+root Get bugger length: 6588 average fs: 7999.57 , finished: 85.21%
+root Get bugger length: 6561 average fs: 7999.00 , finished: 88.25%
+root Get bugger length: 6588 average fs: 7999.58 , finished: 91.30%
+root Get bugger length: 6561 average fs: 7999.03 , finished: 94.34%
+root Get bugger length: 6588 average fs: 7999.58 , finished: 97.39%
+root Get bugger length: 6561 average fs: 7999.05 , finished: 100.00%
+root ch1_aX mean : 57.964775 mG
+root ch1_aY mean : -7.951797 mG
+root ch1_aZ mean : 1014.186951 mG
+root ch3_aX mean : 50.571403 mG
+root ch3_aY mean : 84.615266 mG
+root ch3_aZ mean : -850.689441 mG
+root ch5_aX mean : -108.764816 mG
+root ch5_aY mean : -9.025314 mG
+root ch5_aZ mean : 1004.473633 mG
+root Output data: data/Vib_result_2022-08-31 09:47:23(mG).csv

@@ -1,0 +1,49 @@
+root Software version: 1.1.0
+root Start testing:
+root bus: 0
+root cs: 0
+root fs: 8000
+root sample point: 1000
+root ch:101010
+root scale:2,2,2,2,2,2
+root Board connected!
+root Board Version: 1.1.1
+root Scan sensor at device...
+root 	cannel 1 Connected.
+root 	cannel 2 Disconnected.
+root 	cannel 3 Connected.
+root 	cannel 4 Disconnected.
+root 	cannel 5 Connected.
+root 	cannel 6 Disconnected.
+root Scan the type sensor...
+root 	the device type of channel 1 is MPU sensor.
+root 	the device type of channel 2 is un-know.
+root 	the device type of channel 3 is ADXL sensor.
+root 	the device type of channel 4 is un-know.
+root 	the device type of channel 5 is ICM sensor.
+root 	the device type of channel 6 is un-know.
+root Enable sensor at device...
+root 	cannel 1 sensor enable... OK!
+root 	cannel 2 pass.
+root 	cannel 3 sensor enable... OK!
+root 	cannel 4 pass.
+root 	cannel 5 sensor enable... OK!
+root 	cannel 6 pass.
+root Setting scale of sensor...
+root Setting sampling rate...
+root Start sample...
+root Sample interval: 0.030 sec.
+root Get bugger length: 6588 average fs: 8020.14 , finished: 24.40%
+root Get bugger length: 6561 average fs: 8003.08 , finished: 48.70%
+root Get bugger length: 6588 average fs: 8006.32 , finished: 73.10%
+root Get bugger length: 6561 average fs: 8000.79 , finished: 97.40%
+root ch1_aX mean : 54.811035 mG
+root ch1_aY mean : -6.156250 mG
+root ch1_aZ mean : 989.431641 mG
+root ch3_aX mean : -9.474337 mG
+root ch3_aY mean : 4.280759 mG
+root ch3_aZ mean : 754.492654 mG
+root ch5_aX mean : -111.174316 mG
+root ch5_aY mean : -55.879883 mG
+root ch5_aZ mean : 976.981323 mG
+root Output data: data/Vib_result_2022-08-31 09:49:19(mG).csv

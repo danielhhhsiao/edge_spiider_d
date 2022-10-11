@@ -1,0 +1,364 @@
+root Software version: 1.1.0
+root Start testing:
+root bus: 0
+root cs: 0
+root fs: 8000
+root sample point: 80000
+root ch:101010
+root scale:2,2,2,2,2,2
+root Board connected!
+root Board Version: 1.1.1
+root Scan sensor at device...
+root 	cannel 1 Connected.
+root 	cannel 2 Disconnected.
+root 	cannel 3 Connected.
+root 	cannel 4 Disconnected.
+root 	cannel 5 Connected.
+root 	cannel 6 Disconnected.
+root Scan the type sensor...
+root 	the device type of channel 1 is MPU sensor.
+root 	the device type of channel 2 is un-know.
+root 	the device type of channel 3 is ADXL sensor.
+root 	the device type of channel 4 is un-know.
+root 	the device type of channel 5 is ICM sensor.
+root 	the device type of channel 6 is un-know.
+root Enable sensor at device...
+root 	cannel 1 sensor enable... OK!
+root 	cannel 2 pass.
+root 	cannel 3 sensor enable... OK!
+root 	cannel 4 pass.
+root 	cannel 5 sensor enable... OK!
+root 	cannel 6 pass.
+root Setting scale of sensor...
+root Setting sampling rate...
+root Start sample...
+root Sample interval: 0.030 sec.
+root Get bugger length: 6588 average fs: 8018.76 , finished: 0.30%
+root Get bugger length: 6588 average fs: 8011.85 , finished: 0.61%
+root Get bugger length: 6588 average fs: 8009.10 , finished: 0.92%
+root Get bugger length: 6561 average fs: 8002.49 , finished: 1.22%
+root Get bugger length: 6579 average fs: 8003.64 , finished: 1.52%
+root Get bugger length: 6570 average fs: 8002.75 , finished: 1.83%
+root Get bugger length: 6561 average fs: 8000.69 , finished: 2.13%
+root Get bugger length: 6588 average fs: 8003.17 , finished: 2.44%
+root Get bugger length: 6561 average fs: 8001.49 , finished: 2.74%
+root Get bugger length: 6561 average fs: 8000.14 , finished: 3.04%
+root Get bugger length: 6588 average fs: 8001.94 , finished: 3.35%
+root Get bugger length: 6561 average fs: 8000.81 , finished: 3.65%
+root Get bugger length: 6561 average fs: 7999.87 , finished: 3.96%
+root Get bugger length: 6588 average fs: 8001.20 , finished: 4.26%
+root Get bugger length: 6561 average fs: 8000.20 , finished: 4.57%
+root Get bugger length: 6588 average fs: 8001.23 , finished: 4.87%
+root Get bugger length: 6561 average fs: 8000.42 , finished: 5.17%
+root Get bugger length: 6579 average fs: 8000.79 , finished: 5.48%
+root Get bugger length: 6570 average fs: 8000.48 , finished: 5.78%
+root Get bugger length: 6561 average fs: 7999.71 , finished: 6.09%
+root Get bugger length: 6588 average fs: 8000.37 , finished: 6.39%
+root Get bugger length: 6561 average fs: 7999.60 , finished: 6.69%
+root Get bugger length: 6588 average fs: 8000.56 , finished: 7.00%
+root Get bugger length: 6561 average fs: 7999.91 , finished: 7.30%
+root Get bugger length: 6588 average fs: 8000.59 , finished: 7.61%
+root Get bugger length: 6561 average fs: 7999.91 , finished: 7.91%
+root Get bugger length: 6588 average fs: 8000.36 , finished: 8.22%
+root Get bugger length: 6588 average fs: 8000.74 , finished: 8.52%
+root Get bugger length: 6561 average fs: 8000.15 , finished: 8.83%
+root Get bugger length: 6588 average fs: 8000.67 , finished: 9.13%
+root Get bugger length: 6561 average fs: 7999.98 , finished: 9.44%
+root Get bugger length: 6588 average fs: 8000.35 , finished: 9.74%
+root Get bugger length: 6561 average fs: 7999.78 , finished: 10.04%
+root Get bugger length: 6588 average fs: 8000.26 , finished: 10.35%
+root Get bugger length: 6561 average fs: 7999.79 , finished: 10.65%
+root Get bugger length: 6588 average fs: 8000.11 , finished: 10.96%
+root Get bugger length: 6588 average fs: 8000.44 , finished: 11.26%
+root Get bugger length: 6561 average fs: 7999.98 , finished: 11.57%
+root Get bugger length: 6588 average fs: 8000.34 , finished: 11.87%
+root Get bugger length: 6561 average fs: 7999.80 , finished: 12.17%
+root Get bugger length: 6588 average fs: 8000.12 , finished: 12.48%
+root Get bugger length: 6561 average fs: 7999.73 , finished: 12.78%
+root Get bugger length: 6588 average fs: 8000.11 , finished: 13.09%
+root Get bugger length: 6561 average fs: 7999.71 , finished: 13.39%
+root Get bugger length: 6588 average fs: 8000.00 , finished: 13.70%
+root Get bugger length: 6588 average fs: 8000.25 , finished: 14.00%
+root Get bugger length: 6561 average fs: 7999.84 , finished: 14.31%
+root Get bugger length: 6588 average fs: 8000.14 , finished: 14.61%
+root Get bugger length: 6561 average fs: 7999.77 , finished: 14.92%
+root Get bugger length: 6588 average fs: 8000.11 , finished: 15.22%
+root Get bugger length: 6561 average fs: 7999.80 , finished: 15.52%
+root Get bugger length: 6588 average fs: 8000.15 , finished: 15.83%
+root Get bugger length: 6561 average fs: 7999.79 , finished: 16.13%
+root Get bugger length: 6588 average fs: 8000.00 , finished: 16.44%
+root Get bugger length: 6588 average fs: 8000.21 , finished: 16.74%
+root Get bugger length: 6561 average fs: 7999.86 , finished: 17.05%
+root Get bugger length: 6588 average fs: 8000.05 , finished: 17.35%
+root Get bugger length: 6561 average fs: 7999.74 , finished: 17.66%
+root Get bugger length: 6588 average fs: 8000.03 , finished: 17.96%
+root Get bugger length: 6561 average fs: 7999.78 , finished: 18.26%
+root Get bugger length: 6588 average fs: 8000.01 , finished: 18.57%
+root Get bugger length: 6588 average fs: 8000.21 , finished: 18.87%
+root Get bugger length: 6561 average fs: 7999.95 , finished: 19.18%
+root Get bugger length: 6561 average fs: 7999.66 , finished: 19.48%
+root Get bugger length: 6588 average fs: 7999.84 , finished: 19.79%
+root Get bugger length: 6588 average fs: 8000.04 , finished: 20.09%
+root Get bugger length: 6561 average fs: 7999.83 , finished: 20.39%
+root Get bugger length: 6561 average fs: 7999.62 , finished: 20.70%
+root Get bugger length: 6588 average fs: 7999.80 , finished: 21.00%
+root Get bugger length: 6588 average fs: 7999.85 , finished: 21.31%
+root Get bugger length: 6588 average fs: 7999.94 , finished: 21.61%
+root Get bugger length: 6561 average fs: 7999.67 , finished: 21.92%
+root Get bugger length: 6588 average fs: 7999.87 , finished: 22.22%
+root Get bugger length: 6561 average fs: 7999.65 , finished: 22.53%
+root Get bugger length: 6588 average fs: 7999.88 , finished: 22.83%
+root Get bugger length: 6561 average fs: 7999.67 , finished: 23.14%
+root Get bugger length: 6588 average fs: 7999.80 , finished: 23.44%
+root Get bugger length: 6588 average fs: 7999.95 , finished: 23.75%
+root Get bugger length: 6561 average fs: 7999.72 , finished: 24.05%
+root Get bugger length: 6588 average fs: 7999.87 , finished: 24.35%
+root Get bugger length: 6561 average fs: 7999.67 , finished: 24.66%
+root Get bugger length: 6588 average fs: 7999.89 , finished: 24.96%
+root Get bugger length: 6561 average fs: 7999.72 , finished: 25.27%
+root Get bugger length: 6588 average fs: 7999.89 , finished: 25.57%
+root Get bugger length: 6570 average fs: 7999.81 , finished: 25.88%
+root Get bugger length: 6579 average fs: 7999.88 , finished: 26.18%
+root Get bugger length: 6561 average fs: 7999.67 , finished: 26.48%
+root Get bugger length: 6588 average fs: 7999.79 , finished: 26.79%
+root Get bugger length: 6579 average fs: 7999.83 , finished: 27.09%
+root Get bugger length: 6570 average fs: 7999.78 , finished: 27.40%
+root Get bugger length: 6561 average fs: 7999.63 , finished: 27.70%
+root Get bugger length: 6588 average fs: 7999.76 , finished: 28.01%
+root Get bugger length: 6588 average fs: 7999.91 , finished: 28.31%
+root Get bugger length: 6561 average fs: 7999.72 , finished: 28.62%
+root Get bugger length: 6588 average fs: 7999.87 , finished: 28.92%
+root Get bugger length: 6561 average fs: 7999.66 , finished: 29.22%
+root Get bugger length: 6588 average fs: 7999.82 , finished: 29.53%
+root Get bugger length: 6561 average fs: 7999.68 , finished: 29.83%
+root Get bugger length: 6588 average fs: 7999.85 , finished: 30.14%
+root Get bugger length: 6561 average fs: 7999.67 , finished: 30.44%
+root Get bugger length: 6588 average fs: 7999.80 , finished: 30.75%
+root Get bugger length: 6588 average fs: 7999.85 , finished: 31.05%
+root Get bugger length: 6561 average fs: 7999.65 , finished: 31.36%
+root Get bugger length: 6588 average fs: 7999.75 , finished: 31.66%
+root Get bugger length: 6588 average fs: 7999.84 , finished: 31.96%
+root Get bugger length: 6561 average fs: 7999.63 , finished: 32.27%
+root Get bugger length: 6588 average fs: 7999.81 , finished: 32.57%
+root Get bugger length: 6561 average fs: 7999.67 , finished: 32.88%
+root Get bugger length: 6588 average fs: 7999.82 , finished: 33.18%
+root Get bugger length: 6561 average fs: 7999.66 , finished: 33.49%
+root Get bugger length: 6588 average fs: 7999.77 , finished: 33.79%
+root Get bugger length: 6561 average fs: 7999.60 , finished: 34.09%
+root Get bugger length: 6588 average fs: 7999.72 , finished: 34.40%
+root Get bugger length: 6561 average fs: 7999.60 , finished: 34.70%
+root Get bugger length: 6588 average fs: 7999.75 , finished: 35.01%
+root Get bugger length: 6615 average fs: 7999.77 , finished: 35.32%
+root Get bugger length: 6588 average fs: 7999.86 , finished: 35.62%
+root Get bugger length: 6561 average fs: 7999.71 , finished: 35.92%
+root Get bugger length: 6570 average fs: 7999.66 , finished: 36.23%
+root Get bugger length: 6579 average fs: 7999.66 , finished: 36.53%
+root Get bugger length: 6588 average fs: 7999.80 , finished: 36.84%
+root Get bugger length: 6561 average fs: 7999.67 , finished: 37.14%
+root Get bugger length: 6561 average fs: 7999.55 , finished: 37.45%
+root Get bugger length: 6588 average fs: 7999.67 , finished: 37.75%
+root Get bugger length: 6588 average fs: 7999.77 , finished: 38.05%
+root Get bugger length: 6561 average fs: 7999.65 , finished: 38.36%
+root Get bugger length: 6588 average fs: 7999.77 , finished: 38.66%
+root Get bugger length: 6561 average fs: 7999.61 , finished: 38.97%
+root Get bugger length: 6588 average fs: 7999.75 , finished: 39.27%
+root Get bugger length: 6561 average fs: 7999.62 , finished: 39.58%
+root Get bugger length: 6588 average fs: 7999.74 , finished: 39.88%
+root Get bugger length: 6588 average fs: 7999.83 , finished: 40.19%
+root Get bugger length: 6561 average fs: 7999.69 , finished: 40.49%
+root Get bugger length: 6561 average fs: 7999.56 , finished: 40.79%
+root Get bugger length: 6588 average fs: 7999.64 , finished: 41.10%
+root Get bugger length: 6588 average fs: 7999.73 , finished: 41.40%
+root Get bugger length: 6561 average fs: 7999.63 , finished: 41.71%
+root Get bugger length: 6588 average fs: 7999.75 , finished: 42.01%
+root Get bugger length: 6561 average fs: 7999.64 , finished: 42.32%
+root Get bugger length: 6588 average fs: 7999.72 , finished: 42.62%
+root Get bugger length: 6588 average fs: 7999.81 , finished: 42.93%
+root Get bugger length: 6561 average fs: 7999.69 , finished: 43.23%
+root Get bugger length: 6561 average fs: 7999.56 , finished: 43.53%
+root Get bugger length: 6588 average fs: 7999.67 , finished: 43.84%
+root Get bugger length: 6588 average fs: 7999.74 , finished: 44.14%
+root Get bugger length: 6561 average fs: 7999.64 , finished: 44.45%
+root Get bugger length: 6588 average fs: 7999.76 , finished: 44.75%
+root Get bugger length: 6570 average fs: 7999.70 , finished: 45.06%
+root Get bugger length: 6579 average fs: 7999.73 , finished: 45.36%
+root Get bugger length: 6561 average fs: 7999.63 , finished: 45.66%
+root Get bugger length: 6588 average fs: 7999.71 , finished: 45.97%
+root Get bugger length: 6570 average fs: 7999.64 , finished: 46.27%
+root Get bugger length: 6579 average fs: 7999.68 , finished: 46.58%
+root Get bugger length: 6561 average fs: 7999.58 , finished: 46.88%
+root Get bugger length: 6588 average fs: 7999.66 , finished: 47.19%
+root Get bugger length: 6588 average fs: 7999.76 , finished: 47.49%
+root Get bugger length: 6561 average fs: 7999.65 , finished: 47.80%
+root Get bugger length: 6588 average fs: 7999.73 , finished: 48.10%
+root Get bugger length: 6561 average fs: 7999.60 , finished: 48.41%
+root Get bugger length: 6588 average fs: 7999.68 , finished: 48.71%
+root Get bugger length: 6561 average fs: 7999.59 , finished: 49.01%
+root Get bugger length: 6588 average fs: 7999.70 , finished: 49.32%
+root Get bugger length: 6588 average fs: 7999.78 , finished: 49.62%
+root Get bugger length: 6561 average fs: 7999.66 , finished: 49.93%
+root Get bugger length: 6561 average fs: 7999.56 , finished: 50.23%
+root Get bugger length: 6588 average fs: 7999.65 , finished: 50.54%
+root Get bugger length: 6588 average fs: 7999.73 , finished: 50.84%
+root Get bugger length: 6561 average fs: 7999.63 , finished: 51.14%
+root Get bugger length: 6615 average fs: 7999.83 , finished: 51.45%
+root Get bugger length: 6561 average fs: 7999.73 , finished: 51.75%
+root Get bugger length: 6561 average fs: 7999.62 , finished: 52.06%
+root Get bugger length: 6588 average fs: 7999.70 , finished: 52.36%
+root Get bugger length: 6561 average fs: 7999.61 , finished: 52.67%
+root Get bugger length: 6588 average fs: 7999.68 , finished: 52.97%
+root Get bugger length: 6561 average fs: 7999.57 , finished: 53.28%
+root Get bugger length: 6588 average fs: 7999.67 , finished: 53.58%
+root Get bugger length: 6561 average fs: 7999.58 , finished: 53.89%
+root Get bugger length: 6588 average fs: 7999.68 , finished: 54.19%
+root Get bugger length: 6588 average fs: 7999.72 , finished: 54.50%
+root Get bugger length: 6561 average fs: 7999.63 , finished: 54.80%
+root Get bugger length: 6588 average fs: 7999.71 , finished: 55.10%
+root Get bugger length: 6561 average fs: 7999.61 , finished: 55.41%
+root Get bugger length: 6588 average fs: 7999.69 , finished: 55.71%
+root Get bugger length: 6561 average fs: 7999.59 , finished: 56.02%
+root Get bugger length: 6588 average fs: 7999.68 , finished: 56.32%
+root Get bugger length: 6561 average fs: 7999.60 , finished: 56.62%
+root Get bugger length: 6588 average fs: 7999.67 , finished: 56.93%
+root Get bugger length: 6561 average fs: 7999.57 , finished: 57.23%
+root Get bugger length: 6588 average fs: 7999.66 , finished: 57.54%
+root Get bugger length: 6561 average fs: 7999.57 , finished: 57.84%
+root Get bugger length: 6588 average fs: 7999.63 , finished: 58.15%
+root Get bugger length: 6561 average fs: 7999.55 , finished: 58.45%
+root Get bugger length: 6615 average fs: 7999.72 , finished: 58.76%
+root Get bugger length: 6588 average fs: 7999.70 , finished: 59.06%
+root Get bugger length: 6570 average fs: 7999.63 , finished: 59.37%
+root Get bugger length: 6579 average fs: 7999.61 , finished: 59.67%
+root Get bugger length: 6561 average fs: 7999.55 , finished: 59.98%
+root Get bugger length: 6588 average fs: 7999.63 , finished: 60.28%
+root Get bugger length: 6579 average fs: 7999.64 , finished: 60.58%
+root Get bugger length: 6570 average fs: 7999.60 , finished: 60.89%
+root Get bugger length: 6561 average fs: 7999.55 , finished: 61.19%
+root Get bugger length: 6588 average fs: 7999.65 , finished: 61.50%
+root Get bugger length: 6561 average fs: 7999.59 , finished: 61.80%
+root Get bugger length: 6588 average fs: 7999.57 , finished: 62.11%
+root Get bugger length: 6615 average fs: 7999.74 , finished: 62.41%
+root Get bugger length: 6561 average fs: 7999.66 , finished: 62.72%
+root Get bugger length: 6588 average fs: 7999.73 , finished: 63.02%
+root Get bugger length: 6561 average fs: 7999.68 , finished: 63.32%
+root Get bugger length: 6561 average fs: 7999.60 , finished: 63.63%
+root Get bugger length: 6588 average fs: 7999.68 , finished: 63.93%
+root Get bugger length: 6561 average fs: 7999.62 , finished: 64.24%
+root Get bugger length: 6561 average fs: 7999.57 , finished: 64.54%
+root Get bugger length: 6588 average fs: 7999.67 , finished: 64.85%
+root Get bugger length: 6561 average fs: 7999.61 , finished: 65.15%
+root Get bugger length: 6561 average fs: 7999.55 , finished: 65.45%
+root Get bugger length: 6588 average fs: 7999.65 , finished: 65.76%
+root Get bugger length: 6561 average fs: 7999.58 , finished: 66.06%
+root Get bugger length: 6606 average fs: 7999.70 , finished: 66.37%
+root Get bugger length: 6570 average fs: 7999.67 , finished: 66.67%
+root Get bugger length: 6561 average fs: 7999.57 , finished: 66.98%
+root Get bugger length: 6588 average fs: 7999.64 , finished: 67.28%
+root Get bugger length: 6561 average fs: 7999.57 , finished: 67.58%
+root Get bugger length: 6588 average fs: 7999.66 , finished: 67.89%
+root Get bugger length: 6588 average fs: 7999.69 , finished: 68.19%
+root Get bugger length: 6579 average fs: 7999.69 , finished: 68.50%
+root Get bugger length: 6570 average fs: 7999.66 , finished: 68.80%
+root Get bugger length: 6561 average fs: 7999.58 , finished: 69.11%
+root Get bugger length: 6588 average fs: 7999.64 , finished: 69.41%
+root Get bugger length: 6561 average fs: 7999.56 , finished: 69.72%
+root Get bugger length: 6588 average fs: 7999.64 , finished: 70.02%
+root Get bugger length: 6561 average fs: 7999.57 , finished: 70.33%
+root Get bugger length: 6588 average fs: 7999.64 , finished: 70.63%
+root Get bugger length: 6588 average fs: 7999.67 , finished: 70.94%
+root Get bugger length: 6561 average fs: 7999.60 , finished: 71.24%
+root Get bugger length: 6588 average fs: 7999.66 , finished: 71.54%
+root Get bugger length: 6561 average fs: 7999.59 , finished: 71.85%
+root Get bugger length: 6588 average fs: 7999.65 , finished: 72.15%
+root Get bugger length: 6561 average fs: 7999.58 , finished: 72.46%
+root Get bugger length: 6588 average fs: 7999.65 , finished: 72.76%
+root Get bugger length: 6588 average fs: 7999.70 , finished: 73.07%
+root Get bugger length: 6561 average fs: 7999.62 , finished: 73.37%
+root Get bugger length: 6588 average fs: 7999.66 , finished: 73.67%
+root Get bugger length: 6561 average fs: 7999.57 , finished: 73.98%
+root Get bugger length: 6588 average fs: 7999.63 , finished: 74.28%
+root Get bugger length: 6588 average fs: 7999.62 , finished: 74.59%
+root Get bugger length: 6570 average fs: 7999.59 , finished: 74.89%
+root Get bugger length: 6579 average fs: 7999.61 , finished: 75.20%
+root Get bugger length: 6588 average fs: 7999.65 , finished: 75.50%
+root Get bugger length: 6561 average fs: 7999.59 , finished: 75.81%
+root Get bugger length: 6588 average fs: 7999.65 , finished: 76.11%
+root Get bugger length: 6561 average fs: 7999.57 , finished: 76.42%
+root Get bugger length: 6588 average fs: 7999.60 , finished: 76.72%
+root Get bugger length: 6588 average fs: 7999.67 , finished: 77.03%
+root Get bugger length: 6561 average fs: 7999.61 , finished: 77.33%
+root Get bugger length: 6561 average fs: 7999.55 , finished: 77.63%
+root Get bugger length: 6588 average fs: 7999.62 , finished: 77.94%
+root Get bugger length: 6588 average fs: 7999.68 , finished: 78.24%
+root Get bugger length: 6561 average fs: 7999.61 , finished: 78.55%
+root Get bugger length: 6588 average fs: 7999.67 , finished: 78.85%
+root Get bugger length: 6561 average fs: 7999.60 , finished: 79.16%
+root Get bugger length: 6588 average fs: 7999.66 , finished: 79.46%
+root Get bugger length: 6561 average fs: 7999.60 , finished: 79.76%
+root Get bugger length: 6561 average fs: 7999.55 , finished: 80.07%
+root Get bugger length: 6588 average fs: 7999.60 , finished: 80.37%
+root Get bugger length: 6588 average fs: 7999.65 , finished: 80.68%
+root Get bugger length: 6561 average fs: 7999.59 , finished: 80.98%
+root Get bugger length: 6588 average fs: 7999.64 , finished: 81.29%
+root Get bugger length: 6561 average fs: 7999.56 , finished: 81.59%
+root Get bugger length: 6588 average fs: 7999.63 , finished: 81.89%
+root Get bugger length: 6561 average fs: 7999.57 , finished: 82.20%
+root Get bugger length: 6588 average fs: 7999.64 , finished: 82.50%
+root Get bugger length: 6579 average fs: 7999.66 , finished: 82.81%
+root Get bugger length: 6570 average fs: 7999.62 , finished: 83.11%
+root Get bugger length: 6588 average fs: 7999.67 , finished: 83.42%
+root Get bugger length: 6561 average fs: 7999.60 , finished: 83.72%
+root Get bugger length: 6588 average fs: 7999.65 , finished: 84.03%
+root Get bugger length: 6561 average fs: 7999.59 , finished: 84.33%
+root Get bugger length: 6597 average fs: 7999.62 , finished: 84.64%
+root Get bugger length: 6579 average fs: 7999.62 , finished: 84.94%
+root Get bugger length: 6588 average fs: 7999.67 , finished: 85.25%
+root Get bugger length: 6561 average fs: 7999.60 , finished: 85.55%
+root Get bugger length: 6570 average fs: 7999.59 , finished: 85.85%
+root Get bugger length: 6579 average fs: 7999.60 , finished: 86.16%
+root Get bugger length: 6588 average fs: 7999.65 , finished: 86.46%
+root Get bugger length: 6561 average fs: 7999.59 , finished: 86.77%
+root Get bugger length: 6588 average fs: 7999.64 , finished: 87.07%
+root Get bugger length: 6561 average fs: 7999.59 , finished: 87.38%
+root Get bugger length: 6588 average fs: 7999.63 , finished: 87.68%
+root Get bugger length: 6561 average fs: 7999.57 , finished: 87.98%
+root Get bugger length: 6588 average fs: 7999.63 , finished: 88.29%
+root Get bugger length: 6561 average fs: 7999.57 , finished: 88.59%
+root Get bugger length: 6588 average fs: 7999.61 , finished: 88.90%
+root Get bugger length: 6561 average fs: 7999.55 , finished: 89.20%
+root Get bugger length: 6588 average fs: 7999.60 , finished: 89.51%
+root Get bugger length: 6588 average fs: 7999.66 , finished: 89.81%
+root Get bugger length: 6588 average fs: 7999.68 , finished: 90.12%
+root Get bugger length: 6561 average fs: 7999.63 , finished: 90.42%
+root Get bugger length: 6588 average fs: 7999.62 , finished: 90.72%
+root Get bugger length: 6561 average fs: 7999.56 , finished: 91.03%
+root Get bugger length: 6588 average fs: 7999.56 , finished: 91.33%
+root Get bugger length: 6588 average fs: 7999.61 , finished: 91.64%
+root Get bugger length: 6561 average fs: 7999.56 , finished: 91.94%
+root Get bugger length: 6588 average fs: 7999.61 , finished: 92.25%
+root Get bugger length: 6588 average fs: 7999.65 , finished: 92.55%
+root Get bugger length: 6561 average fs: 7999.57 , finished: 92.86%
+root Get bugger length: 6588 average fs: 7999.59 , finished: 93.16%
+root Get bugger length: 6588 average fs: 7999.61 , finished: 93.47%
+root Get bugger length: 6561 average fs: 7999.56 , finished: 93.77%
+root Get bugger length: 6588 average fs: 7999.62 , finished: 94.08%
+root Get bugger length: 6561 average fs: 7999.56 , finished: 94.38%
+root Get bugger length: 6588 average fs: 7999.60 , finished: 94.68%
+root Get bugger length: 6588 average fs: 7999.65 , finished: 94.99%
+root Get bugger length: 6561 average fs: 7999.60 , finished: 95.29%
+root Get bugger length: 6561 average fs: 7999.55 , finished: 95.60%
+root Get bugger length: 6588 average fs: 7999.60 , finished: 95.90%
+root Get bugger length: 6588 average fs: 7999.63 , finished: 96.21%
+root Get bugger length: 6588 average fs: 7999.66 , finished: 96.51%
+root Get bugger length: 6561 average fs: 7999.61 , finished: 96.81%
+root Get bugger length: 6588 average fs: 7999.64 , finished: 97.12%
+root Get bugger length: 6561 average fs: 7999.58 , finished: 97.42%
+root Get bugger length: 6570 average fs: 7999.57 , finished: 97.73%
+root Get bugger length: 6579 average fs: 7999.59 , finished: 98.03%
+root Get bugger length: 6588 average fs: 7999.63 , finished: 98.34%
+root Get bugger length: 6561 average fs: 7999.56 , finished: 98.64%
+root Get bugger length: 6588 average fs: 7999.62 , finished: 98.95%
+root Get bugger length: 6561 average fs: 7999.58 , finished: 99.25%
+root Get bugger length: 6588 average fs: 7999.61 , finished: 99.56%
+root Get bugger length: 6588 average fs: 7999.66 , finished: 99.86%
+root Get bugger length: 6561 average fs: 7999.61 , finished: 100.00%
