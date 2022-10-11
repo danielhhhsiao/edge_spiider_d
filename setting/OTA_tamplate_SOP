@@ -1,0 +1,10 @@
+1. set ota_status to 3 device.ini
+2. remove .ini_ub file
+3. remove program/Library/data dir
+4. remove program/Library/SW_test dir
+5. remove program/Library/QC dir
+6. remove program/Library/DVT dir
+7. remove program/Library/eeprom dir
+8. remove program/Library/simulator/* file
+9. compress OTA_template due .tar format
+10. process cryptoFile.py to crypto .tar to .bin
