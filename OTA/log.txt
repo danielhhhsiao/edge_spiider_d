@@ -1,0 +1,244 @@
+Start 2022-04-11_18-30-07
+
+flag up
+
+Decrypto file
+uncrypto file /home/pi/OTA/buffer/new.bin to /home/pi/OTA/buffer/new.tar
+Input file: /home/pi/OTA/buffer/new.bin Size: 27023392
+Output file: /home/pi/OTA/buffer/new.tar Size: 27023360
+
+uncompress file
+
+check key
+
+get file list /home/pi/OTA/buffer/list.txt
+['/home/pi/program', '/home/pi/server', '/home/pi/default', '/home/pi/tool_sh', '']
+
+end service 
+
+update MCU FW
+['Vibration board', 'None', 'Current board', 'None']
+write FW at bus/cs/type: 0 0 Vibration board
+ *Total size : 9253 Bytes
+ *checkSum : 0xEDE02DC4
+
+write FW at bus/cs/type: 1 0 Current board
+ *Total size : 8608 Bytes
+ *checkSum : 0x2318A009
+
+
+replace file
+
+install file
+
+flag down
+
+remove buffer
+Start 2022-05-04_16-01-31
+
+flag up
+
+Decrypto file
+uncrypto file /home/pi/OTA/buffer/new.bin to /home/pi/OTA/buffer/new.tar
+Input file: /home/pi/OTA/buffer/new.bin Size: 31436832
+Output file: /home/pi/OTA/buffer/new.tar Size: 31436800
+
+uncompress file
+
+check key
+
+get file list /home/pi/OTA/buffer/list.txt
+['/home/pi/program', '/home/pi/server', '/home/pi/default', '/home/pi/tool_sh', '']
+
+end service 
+
+update MCU FW
+['Vibration board', 'None', 'Current board', 'None']
+write FW at bus/cs/type: 0 0 Vibration board
+ *Total size : 9253 Bytes
+ *checkSum : 0xEDE02DC4
+
+write FW at bus/cs/type: 1 0 Current board
+ *Total size : 8608 Bytes
+ *checkSum : 0x2318A009
+
+
+replace file
+
+install file
+
+flag down
+
+remove buffer
+Start 2022-05-04_16-17-09
+
+flag up
+
+Decrypto file
+uncrypto file /home/pi/OTA/buffer/new.bin to /home/pi/OTA/buffer/new.tar
+Input file: /home/pi/OTA/buffer/new.bin Size: 31436832
+Output file: /home/pi/OTA/buffer/new.tar Size: 31436800
+
+uncompress file
+
+check key
+
+get file list /home/pi/OTA/buffer/list.txt
+['/home/pi/program', '/home/pi/server', '/home/pi/default', '/home/pi/tool_sh', '']
+
+end service 
+
+update MCU FW
+['Vibration board', 'None', 'Current board', 'None']
+write FW at bus/cs/type: 0 0 Vibration board
+ *Total size : 9253 Bytes
+ *checkSum : 0xEDE02DC4
+
+write FW at bus/cs/type: 1 0 Current board
+ *Total size : 8608 Bytes
+ *checkSum : 0x2318A009
+
+
+replace file
+
+install file
+
+flag down
+
+remove buffer
+Start 2022-05-04_16-21-51
+
+flag up
+
+Decrypto file
+uncrypto file /home/pi/OTA/buffer/new.bin to /home/pi/OTA/buffer/new.tar
+Input file: /home/pi/OTA/buffer/new.bin Size: 31436832
+Output file: /home/pi/OTA/buffer/new.tar Size: 31436800
+
+uncompress file
+
+check key
+
+get file list /home/pi/OTA/buffer/list.txt
+['/home/pi/program', '/home/pi/server', '/home/pi/default', '/home/pi/tool_sh', '']
+
+end service 
+
+update MCU FW
+['Vibration board', 'None', 'Current board', 'None']
+write FW at bus/cs/type: 0 0 Vibration board
+ *Total size : 9253 Bytes
+ *checkSum : 0xEDE02DC4
+
+write FW at bus/cs/type: 1 0 Current board
+ *Total size : 8608 Bytes
+ *checkSum : 0x2318A009
+
+
+replace file
+
+install file
+Start 2022-09-02_09-01-13
+
+flag up
+
+Decrypto file
+uncrypto file /home/pi/OTA/buffer/new.bin to /home/pi/OTA/buffer/new.tar
+Input file: /home/pi/OTA/buffer/new.bin Size: 71712
+Output file: /home/pi/OTA/buffer/new.tar Size: 71680
+
+uncompress file
+
+check key
+
+get file list /home/pi/OTA/buffer/list.txt
+['/home/pi/default/device.ini', '/home/pi/default/work.ini', '/home/pi/default/system.ini', '/home/pi/program/work.ini', '/home/pi/program/system.ini', '']
+
+replace file
+/home/pi/OTA/buffer/device.ini move to /home/pi/default/device.ini
+/home/pi/OTA/buffer/work.ini move to /home/pi/default/work.ini
+/home/pi/OTA/buffer/system.ini move to /home/pi/default/system.ini
+/home/pi/OTA/buffer/work.ini move to /home/pi/program/work.ini
+/home/pi/OTA/buffer/system.ini move to /home/pi/program/system.ini
+
+flag down
+
+remove buffer
+Start 2022-09-02_09-07-29
+
+flag up
+
+Decrypto file
+uncrypto file /home/pi/OTA/buffer/new.bin to /home/pi/OTA/buffer/new.tar
+Input file: /home/pi/OTA/buffer/new.bin Size: 71712
+Output file: /home/pi/OTA/buffer/new.tar Size: 71680
+
+uncompress file
+
+check key
+
+get file list /home/pi/OTA/buffer/list.txt
+['/home/pi/default/device.ini', '/home/pi/default/work.ini', '/home/pi/default/system.ini', '/home/pi/program/work.ini', '/home/pi/program/system.ini', '']
+
+replace file
+/home/pi/OTA/buffer/device.ini move to /home/pi/default/device.ini
+/home/pi/OTA/buffer/work.ini move to /home/pi/default/work.ini
+/home/pi/OTA/buffer/system.ini move to /home/pi/default/system.ini
+/home/pi/OTA/buffer/work.ini move to /home/pi/program/work.ini
+/home/pi/OTA/buffer/system.ini move to /home/pi/program/system.ini
+
+flag down
+
+remove buffer
+Start 2022-09-02_09-08-00
+
+flag up
+
+Decrypto file
+uncrypto file /home/pi/OTA/buffer/new.bin to /home/pi/OTA/buffer/new.tar
+Input file: /home/pi/OTA/buffer/new.bin Size: 71712
+Output file: /home/pi/OTA/buffer/new.tar Size: 71680
+
+uncompress file
+
+check key
+
+get file list /home/pi/OTA/buffer/list.txt
+['/home/pi/default/device.ini', '/home/pi/default/work.ini', '/home/pi/default/system.ini', '/home/pi/program/work.ini', '/home/pi/program/system.ini', '']
+
+replace file
+/home/pi/OTA/buffer/device.ini move to /home/pi/default/device.ini
+/home/pi/OTA/buffer/work.ini move to /home/pi/default/work.ini
+/home/pi/OTA/buffer/system.ini move to /home/pi/default/system.ini
+/home/pi/OTA/buffer/work.ini move to /home/pi/program/work.ini
+/home/pi/OTA/buffer/system.ini move to /home/pi/program/system.ini
+
+flag down
+
+remove buffer
+Start 2022-09-02_09-52-50
+
+flag up
+
+Decrypto file
+uncrypto file /home/pi/OTA/buffer/new.bin to /home/pi/OTA/buffer/new.tar
+Input file: /home/pi/OTA/buffer/new.bin Size: 71712
+Output file: /home/pi/OTA/buffer/new.tar Size: 71680
+
+uncompress file
+
+check key
+
+get file list /home/pi/OTA/buffer/list.txt
+['/home/pi/default/device.ini', '/home/pi/default/work.ini', '/home/pi/default/system.ini', '/home/pi/program/work.ini', '/home/pi/program/system.ini', '']
+
+replace file
+/home/pi/OTA/buffer/device.ini move to /home/pi/default/device.ini
+/home/pi/OTA/buffer/work.ini move to /home/pi/default/work.ini
+/home/pi/OTA/buffer/system.ini move to /home/pi/default/system.ini
+/home/pi/OTA/buffer/work.ini move to /home/pi/program/work.ini
+/home/pi/OTA/buffer/system.ini move to /home/pi/program/system.ini
+
+flag down
+
+remove buffer
