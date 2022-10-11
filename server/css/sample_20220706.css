@@ -1,0 +1,238 @@
+.topTabBox{
+    position:fixed;
+    top:3.5rem;
+    left:0;
+    height:3.5rem;
+    width:100%;
+    min-width:20rem;
+    text-align:center;
+    vertical-align:top;
+    z-index:800;
+    padding:0;
+    margin:0;
+}
+.topTab{
+    position:relative;
+    top:0;
+    line-height:1.5rem;
+    height:1.5rem;
+    width:30%;
+    max-width:12rem;
+    font-size:0.6rem;
+    text-align:center;
+    color:#FFF;
+    background-color:rgba(175, 175, 175,1);
+    background-color:rgba(175, 175, 175);
+    background-color:#AFAFAF;
+    border-radius: 0 0 0.6rem 0.6rem;
+    display:inline-block;
+    vertical-align:top;
+    padding:0;
+    margin:0;
+    cursor: pointer;
+    box-shadow:0px 1px 1px rgba(0, 0, 0,0.4),0px 3px 5px rgba(100, 100, 100,0.3);
+}
+.topTabFocus{
+    height:2.25rem;
+    line-height:2.25rem;
+    width:40%;
+    max-width:16rem;
+    font-size:1rem;
+    border-radius: 0 0 0.75rem 0.75rem;
+    background-color:rgba(98, 152, 234,1);
+    background-color:rgb(98, 152, 234);
+    background-color:#6298EA;
+}
+.question{
+    position:absolute;
+    top:0.4rem;
+    right:0.4rem;
+    background-image:URL("/img/question.png");
+    background-repeat:no-repeat;
+    background-size:90% auto;
+    background-position:center;
+    width:2.6rem;
+    height:2.6rem;
+}
+
+.topTabHide{
+    display:none;
+}
+.tabSensor{
+    display:block;
+}
+#view{
+    margin-top:2.5rem;
+    margin-bottom:2rem;
+}
+.bottomInfo{
+    position:fixed;
+    bottom:0;
+    left:0;
+    height:2rem;
+    width:100%;
+    max-width:25rem;
+    border-radius: 0 0.5rem 0 0;
+    z-index:800;
+    padding:0;
+    padding-left:0.4rem;
+    padding-right:0.4rem;
+    line-height:2rem;
+    text-align:center;
+    margin:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:1.2rem;
+    box-shadow:1px -1px 1px rgba(0, 0, 0,0.4),3px -3px 5px rgba(100, 100, 100,0.3);
+    display:none;
+}
+
+#sensorResult{
+    display:none;
+}
+#segResult{
+    display:none;
+}
+#msgResult{
+    display:none;
+}
+.currentRange{
+    background-color:#ADD8E6
+}
+.currentRange[data-value="1"]{
+    background-color:#FFA07A
+}
+.currentRange[data-value="2"]{
+    background-color:#FFA07A
+}
+.currentRange[data-value="3"]{
+    background-color:#FFA07A
+}
+.currentRange[data-value="4"]{
+    background-color:#ADD8E6
+}
+.currentRange[data-value="5"]{
+    background-color:#ADD8E6
+}
+.currentRange[data-value="6"]{
+    background-color:#ADD8E6
+}
+.currentRange option[value="1"]{
+    background-color:#FFA07A
+}
+.currentRange option[value="2"]{
+    background-color:#FFA07A
+}
+.currentRange option[value="3"]{
+    background-color:#FFA07A
+}
+.currentRange option[value="4"]{
+    background-color:#ADD8E6
+}
+.currentRange option[value="5"]{
+    background-color:#ADD8E6
+}
+.currentRange option[value="6"]{
+    background-color:#ADD8E6
+}
+.SGdiable{
+    display:none;
+}
+
+.sensorSelect{
+    display:none;
+}
+.popWindow{
+    position:fixed;
+    top:50%;
+    left:50%;
+    -ms-transform:translate(-50%,-50%);
+    -webkit-transform:translate(-50%,-50%);
+    -moz-transform:translate(-50%,-50%);
+    -o-transform:translate(-50%,-50%);
+    transform:translate(-50%,-50%);
+    width:100%;
+    max-width:30rem;
+    min-width:18rem;
+    z-index:980;
+    opacity:1;
+    background-color: rgba(175, 175, 175, 1);
+    display:block;
+    margin:0;
+}
+#popWindowMask{
+    position:fixed;
+    top:0;
+    left:0;
+    height:100%;
+    width:100%;
+    z-index:979;
+    background-color:rgb(0, 0 , 0);
+    background-color:#000;
+    opacity:0.9;
+    display:none;
+}
+.popBtn{
+    font-size: 1rem;
+    border-radius: 1.25rem;
+    height:2.5rem;
+    min-width:2.5rem;
+}
+.enableChannel{
+    height:1rem;
+    width:1rem;
+    margin-right:0.5rem;
+}
+.switchBox{
+    position:relative;
+    height:auto;
+    width:100%;
+}
+.switchOut{
+    position:absolute;
+    bottom:0;
+    right:0;
+    height:1.75rem;
+    width:2.75rem;
+    border-radius: 0.875rem;
+    background-color:#DCDCDC;
+    border:1px #888 solid;
+}
+.switchIn{
+    position:absolute;
+    top:0;
+    left:0;
+    right:auto;
+    margin-top: 0.0625rem;
+    height:1.5rem;
+    width:1.5rem;
+    border-radius: 0.75rem;
+    background-color:#FFF;
+    border:1px #888 solid;
+}
+.switchFocus{
+    background-color:#6EE000;
+}
+.switchFocus .switchIn{
+    left:auto;
+    right:0;
+}
+@media only screen and (min-width: 480px){
+    .topTab{
+        height:2rem;
+        line-height:2rem;
+        font-size:1rem;
+        border-radius: 0 0 0.8rem 0.8rem;
+    }
+    .topTabFocus{
+        height:3rem;
+        line-height:3rem;
+        font-size:1.7rem;
+        border-radius: 0 0 1rem 1rem;
+    }
+    #view{
+        margin-top:3.5rem;
+    }
+}
+        
