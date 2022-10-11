@@ -1,0 +1,18 @@
+{"project_id": 237, "parameter_list": ["CT", "Vibration"], "feature_config": [{"parameter": "CT", 
+"spectrum": [{"item": "FFT", "spectrum_param": {"samplerate": 1000, "level": 7}, "bin": 10, 
+"statistical": ["Entropy", "Std", "Var", "Rms", "Mean", "Skewness", "Kurtosis", "Quantile_5", "Quantile_25", "Quantile_50", "Quantile_75", "Quantile_95"]}, 
+{"item": "PSD", "spectrum_param": {"samplerate": 1000, "level": 7}, "bin": 10, 
+"statistical": ["Entropy", "Std", "Var", "Rms", "Mean", "Skewness", "Kurtosis", "Quantile_5", "Quantile_25", "Quantile_50", "Quantile_75", "Quantile_95"]}, 
+{"item": "DWT", "spectrum_param": {"samplerate": 1000, "level": 7}, "bin": 10, 
+"statistical": ["Entropy", "Std", "Var", "Rms", "Mean", "Skewness", "Kurtosis", "Quantile_5", "Quantile_25", "Quantile_50", "Quantile_75", "Quantile_95"]}, 
+{"item": "WP", "spectrum_param": {"samplerate": 1000, "level": 7}, "bin": 10, 
+"statistical": ["Entropy", "Std", "Var", "Rms", "Mean", "Skewness", "Kurtosis", "Quantile_5", "Quantile_25", "Quantile_50", "Quantile_75", "Quantile_95"]}]}, 
+{"parameter": "Vibration", "spectrum": 
+[{"item": "FFT", "spectrum_param": {"samplerate": 1000, "level": 7}, "bin": 10, 
+"statistical": ["Entropy", "Std", "Var", "Rms", "Mean", "Skewness", "Kurtosis", "Quantile_5", "Quantile_25", "Quantile_50", "Quantile_75", "Quantile_95"]}, 
+{"item": "PSD", "spectrum_param": {"samplerate": 1000, "level": 7}, "bin": 10, 
+"statistical": ["Entropy", "Std", "Var", "Rms", "Mean", "Skewness", "Kurtosis", "Quantile_5", "Quantile_25", "Quantile_50", "Quantile_75", "Quantile_95"]},
+ {"item": "DWT", "spectrum_param": {"samplerate": 1000, "level": 7}, "bin": 10, 
+"statistical": ["Entropy", "Std", "Var", "Rms", "Mean", "Skewness", "Kurtosis", "Quantile_5", "Quantile_25", "Quantile_50", "Quantile_75", "Quantile_95"]}, 
+{"item": "WP", "spectrum_param": {"samplerate": 1000, "level": 7}, "bin": 10, 
+"statistical": ["Entropy", "Std", "Var", "Rms", "Mean", "Skewness", "Kurtosis", "Quantile_5", "Quantile_25", "Quantile_50", "Quantile_75", "Quantile_95"]}]}]}

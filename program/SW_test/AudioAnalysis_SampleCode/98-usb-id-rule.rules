@@ -1,0 +1,6 @@
+ACTION!="add", GOTO="my_usb_audio_end"
+
+KERNELS=="1-1.2:1.0", ATTR{id}="usb1"
+KERNELS=="1-1.6:1.0", ATTR{id}="usb2"
+
+LABEL="my_usb_audio_end"

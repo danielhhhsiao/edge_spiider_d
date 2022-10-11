@@ -1,0 +1,47 @@
+#lib install
+sudo apt-get install libcblas-dev
+sudo apt-get install libhdf5-dev
+sudo apt-get install libhdf5-serial-dev
+sudo apt-get install libatlas-base-dev
+sudo apt-get install libjasper-dev 
+sudo apt-get install libqtgui4 
+sudo apt-get install libqt4-test
+sudo pip3 install -U numpy
+sudo pip3 install pandas
+
+
+
+#gcc version check
+pkg-config python-3.9 --libs --cflags
+
+
+
+
+#change compiler content
+sudo cython --embed -o /home/pi/program/Library/ADCHub.c /home/pi/program/Library/ADCHub.py -3
+sudo gcc -Os -I /usr/include/python3.9 -o /home/pi/program/Library/DAQ_module /home/pi/program/Library/ADCHub.c -lpython3.9 -lpthread -lm -lutil -ldl
+sudo rm /home/pi/program/Library/ADCHub.c
+sudo chmod 777 /home/pi/program/Library/DAQ_module
+
+sudo cython --embed -o /home/pi/program/Library/VibrationHub.c /home/pi/program/Library/VibrationHub.py -3
+sudo gcc -Os -I /usr/include/python3.9 -o /home/pi/program/Library/Vib_module /home/pi/program/Library/VibrationHub.c -lpython3.9 -lpthread -lm -lutil -ldl
+sudo rm /home/pi/program/Library/VibrationHub.c
+sudo chmod 777 /home/pi/program/Library/Vib_module
+
+sudo cython --embed -o /home/pi/program/Library/I2Ccheck.c /home/pi/program/Library/I2Ccheck.py -3
+sudo gcc -Os -I /usr/include/python3.9 -o /home/pi/program/Library/I2Ccheck /home/pi/program/Library/I2Ccheck.c -lpython3.9 -lpthread -lm -lutil -ldl
+sudo rm /home/pi/program/Library/I2Ccheck.c
+sudo chmod 777 /home/pi/program/Library/I2Ccheck
+
+sudo cython --embed -o /home/pi/program/Library/DIOtest.c /home/pi/program/Library/DIOtest.py -3
+sudo gcc -Os -I /usr/include/python3.9 -o /home/pi/program/Library/DIOtest /home/pi/program/Library/DIOtest.c -lpython3.9 -lpthread -lm -lutil -ldl
+sudo rm /home/pi/program/Library/DIOtest.c
+sudo chmod 777 /home/pi/program/Library/DIOtest
+
+
+
+
+#setting /boot/config
+i2c / spi enable
+i2c baudrate
+
