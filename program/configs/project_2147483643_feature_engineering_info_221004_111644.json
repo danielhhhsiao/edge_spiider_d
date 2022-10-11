@@ -1,0 +1,1 @@
+{"project_id": 2147483643, "parameter_list": ["C3"], "feature_config": [{"parameter": "C3", "spectrum": [{"item": "Time_Domain", "spectrum_param": {"samplerate": 1000, "level":7}, "bin": 1, "statistical": ["Rms"]}, {"item": "PSD_VEL", "spectrum_param": {"samplerate": 1000, "base_freq": 60}, "bin": 10, "statistical": ["vel_psd_rms","low_psd_rms","mid_psd_rms","high_psd_rms"]}]}]}
