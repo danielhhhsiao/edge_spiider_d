@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF8"></meta>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <title>404 page</title>
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/tool_20220706.js"></script>
+    <script type="text/javascript" src="js/language_20220801.js"></script>
+    <script>
+    var jumpTime=5;
+    var targetPath="/";
+	
+	$(function(){
+        jump(jumpTime);
+    });
+    function jump(time){
+        text(time);
+        if(time>0){
+            console.log(time);
+            setTimeout(jump,1000,time-1);
+        }
+        else{
+            window.location.href=targetPath;
+        }
+    }
+    function text(sec){
+        //$("body").html("404 not found. Jump after "+sec+" sec.");
+        $("body").html(_language.html.page404.remain+" "+sec+" "+_language.html.page404.time_unit);
+    }
+	</script>
+    <link href="/css/RWD_20220706.css" rel="stylesheet">
+</head>
+<body style="text-align:center"></body>
+</html>

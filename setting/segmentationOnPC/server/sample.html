@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF8"></meta>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/tool_20220706.js"></script>
+    <script type="text/javascript" src="js/language_20220831.js"></script>
+    <script type="text/javascript" src="js/topBar_20220706.js"></script>
+    <script type="text/javascript" src="js/form_20220706.js"></script>
+    <script type="text/javascript" src="js/sample_20220831.js"></script>
+    <script>
+        $(function(){
+            //initTopBar("Sample parameter");
+            initTopBar(_language.html.sample.topBar);
+        });
+    </script>
+    <link href="/css/RWD_20220706.css" rel="stylesheet">
+    <link href="/css/topBar_20220706.css" rel="stylesheet">
+    <link href="/css/form_20220803.css" rel="stylesheet">
+    <link href="/css/sample_20220803.css" rel="stylesheet">
+    <title>Sample parameter</title>
+</head>
+<body>
+    <div class="topTabBox">
+        <div class="topTab topTabFocus" data-show="tabSensor" id="lang_sample_tab_sensor">Sensor</div><!--
+     --><div class="topTab" data-show="tabSegmentation" id="lang_sample_tab_seg">Segmentation</div><!--
+     --><div class="topTab" data-show="tabTesting" id="lang_sample_tab_test">Testing</div>
+    </div>
+    <div class="bottomInfo mainColor"></div>
+    <div id="popWindowMask"></div>
+    <div id="popRegisterBox" class="nestBox"></div>
+    <input id="ImportSubmitSelect" type="file" accept=".ini" style="position:fixed;top:-100rem;" onchange="importFiles(this.files)">
+    <input id="FEjsonFileBtn" type="file" accept=".json" style="position:fixed;top:-100rem;" onchange="importFEFiles(this.files)">
+    <div id="view">
+
+        <div class="item" style="display:none">
+            <div class="title">Show descriptive picture<div>-</div></div>
+            <div class="content">
+                <label class="leftLabel">
+                    <input type="radio" name="showPicture" value="Yes" checked/>Yes
+                </label>
+                </br>
+                <label class="leftLabel">
+                    <input type="radio" name="showPicture" value="No"/>No
+                </label>
+            </div>
+        </div>
+
+
+        <div class="item topTabHide tabSensor">
+            <div class="content">
+                <div id="sensorContainer"></div>
+                <div id="sensorAddBox" class="nestBox">
+                    <a href="/img/sensorDescript.png" target="_blank">
+                        <div class="question"></div>
+                    </a>
+                    <div class="subTitle" id="lang_sample_sensor_source">Sample source:</div>
+                    <select name="newSensor" class="sensorSelectList selectList">
+                        <option value="voltageInput" selected>Voltage input</option>
+                        <option value="currentInput">Current input</option>
+                        <option value="digitalInput">Digital input</option>
+                        <option value="vibration">Vibration(AUO)</option>
+                        <option value="prognosis">Vibration(Prognosis)</option>
+                        <option value="modbus">Modbus(RTU)</option>
+                        <option value="audio">Audio</option>
+                        <option value="distance">Distance</option>
+                    </select>
+                    <input type="button" class="btn showImg" value="Show descriptive picture"/>
+                    <img id="sensorAddRemine" src="/example/voltageInput.png" class="img"/>
+                    <!--<img id="sensorAddRemine" src="/example/currentInput.png" class="img"/>
+                    <img src="/example/digitalInput.png" class="img"/>
+                    <img src="/example/vibration.png" class="img"/>
+                    <img src="/example/distance.png" class="img"/>-->
+                    <div class="centerOutside">
+                        <input id="sensorAdd" type="button" class="btn" value="Add"/>
+                    </div>
+                </div>
+                <div class="centerOutside">
+                    <input id="sensorSubmit" type="button" class="btn" value="Submit"/>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="item topTabHide tabSegmentation">
+            <div class="content">
+                <div id="segContainer"></div>
+                <div id="segAddBox" class="nestBox">
+                    <a href="/img/segmentationDescript.png" target="_blank">
+                        <div class="question"></div>
+                    </a>
+                    <div class="subTitle" id="lang_sample_seg_rule">Rule:</div>
+                    <select name="newSegRule" class="segTypeList selectList">
+                        <option value="0" selected>Normal</option>
+                        <option value="1">By strength</option>
+                        <option value="2">By frequency</option>
+                        <option value="3">Smart Grid</option>
+                        <!--<option value="3">Trigger</option>-->
+                    </select>
+                    <input type="button" class="btn showImg" value="Show descriptive picture"/>
+                    <img id="segAddRemine" src="/example/segNormal.png" class="img"/>
+                    <!--<img src="/example/segStrength.png" class="img"/>
+                    <img src="/example/segFreq.png" class="img"/>-->
+                    <div class="centerOutside">
+                        <input id="segAdd" type="button" class="btn" value="Add"/>
+                    </div>
+                </div>
+                
+                <div class="showAdvanced loopModeForRuleBtn"></div>
+                <div class="nestBox showDetail loopModeForRuleBox">
+                    <img src="/example/loopModeForRule.png" class="img"/>
+                    <div class="subTitle" id="lang_sample_seg_TDMA">Run only one rule at a time:</div>
+                    <label class="leftLabel">
+                        <input type="radio" name="loopModeForRule" class="loopModeForRule" value="No" checked/><span class="lang_radio_no">No</span>
+                    </label>
+                    </br>
+                    <label class="leftLabel">
+                        <input type="radio" name="loopModeForRule" class="loopModeForRule" value="Yes"/><span class="lang_radio_yes">Yes</span>
+                    </label>
+                    <div class="displayBox">
+                        <div class="subTitle"id="lang_sample_seg_TDMA_remind">Work time for a rule ( 60~N Sec.):</div>
+                        <input id="loopTimeForRule" type="text" class="input_1_1" value="60"/>
+                    </div>
+                </div>
+                
+                <div class="centerOutside">
+                    <input id="segSubmit" type="button" class="btn" value="Submit"/>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="item topTabHide tabTesting">
+            <div class="content">
+                <div class="centerOutside">
+                    <input id="oldSensorTest" type="button" class="btn btn9r" value="Run by old data"/>
+                    <input id="sensorTest" type="button" class="btn btn9r" value="Run new setting"/>
+                    <input id="offlineTest" type="button" class="btn btn9r" value="Run offline"/>
+                </div>
+                <div id="sensorResult" class="nestBox">
+                    <div class="subTitle" id="lang_sample_sensor_result">Sample result:</div>
+                    <div class="centerOutside" id="lang_sample_sensor_result_n">No result</div>
+                    <img src="" class="resultImg"/>
+                    <a href="" target="_blank">
+                        <div class="centerOutside link" id="lang_sample_sensor_result_link">Look clear result at new page</div>
+                    </a>
+                </div>
+                <div id="segResult" class="nestBox">
+                    <div class="subTitle" id="lang_sample_seg_result">Segmentation result:</div>
+                    <div class="centerOutside" id="lang_sample_seg_result_n">No result</div>
+                    <img src="" class="resultImg"/>
+                    <a href="" target="_blank">
+                        <div class="centerOutside link" id="lang_sample_seg_result_link">Look clear result at new page</div>
+                    </a>
+                </div>
+                <div id="msgResult" class="nestBox">
+                    <div id="msgResultText" class="subTitle"></div>
+                </div>
+            </div>
+        </div>
+	</div>
+</body>
+</html>
