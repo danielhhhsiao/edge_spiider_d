@@ -790,8 +790,9 @@ class upload(multiprocessing.Process):
                     time.sleep(minProcT-(endTime-startTime))
                 gc.collect()
             except Exception as e:
-                errTime = datetime.strftime(datetime.now(),'%Y_%m_%d_%H_%M_%S')
-                pickle.dump(data,open("/home/pi/program/Err_" + errTime,'wb'),protocol=pickle.HIGHEST_PROTOCOL)
+                pass
+                #errTime = datetime.strftime(datetime.now(),'%Y_%m_%d_%H_%M_%S')
+                #pickle.dump(data,open("/home/pi/program/Err_" + errTime,'wb'),protocol=pickle.HIGHEST_PROTOCOL)
 
         #upload local data
         if(glob.glob(path_dir+'*') != []):
@@ -1095,12 +1096,12 @@ class FTP_upload(multiprocessing.Process):
                     temp.seek(0)
                     #now = datetime.now() # current date and time
                     if self.Type == self.type_std[0]:
-                        path = "Segmentation/" + self.FTPnamePath + "/" + self.sampling_time.strftime("%Y") + "/" + self.sampling_time.strftime("%m%d")
+                        path = "SPIIDER-D/Segmentation/" + self.FTPnamePath + "/" + self.sampling_time.strftime("%Y") + "/" + self.sampling_time.strftime("%m%d")
                         timeStr = self.sampling_time.strftime("%Y_%m_%d_%H_%M_%S")
                         timeStr = "Seg_"+timeStr
                     elif self.Type == self.type_std[1]:
                         timeStr = datetime.strptime(self.sampling_time,"%Y/%m/%d %H:%M:%S")
-                        path = "Extraction/" + self.FTPnamePath + "/" + timeStr.strftime("%Y") + "/" + timeStr.strftime("%m%d")
+                        path = "SPIIDER-D/Extraction/" + self.FTPnamePath + "/" + timeStr.strftime("%Y") + "/" + timeStr.strftime("%m%d")
                         timeStr = timeStr.strftime("%Y_%m_%d_%H_%M_%S")
                         timeStr = "FE_"+timeStr
                     fileName=self.file_name+".csv"
@@ -1124,12 +1125,12 @@ class FTP_upload(multiprocessing.Process):
                     temp.seek(0)
                     #now = datetime.now() # current date and time
                     if self.Type == self.type_std[0]:
-                        path = "Segmentation/" + self.FTPnamePath + "/" + self.sampling_time.strftime("%Y") + "/" + self.sampling_time.strftime("%m%d")
+                        path = "SPIIDER-D/Segmentation/" + self.FTPnamePath + "/" + self.sampling_time.strftime("%Y") + "/" + self.sampling_time.strftime("%m%d")
                         timeStr = self.sampling_time.strftime("%Y_%m_%d_%H_%M_%S")
                         timeStr = "Seg_"+timeStr
                     elif self.Type == self.type_std[1]:
                         timeStr = datetime.strptime(self.sampling_time,"%Y/%m/%d %H:%M:%S")
-                        path = "Extraction/" + self.FTPnamePath + "/" + timeStr.strftime("%Y") + "/" + timeStr.strftime("%m%d")
+                        path = "SPIIDER-D/Extraction/" + self.FTPnamePath + "/" + timeStr.strftime("%Y") + "/" + timeStr.strftime("%m%d")
                         timeStr = timeStr.strftime("%Y_%m_%d_%H_%M_%S")
                         timeStr = "FE_"+timeStr
                     fileName=self.file_name+".pkl"
@@ -1150,7 +1151,7 @@ class FTP_upload(multiprocessing.Process):
                 try:
                     d = [requests.get('http://127.0.0.1/api/work/file'),requests.get('http://127.0.0.1/api/system/file')]
                     
-                    path = "Raspberry_Detail/" + self.FTPToolID
+                    path = "SPIIDER-D/Raspberry_Detail/" + self.FTPToolID
                     self.cd_dir(path)
                     fileName = ['work.ini','system.ini']
                     for i in range(2):

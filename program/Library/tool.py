@@ -279,7 +279,7 @@ def transFormatUpload(dataObj,work_ini,name,Type):
                 first_endTime.append(max(dataObj[key]["time"]))
                 df_data = pd.DataFrame(data = dataObj[key]["data"])
                 df_time = pd.DataFrame(data = dataObj[key]["time"])
-                df_time.columns = ['Time']
+                df_time.columns = ['datetime']
                 df_merge = pd.merge(df_time,df_data,how='inner',left_index=True,right_index=True)
                 #First data frame?
                 if(First_df_flag==0):
@@ -288,11 +288,11 @@ def transFormatUpload(dataObj,work_ini,name,Type):
                     df_index_max = df_merge.shape[0]
                 else:
                     if(df_index_max >= df_merge.shape[0]):
-                        df_sum = pd.merge_asof(df_sum,df_merge,on='Time')
+                        df_sum = pd.merge_asof(df_sum,df_merge,on='datetime')
                     else:
-                        df_sum = pd.merge_asof(df_merge,df_sum,on='Time')
+                        df_sum = pd.merge_asof(df_merge,df_sum,on='datetime')
                 df_sum = df_sum.fillna(method='bfill')
-                filt = ((df_sum['Time']>=max(last_startTime)) & (df_sum['Time']<=min(first_endTime)))
+                filt = ((df_sum['datetime']>=max(last_startTime)) & (df_sum['datetime']<=min(first_endTime)))
                 df_sum = df_sum[filt]
 
             elif (key == "bus"):    
@@ -303,7 +303,7 @@ def transFormatUpload(dataObj,work_ini,name,Type):
                         first_endTime.append(max(d["time"]))
                         df_data = pd.DataFrame(data = d["data"])
                         df_time = pd.DataFrame(data = d["time"])
-                        df_time.columns = ['Time']
+                        df_time.columns = ['datetime']
                         df_merge = pd.merge(df_time,df_data,how='inner',left_index=True,right_index=True)
                         #First data frame?
                         if(First_df_flag==0):
@@ -312,11 +312,11 @@ def transFormatUpload(dataObj,work_ini,name,Type):
                             df_index_max = df_merge.shape[0]
                         else:
                             if(df_index_max >= df_merge.shape[0]):
-                                df_sum = pd.merge_asof(df_sum,df_merge,on='Time')
+                                df_sum = pd.merge_asof(df_sum,df_merge,on='datetime')
                             else:
-                                df_sum = pd.merge_asof(df_merge,df_sum,on='Time')
+                                df_sum = pd.merge_asof(df_merge,df_sum,on='datetime')
                         df_sum = df_sum.fillna(method='bfill')
-                        filt = ((df_sum['Time']>=max(last_startTime)) & (df_sum['Time']<=min(first_endTime)))
+                        filt = ((df_sum['datetime']>=max(last_startTime)) & (df_sum['datetime']<=min(first_endTime)))
                         df_sum = df_sum[filt]
             
             elif (key == "usb"):    
@@ -327,7 +327,7 @@ def transFormatUpload(dataObj,work_ini,name,Type):
                         first_endTime.append(max(d["time"]))
                         df_data = pd.DataFrame(data = d["data"])
                         df_time = pd.DataFrame(data = d["time"])
-                        df_time.columns = ['Time']
+                        df_time.columns = ['datetime']
                         df_merge = pd.merge(df_time,df_data,how='inner',left_index=True,right_index=True)
                         #First data frame?
                         if(First_df_flag==0):
@@ -336,11 +336,11 @@ def transFormatUpload(dataObj,work_ini,name,Type):
                             df_index_max = df_merge.shape[0]
                         else:
                             if(df_index_max >= df_merge.shape[0]):
-                                df_sum = pd.merge_asof(df_sum,df_merge,on='Time')
+                                df_sum = pd.merge_asof(df_sum,df_merge,on='datetime')
                             else:
-                                df_sum = pd.merge_asof(df_merge,df_sum,on='Time')
+                                df_sum = pd.merge_asof(df_merge,df_sum,on='datetime')
                         df_sum = df_sum.fillna(method='bfill')
-                        filt = ((df_sum['Time']>=max(last_startTime)) & (df_sum['Time']<=min(first_endTime)))
+                        filt = ((df_sum['datetime']>=max(last_startTime)) & (df_sum['datetime']<=min(first_endTime)))
                         df_sum = df_sum[filt]
                         
             elif (key == "distance"):
@@ -348,7 +348,7 @@ def transFormatUpload(dataObj,work_ini,name,Type):
                 first_endTime.append(max(dataObj[key]["time"]))
                 df_data = pd.DataFrame(data = dataObj[key]["data"])
                 df_time = pd.DataFrame(data = dataObj[key]["time"])
-                df_time.columns = ['Time']
+                df_time.columns = ['datetime']
                 df_merge = pd.merge(df_time,df_data,how='inner',left_index=True,right_index=True)
                 #First data frame?
                 if(First_df_flag==0):
@@ -357,18 +357,18 @@ def transFormatUpload(dataObj,work_ini,name,Type):
                     df_index_max = df_merge.shape[0]
                 else:
                     if(df_index_max >= df_merge.shape[0]):
-                        df_sum = pd.merge_asof(df_sum,df_merge,on='Time')
+                        df_sum = pd.merge_asof(df_sum,df_merge,on='datetime')
                     else:
-                        df_sum = pd.merge_asof(df_merge,df_sum,on='Time')
+                        df_sum = pd.merge_asof(df_merge,df_sum,on='datetime')
                 df_sum = df_sum.fillna(method='bfill')
-                filt = ((df_sum['Time']>=max(last_startTime)) & (df_sum['Time']<=min(first_endTime)))
+                filt = ((df_sum['datetime']>=max(last_startTime)) & (df_sum['datetime']<=min(first_endTime)))
                 df_sum = df_sum[filt]
                 
-        if (max(df_sum['Time'])-min(df_sum['Time']))!=0:
-            sampleRate = round(len(df_sum)/(max(df_sum['Time'])-min(df_sum['Time'])))
+        if (max(df_sum['datetime'])-min(df_sum['datetime']))!=0:
+            sampleRate = round(len(df_sum)/(max(df_sum['datetime'])-min(df_sum['datetime'])))
         else:
             sampleRate = 0
-        df_sum['Time'] = stamp2dateArr(df_sum['Time'] ,"%y/%m/%d %H:%M:%S")
+        df_sum['datetime'] = stamp2dateArr(df_sum['datetime'] ,"%Y-%m-%d %H:%M:%S")
         print(sampleRate)
         #df_sum = df_sum.drop(columns=['Time'])
         val = df_sum.values.tolist()
@@ -748,6 +748,8 @@ class drawListMuti_proc(multiprocessing.Process):
         #fig.subplots_adjust(left=0.07,right=0.95,top=0.9,bottom=0.2)
         fig.subplots_adjust(left=0.07,right=0.92,top=0.9,bottom=0.2)
         for i,d in enumerate(data):
+        
+            
             if self.testStatus !="":
                 testStatusUpload(self.testStatus,str(i+1),str(len(data)))
             _test_startTime=time.time()
@@ -761,6 +763,7 @@ class drawListMuti_proc(multiprocessing.Process):
                 minlength = min(len(d["time"]),len(d["data"][item]))
                 newMaxData = max(newMaxData,max(d["data"][item][:minlength]))
                 newMinData = min(newMinData,min(d["data"][item][:minlength]))
+                DataMean = d["data"][item].mean()
                 newX,newY = self.downSample(np.array(d["time"][:minlength]),np.array(d["data"][item][:minlength]))
                 if limitDataTime > 0:
                     limitDataTime = min(limitDataTime,d["time"][minlength-1])
@@ -818,7 +821,10 @@ class drawListMuti_proc(multiprocessing.Process):
                     #t.set_bbox(dict(facecolor='gold',edgecolor=None,boxstyle='Round,pad=0.1',alpha=alpha/4))
                     plt.fill_between((text['l'],text['r']),text['y'],text['y']+dataRange/20,alpha=alpha/4,facecolor="green")
                     
-            ax.set_title(d["title"])
+            ax.set_title(d["title"]+'  (Mean:%2f)'%DataMean)
+            ax.axhline(DataMean,color="blue")
+            sensor_name = d["title"].split('Sensor(')[1].split(') start')[0]
+            ax.text(math.ceil(max(d["time"])),DataMean,f"{sensor_name}'s Mean=%.2f"%DataMean,color="blue",horizontalalignment="right",verticalalignment="bottom")
             ax.set_xlabel("Time(s)")
             ax.set_ylabel("Value("+d["unit"]+")")
             ax.set_xlim(0,math.ceil(max(d["time"])))
