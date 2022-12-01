@@ -1047,7 +1047,8 @@ $(document).on("click","#sensorTest",function(){
             alert(_language.sample.test_time_format); 
             return;
         }
-        maxSec=parseInt(maxSec);
+        //alert('Test time will be add 0.01');
+        maxSec=parseInt(maxSec)+0.01;
         if(!inRange(maxSec,1,_maxTestSec)){
             //alert("Please input number from 1 to "+_maxTestSec+" sec."); 
             alert(_language.sample.test_time_format_limit+_maxTestSec+" "+_language.sample.test_time_unit+"."); 
@@ -4078,7 +4079,7 @@ function sensorSettingLoad(obj,form,type,useDefault){
 }
 
 function segRuleLoad(obj,form,sensor_form,useDefault,segCnt){
-    console.log(segCnt);
+    //console.log(segCnt);
     obj.name="";
     obj.unit="";
     obj.sub_unit="";
@@ -4194,7 +4195,7 @@ function segRuleLoad(obj,form,sensor_form,useDefault,segCnt){
                         temp_sampleRate=chFindSamplerate(segSourceList.eq(i).val(),sensor_form);
                         console.log(segSourceList.eq(i).val());
                         console.log(temp_sampleRate);
-                        var single_feature_config='{"parameter": "'+segSourceList.eq(i).val()+'", "spectrum": [{"item": "Time_Domain", "spectrum_param": {"samplerate": '+temp_sampleRate+', "level":7}, "bin": 1, "statistical": ["Rms"]}, '+'{"item": "PSD_VEL", "spectrum_param": {"samplerate": '+temp_sampleRate+', "base_freq": '+jData.base_freq+'}, "bin": 10, "statistical": ["vel_psd_rms","low_psd_rms","mid_psd_rms","high_psd_rms"]}]}';
+                        var single_feature_config='{"parameter": "'+segSourceList.eq(i).val()+'", "spectrum": [{"item": "Time_Domain", "spectrum_param": {"samplerate": '+temp_sampleRate+', "level":7}, "bin": 1, "statistical": ["Rms"]}, '+'{"item": "VibVelocity", "spectrum_param": {"samplerate": '+temp_sampleRate+', "base_freq": '+jData.base_freq+'}, "bin": 10, "statistical": ["VelRms","LowPsdRms","MidPsdRms","HighPsdRms"]}]}';
                         console.log(single_feature_config);
                         if(temp_feature_config!="")
                             temp_feature_config+=",";
