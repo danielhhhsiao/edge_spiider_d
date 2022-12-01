@@ -64,7 +64,7 @@ def _cal_spectrum(raw_data, parameter, config_spectrum_list):
         for par_key in (spectrum_obj['spectrum_param']).keys():
             obj['Setting']['Spectrum'][par_key] = spectrum_obj['spectrum_param'][par_key]
         
-        if spectrum_obj['item']=='PSD_VEL':
+        if spectrum_obj['item']=='VibVelocity':
             psd_rms, df_psd, bin_width = spectrum_model.run(data=raw_data, parm=obj)
         else:
             x_val, y_val = spectrum_model.run(data=raw_data, parm=obj)
@@ -88,13 +88,13 @@ def _cal_spectrum(raw_data, parameter, config_spectrum_list):
         elif spectrum_obj['item'] == 'Time_Domain':
             bin_spec_data_list = [y_val]
         
-        elif spectrum_obj['item'] == 'PSD_VEL':
+        elif spectrum_obj['item'] == 'VibVelocity':
             bin_spec_data_list = []
         else:
             bin_spec_data_list = np.array_split(y_val, spectrum_obj['bin'], axis=0)
 #===========================================================================================================
         for statistical_item in spectrum_obj['statistical']:
-            if spectrum_obj['item']=='PSD_VEL':
+            if spectrum_obj['item']=='VibVelocity':
                 statistical_result=transform_psd_vel(parameter,
                                                      spectrum_obj['item'],
                                                      statistical_item,
@@ -106,7 +106,7 @@ def _cal_spectrum(raw_data, parameter, config_spectrum_list):
                 if math.isnan(statistical_result):
                     statistical_result = 0
                 feature_val_list.append(statistical_result)
-                column_name_list.append(f'{parameter}_{spectrum_obj["item"]}_{statistical_item}')
+                column_name_list.append(f'{parameter}_{spectrum_obj["item"]}_{statistical_item}_1')
             else:
                 for i, v_val in enumerate(bin_spec_data_list):
                     # 2.Feature_Statistical
