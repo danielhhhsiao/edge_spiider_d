@@ -17,8 +17,54 @@ import json
 import Library.SpiSlaveScan as SpiSlaveScan
 import Library.VibrationHub as VibrationHub
 import Library.ADCHub as ADCHub
+import RPi.GPIO as GPIO
 
+def script(cmd):
+	log = True
+	p = os.popen(cmd)
+	t = p.read()
+	if log:
+		print(t)
+	p.close()
+	
+def reset():
+	ST2_pin = 13
+	reverse = True
+	time.sleep(1)
+	#reset config
+	print("reset config")
+	script("rm /home/pi/default/device.ini_ub")
+	script("rm /home/pi/program/system.ini_ub")
+	script("rm /home/pi/program/work.ini_ub")
+	script("cp /home/pi/default/original_device.ini /home/pi/default/device.ini ")
+	script("cp /home/pi/default/system.ini /home/pi/program/system.ini ")
+	script("cp /home/pi/default/work.ini /home/pi/program/work.ini ")
+	
+	#clear file
+	print("clear file")
+	script("rm /home/pi/program/LocalSaved/*")
+	
+	#reset wifi connection information
+	print("reset wifi connection information")
+	script("/home/pi/tool_sh/wifi_disconnect.sh")
+	
+	#clear static network IP setting
+	print("clear static network IP setting")
+	script("/home/pi/tool_sh/ip_setting.sh -- -- -- -- -- -- -- -- --")
+	
+	#reset AP setting
+	print("reset AP setting")
+	script("hostname raspberry")
+	
+	time.sleep(1)
+	
+	GPIO.output(ST2_pin,0^reverse)
+	script("/bin/hostAP_check.sh >> /home/pi/Desktop/test.txt")
+	script("(sleep 2 ; shutdown -r 0 )&")
 
+def shutdown():
+	script("(sleep 1 ; shutdown -h 0 )&")
+	
 def loadConfig(target):
 	payload = {'t' : target}
 	try:
@@ -165,7 +211,29 @@ def getQuality():
 		return Qulity
 	except:
 		return ''
-	
+def getApStatus(chk):
+	try:
+		if chk == 1:
+			string = str(os.popen("iwconfig wlan1 | grep ESSID").readline().strip())
+			if string != "":
+				apConns = str(os.popen("iw dev wlan1 station dump | grep Station").readline().strip())
+				if apConns != "":
+					return 2
+				return 1
+			else:
+				return 0
+		else:
+			string = str(os.popen("iwconfig ap0 | grep Tx-Power").readline().strip())
+			if string != "":
+				apConns = str(os.popen("iw dev ap0 station dump | grep Station").readline().strip())
+				if apConns != "":
+					return 2
+				return 1
+			else:
+				return 0
+	except:
+		return 0
+		
 #Device work status	
 def getBootTime():
 	uptime = os.popen('uptime').readline()
