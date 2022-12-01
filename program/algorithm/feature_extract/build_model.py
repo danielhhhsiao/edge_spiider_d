@@ -10,10 +10,10 @@ import pandas as pd
 class Build_psd_vel_model():
     def __init__(self):
         self.PHM_main_dict = {
-            'vel_psd_rms': feature_lib.get_vel_psd_rms,
-            'low_psd_rms': feature_lib.get_low_psd_rms,
-            'mid_psd_rms': feature_lib.get_mid_psd_rms,
-            'high_psd_rms': feature_lib.get_high_psd_rms,
+            'VelRms': feature_lib.get_vel_psd_rms,
+            'LowPsdRms': feature_lib.get_low_psd_rms,
+            'MidPsdRms': feature_lib.get_mid_psd_rms,
+            'HighPsdRms': feature_lib.get_high_psd_rms,
         }
     def run(self, parm):
         self.parm = parm
@@ -31,7 +31,7 @@ class Build_psd_vel_model():
         df_psd = self.parm['RawData']['df_psd']  # self.data
         psd_rms = self.parm['RawData']['psd_rms']
         bin_width = self.parm['Setting']['bin_width']
-        if 'vel_psd_rms' in feature_type:
+        if 'VelRms' in feature_type:
             val = self.PHM_main_dict[feature_type](df_psd, bin_width)
         else:
             base_freq = self.parm["Setting"]["base_freq"]

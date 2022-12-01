@@ -14,7 +14,7 @@ class Build_model():
                               'WP': get_wavelet_packet_energy_3_level,
                               'DWT': get_wavedec,
                               'Time_Domain': get_time_domain_values,
-                              'PSD_VEL':get_psd_vel_values}
+                              'VibVelocity':get_psd_vel_values}
 
         self.transform_key = {"FFT": ["samplerate"],
                               "PSD": ["samplerate"],
@@ -22,7 +22,7 @@ class Build_model():
                               "WP": ["level"],
                               "DWT": ["level"],
                               "Time_Domain": [],
-                              "PSD_VEL": ["samplerate","base_freq"]}
+                              "VibVelocity": ["samplerate","base_freq"]}
 
     def run(self, data, parm):
         self.parm = parm
@@ -33,7 +33,7 @@ class Build_model():
             #     #  level , samplerate
             #     self._run_each_spectrum(spectrum_list)
             spectrum = self.parm["Setting"]["Spectrum"]
-            if parm["Setting"]["Spectrum"]["type"]=='PSD_VEL':
+            if parm["Setting"]["Spectrum"]["type"]=='VibVelocity':
                 return self._run_PSD_spectrum(spectrum)
             else:
                 return self._run_spectrum(spectrum)
