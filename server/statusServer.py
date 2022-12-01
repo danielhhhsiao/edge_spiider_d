@@ -7,7 +7,7 @@ import queue
 import RPi.GPIO as GPIO
 from urllib.parse import urlparse
 from datetime import datetime
-from Library.StatusServerLib import staticInfoTrans,dynamicInfoTrans,writeConfig,loadConfig,getDictItem,IoTInfoTrans,getWifiIP,getLanIP,getLan2IP,getMacID,getBoardVersion,getMappingProxy
+from Library.StatusServerLib import staticInfoTrans,dynamicInfoTrans,writeConfig,loadConfig,getDictItem,IoTInfoTrans,getWifiIP,getLanIP,getLan2IP,getMacID,getBoardVersion,getMappingProxy,getApStatus,reset,shutdown
 import requests
 import ftplib
 import multiprocessing
@@ -208,6 +208,10 @@ class LED_Control(threading.Thread):
 					if(ST2_Mode == -1):
 						ST2_Mode = 0
 					self.LED_Blink_Proc.getMode(ST1_Mode,ST2_Mode)
+				if self.FTP_upload_Proc.ipChangedCheck() == True:
+					print("IP changed, upload the static payload.")
+					json_obj = staticInfoTrans(self.boardVer,self.boardType)
+					self.API_upload_Proc.put(json_obj)
 
 			for i in range(3,-1,-1):
 				if(ST1_Timeout[i] == 50):
@@ -325,12 +329,18 @@ class LED_Blink(multiprocessing.Process):
 		multiprocessing.Process.__init__(self)
 		self.exit = multiprocessing.Event()
 		#GPIO setting
+		self.shutdownPin = 0
+		self.resetPin = 1
 		self.ST1 = 12
 		self.ST2 = 13
+		self.apLed = 27
 		GPIO.setwarnings(False)
 		GPIO.setmode(GPIO.BCM)
+		GPIO.setup(self.shutdownPin,GPIO.IN)
+		GPIO.setup(self.resetPin,GPIO.IN)
 		GPIO.setup(self.ST1,GPIO.OUT)
 		GPIO.setup(self.ST2,GPIO.OUT)
+		GPIO.setup(self.apLed,GPIO.OUT)
 		manager=multiprocessing.Manager()
 		self.states=manager.dict()
 		self.states["ST1Mode"] = 0
@@ -350,8 +360,21 @@ class LED_Blink(multiprocessing.Process):
 		ST2_OnOff = [1,49]
 		ST2_OnOff_Count = 0
 		ST2_Count = 0
+		AP_OnOff = 0
+		AP_OnOff_Count = 0
 		ST1Mode = 0
 		ST2Mode = 0
+		APMode = 0
+		apCheckCount = 0
+		resetCount = 0
+		try:
+			pid = str(os.popen('/home/pi/tool_sh/eeprom -r 1').readline().strip())
+		except:
+			pid = ''
+		if pid != '':
+			checkSPIIDER = 1
+		else:
+			checkSPIIDER = 0
 		while(1):
 			if ST1Mode != self.states["ST1Mode"]:
 				ST1Mode = self.states["ST1Mode"]
@@ -391,6 +414,33 @@ class LED_Blink(multiprocessing.Process):
 				ST2_Count = (ST2_Count+1)%2
 				GPIO.output(self.ST2,ST2_Count^1^self.reverse)
 				ST2_OnOff_Count=1
+				
+			if(APMode == 0):
+				GPIO.output(self.apLed,0^self.reverse)
+			elif(APMode == 2):
+				GPIO.output(self.apLed,AP_OnOff^self.reverse)
+				AP_OnOff_Count+=1
+				if(AP_OnOff_Count == 10):
+					AP_OnOff^=1
+					AP_OnOff_Count=0
+			elif(APMode == 1):
+				GPIO.output(self.apLed,1^self.reverse)
+			
+			#Check AP status
+			apCheckCount+=1
+			if apCheckCount == 100:
+				apCheckCount = 0
+				APMode = getApStatus(checkSPIIDER)
+			#Check shutdown button
+			if GPIO.input(self.shutdownPin) == 0:
+				shutdown()
+			#Check reset button
+			if GPIO.input(self.resetPin) == 0:
+				resetCount+=1
+				if resetCount == 20:
+					reset()
+			else:
+				resetCount = 0
 			time.sleep(0.1)
 					
 class FTP_status_upload(multiprocessing.Process):
@@ -400,7 +450,10 @@ class FTP_status_upload(multiprocessing.Process):
 		self.systemConfigPath = 's'
 		self.workConfigPath = 'w'
 		print("Server FTP upload create")
-		
+		manager=multiprocessing.Manager()
+		self.states=manager.dict()
+		self.states["ip_changed_flag"] = False
+
 	def cd_dir(self,path,ftp):
 		if path != "":
 			try:
@@ -412,6 +465,12 @@ class FTP_status_upload(multiprocessing.Process):
 				ftp.cwd("/"+path)
 				print("Not found ftp folder, create " + path)
 		
+	def ipChangedCheck(self):
+		if self.states["ip_changed_flag"]:
+			self.states["ip_changed_flag"] = False
+			return True
+		return False
+	
 	def run(self):
 		try:
 			pid = str(os.popen('/home/pi/tool_sh/eeprom -r 1').readline().strip())
@@ -427,6 +486,8 @@ class FTP_status_upload(multiprocessing.Process):
 		FTP_PASS = getDictItem(systemConfig,"ftp","pwd","")
 		wifiIP = ""
 		lanIP = ""
+		lan2IP = ""
+		ftpSuccessF = False
 		if FTP_HOST != "":
 			try:
 				segCount = 0
@@ -440,80 +501,87 @@ class FTP_status_upload(multiprocessing.Process):
 						break
 					if(segType != "0"):
 						segTool = getDictItem(workConfig,segStr,"name","unknown")
-						ftp = ftplib.FTP(FTP_HOST, FTP_USER, FTP_PASS)
+						path = "Raspberry_Detail/" + segTool
+						wifiIP = getWifiIP()
+						lanIP = getLanIP()
+						lan2IP = getLan2IP()
+						ftp = ftplib.FTP(FTP_HOST, FTP_USER, FTP_PASS,timeout=10)
 						if FTP_USER == '':
 							ftp.login()
 						ftp.encoding = "utf-8"
-						path = "Raspberry_Detail/" + segTool
 						self.cd_dir(path,ftp)
-						wifiIP = getWifiIP()
-						lanIP = getLanIP()
 						fileName = "_".join([
 								getMacID().replace(":",""),
 								wifiIP,
 								lanIP,
+								lan2IP,
 								pid
 								])
 						x = datetime.strftime(datetime.now(),'%Y-%m-%d %H:%M:%S')
 						bio = io.BytesIO(bytes(x,encoding='utf8'))
 						ftp.storbinary("STOR "+ '/' +path + '/' + fileName, bio)
 						print("Server FTP upload success")
+				ftpSuccessF = True
 			except Exception as e:
-				bootFTP = 0
+				ftpSuccessF = False
 				print(e)
 		while(1):
-			if bootFTP == 1:
-				time.sleep(0.1)
-				check_FTP_Count+=1
-				if check_FTP_Count >= 3000:
-					check_FTP_Count = 0
-					systemConfig = loadConfig(self.systemConfigPath)
-					FTP_HOST = getDictItem(systemConfig,"ftp","ip","")
-					FTP_USER = getDictItem(systemConfig,"ftp","name","")
-					FTP_PASS = getDictItem(systemConfig,"ftp","pwd","")
-					if FTP_HOST != "":
-						try:
-							segCount = 0
-							bootFTP = 1
-							while(1):
-								segCount+=1
-								segStr = "segmentation_" + str(segCount)
-								segType = getDictItem(workConfig,segStr,"type","-1")
-								print(segStr,segType)
-								if(segType == "-1"):
-									break
-								if(segType != "0"):
-									segTool = getDictItem(workConfig,segStr,"name","unknown")
-									ftp = ftplib.FTP(FTP_HOST, FTP_USER, FTP_PASS)
-									if FTP_USER == '':
-										ftp.login()
-									ftp.encoding = "utf-8"
-									path = "Raspberry_Detail/" + segTool
-									self.cd_dir(path,ftp)
-									wifiIP = getWifiIP()
-									lanIP = getLanIP()
-									fileName = "_".join([
-											getMacID().replace(":",""),
-											wifiIP,
-											lanIP,
-											pid
-											])
-									x = datetime.strftime(datetime.now(),'%Y-%m-%d %H:%M:%S')
-									bio = io.BytesIO(bytes(x,encoding='utf8'))
-									ftp.storbinary("STOR "+ '/' +path + '/' + fileName, bio)
-									print("Server FTP upload success")
-						except Exception as e:
-							bootFTP = 0
-							print(e)
-			else:
-				time.sleep(0.1)
-				check_FTP_Count+=1
-				if check_FTP_Count >= 600:
-					check_FTP_Count = 0
-					systemConfig = loadConfig(self.systemConfigPath)
-					if wifiIP != getWifiIP() or lanIP != getLanIP() or FTP_HOST != getDictItem(systemConfig,"ftp","ip",""):
-						check_FTP_Count = 3000
+			time.sleep(0.1)
+			check_FTP_Count+=1
+			if bootFTP == 0:
+				systemConfig = loadConfig(self.systemConfigPath)
+				FTP_HOST = getDictItem(systemConfig,"ftp","ip","")
+				FTP_USER = getDictItem(systemConfig,"ftp","name","")
+				FTP_PASS = getDictItem(systemConfig,"ftp","pwd","")
+				if FTP_HOST != "":
+					try:
+						segCount = 0
 						bootFTP = 1
+						while(1):
+							segCount+=1
+							segStr = "segmentation_" + str(segCount)
+							segType = getDictItem(workConfig,segStr,"type","-1")
+							print(segStr,segType)
+							if(segType == "-1"):
+								break
+							if(segType != "0"):
+								segTool = getDictItem(workConfig,segStr,"name","unknown")
+								path = "Raspberry_Detail/" + segTool
+								wifiIP = getWifiIP()
+								lanIP = getLanIP()
+								lan2IP = getLan2IP()
+								ftp = ftplib.FTP(FTP_HOST, FTP_USER, FTP_PASS,timeout=10)
+								if FTP_USER == '':
+									ftp.login()
+								ftp.encoding = "utf-8"
+								self.cd_dir(path,ftp)
+								fileName = "_".join([
+										getMacID().replace(":",""),
+										wifiIP,
+										lanIP,
+										lan2IP,
+										pid
+										])
+								x = datetime.strftime(datetime.now(),'%Y-%m-%d %H:%M:%S')
+								bio = io.BytesIO(bytes(x,encoding='utf8'))
+								ftp.storbinary("STOR "+ '/' +path + '/' + fileName, bio)
+								print("Server FTP upload success")
+						ftpSuccessF = True
+					except Exception as e:
+						ftpSuccessF = False
+						print(e)
+			else:
+				if check_FTP_Count >= 600:
+					print("ftp ip check")
+					check_FTP_Count = 0
+					systemConfig = loadConfig(self.systemConfigPath)
+					if not ftpSuccessF:
+						print("Retry status upload to ftp.")
+						bootFTP = 0
+					if wifiIP != getWifiIP() or lanIP != getLanIP() or lan2IP != getLan2IP() or FTP_HOST != getDictItem(systemConfig,"ftp","ip",""):
+						print("ip change.")
+						self.states["ip_changed_flag"] = True
+						bootFTP = 0
 				
 class API_status_upload(multiprocessing.Process):
 	def __init__(self):
