@@ -267,7 +267,7 @@ var _inputCheckList=[{
     {
         "preObj":".loopModeForRule",
         "isTrue":"Yes",
-        "default":60,
+        "default":0,
         "class":"#loopTimeForRule",
         "min":60,
         "max":-1
@@ -351,7 +351,7 @@ function topBarCallback(){
     loadSetting(false,"System",_api_sysSetting,function(data){
         config.system = data;
     });
-    //console.log(config);
+    console.log(config);
     loadForm(config);
     
 
@@ -1187,7 +1187,7 @@ $(document).on("click","#segSubmit",function(){
 
 //displaySelect displayBox event 
 var _displaySelectClass=[".triggerEnable",".subOperation",".signalFilter",".uploadResultSeg",".uploadResultFE",".centerFrequencySelect",".loopModeForRule"];
-var _displaySelectTarget=["Yes","Yes","Yes","Yes","Yes","Yes","Yes"];
+var _displaySelectTarget=["Yes","Yes","Yes","Yes","Yes","Yes","Yes"]; 
 for(let i =0;i<_displaySelectClass.length;i++){
     let className = _displaySelectClass[i];
     let value = _displaySelectTarget[i];
@@ -3586,12 +3586,15 @@ function loadForm(data){
     
     for(var i=0;i<_maxSegRule;i++)
         loadSeg(data.seg['segmentation_'+(i+1)]);
-        
-    if(parseInt(data.seg['tdma']["period"])>60){
+    
+    
+    if(parseInt(data.seg['tdma']["period"])>=60){
         $(".loopModeForRuleBtn").hide();
         $(".loopModeForRuleBox").show();
-        $(".loopModeForRule[value='Yes']").prop('checked',true);
-        $(".loopModeForRuleBox").find(".displayBox").eq(0).show();
+        console.log("$(.loopModeForRuleBox).show();");
+		$(".loopModeForRule[value='Yes']").prop('checked',true); 
+		$(".loopModeForRuleBox").find(".displayBox").eq(0).show();
+		console.log(".loopModeForRuleBox).find(.displayBox).eq(0).show();");
         $("#loopTimeForRule").val(data.seg['tdma']["period"]);
     }
     
@@ -3731,7 +3734,8 @@ function getForm(){
     ret.tdma={}
     ret.tdma.period=0
     if($(".loopModeForRule:checked").val()=="Yes")
-        ret.tdma.period = $("#loopTimeForRule").val();
+        ret.tdma.period = Math.ceil($("#loopTimeForRule").val());
+        console.log(ret.tdma.period);
     
     //console.log(ret);
     return ret;
@@ -4481,7 +4485,7 @@ function formCheck(type){
         var segRule = $(".segRule");
         for(var i=0;i<segRule.length;i++){
             var segSelectList = segRule.eq(i).children(".segSelectList");
-                console.log(segSelectList.css("display"));
+                //console.log(segSelectList.css("display"));
             if(segSelectList.css("display")!="none"){
                 if(segSelectList.val()==null){
                     let name = segRule.eq(i).children(".segRuleName").val();
