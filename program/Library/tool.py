@@ -822,13 +822,13 @@ class drawListMuti_proc(multiprocessing.Process):
                     plt.fill_between((text['l'],text['r']),text['y'],text['y']+dataRange/20,alpha=alpha/4,facecolor="green")
                     
             ax.set_title(d["title"]+'  (Mean:%2f)'%DataMean)
-            ax.axhline(DataMean,color="blue")
+            ax.axhline(DataMean,color="royalblue")
             sensor_name = d["title"].split('Sensor(')[1].split(') start')[0]
-            ax.text(math.ceil(max(d["time"])),DataMean,f"{sensor_name}'s Mean=%.2f"%DataMean,color="blue",horizontalalignment="right",verticalalignment="bottom")
+            #ax.text(math.ceil(max(d["time"])),DataMean,f"{sensor_name}'s Mean=%.2f"%DataMean,color="blue",horizontalalignment="right",verticalalignment="bottom")
             ax.set_xlabel("Time(s)")
             ax.set_ylabel("Value("+d["unit"]+")")
-            ax.set_xlim(0,math.ceil(max(d["time"])))
-            
+            #ax.set_xlim(0,math.ceil(max(d["time"])))  #math.ceil return the >= miniest int
+            ax.set_xlim(0,math.floor(max(d["time"])))  #math.floor return the <= biggiest int
             newRange = (abs(newMaxData*1.0-newMinData*1.0)/3.0*4.0)/2.0
             newCenter = (newMaxData+newMinData)/2.0
             newMaxData = newCenter+newRange
