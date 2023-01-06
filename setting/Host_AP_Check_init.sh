@@ -38,6 +38,12 @@ if [ "\${pid}" != "" ]; then
 	if [ "\${interface}" != "wlan1" ]; then
 		echo "Error interface, set to wlan1."
 		sudo sed -i.bak "s/^interface=.*/interface=wlan1/" /etc/hostapd/hostapd.conf
+		home_dir=\$(cat /home/pi/default/device.ini | grep home_dir | tr -d ' ' | cut -d'=' -f2)
+		AP_name=\$(cat /home/pi/default/system.ini | grep name | tr -d ' ' | cut -d'=' -f2 | head -n 1)
+		sed -i "/^\[ap\]$/,/^\[/ s/^name =.*/name = \${pid}/" /home/pi/default/system.ini
+		cp /home/pi/default/system.ini \$home_dir"/system.ini"
+		cp /home/pi/default/work.ini \$home_dir"/work.ini"
+		sudo /home/pi/tool_sh/ap_setting.sh \${pid} 00000000
 		sudo reboot
 	fi
 
