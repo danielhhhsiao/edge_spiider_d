@@ -501,7 +501,7 @@ class FTP_status_upload(multiprocessing.Process):
 						break
 					if(segType != "0"):
 						segTool = getDictItem(workConfig,segStr,"name","unknown")
-						path = "Raspberry_Detail/" + segTool
+						path = "SPIIDER-D/Raspberry_Detail/" + segTool
 						wifiIP = getWifiIP()
 						lanIP = getLanIP()
 						lan2IP = getLan2IP()
@@ -546,7 +546,7 @@ class FTP_status_upload(multiprocessing.Process):
 								break
 							if(segType != "0"):
 								segTool = getDictItem(workConfig,segStr,"name","unknown")
-								path = "Raspberry_Detail/" + segTool
+								path = "SPIIDER-D/Raspberry_Detail/" + segTool
 								wifiIP = getWifiIP()
 								lanIP = getLanIP()
 								lan2IP = getLan2IP()
@@ -628,9 +628,9 @@ class API_status_upload(multiprocessing.Process):
 		checkAuoFlag = False
 		ipFirstByte = getWifiIP().split(".")[0]
 		if ipFirstByte == "":
-			ipFirstByte = getLanIP.split(".")[0]
+			ipFirstByte = getLanIP().split(".")[0]
 			if ipFirstByte == "":
-				ipFirstByte = getLan2IP.split(".")[0]
+				ipFirstByte = getLan2IP().split(".")[0]
 		if ipFirstByte  == "10":
 			auoProxy = getMappingProxy()
 			print(auoProxy)

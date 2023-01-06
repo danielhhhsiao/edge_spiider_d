@@ -108,22 +108,22 @@
                     </div>
                 </div>
                 
-                <div class="showAdvanced loopModeForRuleBtn"></div>
-                <div class="nestBox showDetail loopModeForRuleBox">
-                    <img src="/example/loopModeForRule.png" class="img"/>
-                    <div class="subTitle" id="lang_sample_seg_TDMA">Run only one rule at a time:</div>
-                    <label class="leftLabel">
-                        <input type="radio" name="loopModeForRule" class="loopModeForRule" value="No" checked/><span class="lang_radio_no">No</span>
-                    </label>
-                    </br>
-                    <label class="leftLabel">
-                        <input type="radio" name="loopModeForRule" class="loopModeForRule" value="Yes"/><span class="lang_radio_yes">Yes</span>
-                    </label>
-                    <div class="displayBox">
-                        <div class="subTitle"id="lang_sample_seg_TDMA_remind">Work time for a rule ( 60~N Sec.):</div>
-                        <input id="loopTimeForRule" type="text" class="input_1_1" value="60"/>
-                    </div>
-                </div>
+                <!--<div class="showAdvanced loopModeForRuleBtn"></div>-->
+                <!--<div class="nestBox showDetail loopModeForRuleBox">-->
+				<img src="/example/loopModeForRule.png" class="img" style="background-color:#ccccdc;" />
+				<div class="subTitle" id="lang_sample_seg_TDMA">Run only one rule at a time:</div>
+				<label class="leftLabel">
+					<input type="radio" name="loopModeForRule" class="loopModeForRule" value="No" checked/><span class="lang_radio_no">No</span>
+				</label>
+				</br>
+				<label class="leftLabel">
+					<input type="radio" name="loopModeForRule" class="loopModeForRule" value="Yes"/><span class="lang_radio_yes">Yes</span>
+				</label>
+				<div class="displayBox" style="display:none";>
+					<div class="subTitle"id="lang_sample_seg_TDMA_remind">Work time for a rule ( 60~N Sec.):</div>
+					<input id="loopTimeForRule" type="text" class="input_1_1" value="0"/>
+				</div>
+                <!--</div>-->
                 
                 <div class="centerOutside">
                     <input id="segSubmit" type="button" class="btn" value="Submit"/>
