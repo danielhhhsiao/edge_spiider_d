@@ -70,7 +70,7 @@ programPy2So(program_dir+'_ext',ignore_dir,ignore_file)
 program_dir = './server'
 ignore_dir = ['']
 #Ignore the execute file.
-ignore_file = ['server.py','statusServer.py']
+ignore_file = ['server.py','statusServer.py','ftpCheck.py']
 print("Start package the ",program_dir," dir.")
 programPy2So(program_dir+'_ext',ignore_dir,ignore_file)
 
@@ -84,9 +84,9 @@ programPy2So(program_dir+'_ext',ignore_dir,ignore_file)
 
 
 #-------------------------Package dir 4------------------------------
-program_dir = './OTA'
-ignore_dir = ['']
+#program_dir = './OTA'
+#ignore_dir = ['']
 #Ignore the execute file.
-ignore_file = ['setup.py']
-print("Start package the ",program_dir," dir.")
-programPy2So(program_dir+'_ext',ignore_dir,ignore_file)
+#ignore_file = ['setup.py']
+#print("Start package the ",program_dir," dir.")
+#programPy2So(program_dir+'_ext',ignore_dir,ignore_file)
