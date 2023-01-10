@@ -696,7 +696,6 @@ class modbus_process(multiprocessing.Process):
         stopbitMap["1.5"] = serial.STOPBITS_ONE_POINT_FIVE
         stopbitMap["2"] = serial.STOPBITS_TWO
         self.typeLenMap = dict()
-        self.typeCountLen = dict()
         self.typeLenMap["float32"] = 4
         self.typeLenMap["int8"] = 1
         self.typeLenMap["int16"] = 2
@@ -707,16 +706,6 @@ class modbus_process(multiprocessing.Process):
         self.typeLenMap["BCD"] = 2
         self.typeLenMap["bit8"] = 1
         self.typeLenMap["bit16"] = 2
-        self.typeCountLen["float32"] = 2
-        self.typeCountLen["int8"] = 1
-        self.typeCountLen["int16"] = 1
-        self.typeCountLen["int32"] = 2
-        self.typeCountLen["uint8"] = 1
-        self.typeCountLen["uint16"] = 1
-        self.typeCountLen["uint32"] = 2
-        self.typeCountLen["BCD"] = 1
-        self.typeCountLen["bit8"] = 1
-        self.typeCountLen["bit16"] = 1
         self.typeFunction = dict()
         self.typeFunction["float32"] = modbus_process.byte2float32
         self.typeFunction["int8"] = modbus_process.byte2int8
@@ -785,7 +774,8 @@ class modbus_process(multiprocessing.Process):
                     
         for k in byAddress.keys():
             byAddress[k] = sorted(byAddress[k],key=lambda d: d['register'])
-            lastRegister=-2
+            lastRegister=-5
+            lastDeviceAddress = 1
             for date in byAddress[k]:
                 obj = dict()
                 obj["name"] = date['name']
@@ -795,8 +785,12 @@ class modbus_process(multiprocessing.Process):
                 for n in obj["name"]:
                     if n != "" and n not in self.nameAndRule.keys():
                         self.nameAndRule[n]=obj
-                
-                if date['register']-1!=lastRegister:
+                lastRegisterDiff = int(self.typeLenMap[date['type']]/2)
+                if lastRegisterDiff == 0:
+                    lastRegisterDiff = -1
+                if date['register']-lastRegister!=lastRegisterDiff or lastDeviceAddress != date['address']:
+                    print("11111111111111111111111111111111111111111")
+                    print(date['register'],lastRegister)
                     d = dict()
                     d["address"]=date['address']
                     d["function"]=date['function']
@@ -804,18 +798,24 @@ class modbus_process(multiprocessing.Process):
                     d["delay"]=date['delay']
                     d["check"]=date['check']
                     d["dataReciveByte"]= 5 #address 1 + function code 1 + length 1 + CRC 2
-                    d["count"]=self.typeCountLen[date['type']]
+                    d["count"]=lastRegisterDiff
                     d["obj"]=[]
                     d["obj"].append(obj)
                     self.batch.append(d)
+                    lastRegister = date['register']
+                    lastDeviceAddress = date['address']
                 else:
-                    self.batch[-1]["count"] +=self.typeCountLen[date['type']]
+                    print("2222222222222222222222222222222222222222222222")
+                    print(date['register'],lastRegister)
+                    self.batch[-1]["count"] +=lastRegisterDiff
                     self.batch[-1]["delay"] = max(self.batch[-1]["delay"],date['delay'])
                     self.batch[-1]["obj"].append(obj)
-                    if self.batch[-1]["count"]>= 64:#new batch
-                        lastRegister=-2
+                    if self.batch[-1]["count"]>= 124:#new batch
+                        lastRegister=-5
+                    else:
+                        lastRegister = date['register']
                 self.batch[-1]["dataReciveByte"] +=self.typeLenMap[date['type']] # data length
-                lastRegister = date['register']
+                #lastRegister = date['register']
                 
             
                     
@@ -1037,25 +1037,28 @@ class modbus_process(multiprocessing.Process):
                     self.port.flushInput()
                     
                     data = self.getModbusArr(b["address"],b["function"],b["register"],b["count"])
+                    print("3333333333333333333333333333333333")
+                    print(data)
+                    print(time.time()-newSampleTime,self.period)
                     self.port.write(data)
                     
                     #transmite time
                     time.sleep(self.transmitTime)
-                    
+                    print(time.time()-newSampleTime,self.period)
                     while self.port.out_waiting>0 and time.time()-newSampleTime<self.period:
                         time.sleep(self.oneByteTime)
-                        
+                    print(time.time()-newSampleTime,self.period)
                     if time.time()-newSampleTime>self.period:
                         raise Exception("transmission timeout")
-                    
                     #response + receive time
-                    time.sleep(b["delay"]/1000+self.oneByteTime*b["dataReciveByte"])
-                    
+                    #time.sleep(b["delay"]/1000+self.oneByteTime*b["dataReciveByte"])
+                    print(time.time()-newSampleTime,self.period)
                     while self.port.in_waiting!=b["dataReciveByte"]  and time.time()-newSampleTime<self.period:
                         time.sleep(self.oneByteTime)
-                        
+                    print(time.time()-newSampleTime,self.period)
                     if time.time()-newSampleTime>self.period:
                         useOldDate = True
+                        print(self.port.in_waiting,b["dataReciveByte"])
                         mainProgramStates.send(mainProgramStates._Err,"Modbus receive timeout. [slave "+str(b["address"])+",register "+str(b["register"])+" ]")
                         #raise Exception("receive timeout. in_waiting="+str(self.port.in_waiting))
                     
@@ -1379,7 +1382,7 @@ class prognosis(multiprocessing.Process):
             print("\tResult:",rdata)
             if(self.config[self.sensor]["stdCommand"] in rdata):
                 return baud_value[i]
-        #mainProgramStates.send(mainProgramStates._Err,"Prognosis sensor (port "+str(self.portNum+1)+") is not found")        
+        #mainProgramStates.send(mainProgramStates._Err,"Prognosis snesor (port "+str(self.portNum+1)+") is not found")        
         return None
                             
                
@@ -1468,8 +1471,8 @@ class prognosis(multiprocessing.Process):
         if L>0:
             arr = arr+self.port.read(L)
             
-        #if onlyBuffer:
-        #    return arr
+        if onlyBuffer:
+            return arr
             
         serialBufferLen = len(arr)
         bufferStartTime -= serialBufferLen*self.offsetRatioForTx
@@ -1571,7 +1574,7 @@ class prognosis(multiprocessing.Process):
                         zeroCount = 0
                 elif zeroCount==400:
                     zeroCount = zeroCount+1 #let zeroCount over 10, so this condition will run one times.
-                    mainProgramStates.send(mainProgramStates._Err,"Prognosis sensor (port "+str(self.portNum+1)+") dissconnected.")
+                    mainProgramStates.send(mainProgramStates._Err,"Prognosis snesor (port "+str(self.portNum+1)+") dissconnected.")
                     return False # terminate processing
                 elif zeroCount>400:
                     errRecalTimeDiv=errRecalTimeDiv+1
@@ -1603,7 +1606,7 @@ class prognosis(multiprocessing.Process):
                     
                     if data[0:3]!=b'AT3':
                         zeroCount=401
-                        mainProgramStates.send(mainProgramStates._Err,"Prognosis sensor (port "+str(self.portNum+1)+") communication value error.")
+                        mainProgramStates.send(mainProgramStates._Err,"Prognosis snesor (port "+str(self.portNum+1)+") communication value error.")
                         self.stopThread=True
                         t.join()   
                         return False # terminate processing
@@ -1620,7 +1623,7 @@ class prognosis(multiprocessing.Process):
                         if (diffIndex != 1 and diffIndex!=255):
                             print("index error(port "+str(self.portNum+1)+")",currentIndex,lastIndex,data[0:10],debug)
                             zeroCount=401
-                            mainProgramStates.send(mainProgramStates._Err,"Prognosis sensor (port "+str(self.portNum+1)+") communication index error.")
+                            mainProgramStates.send(mainProgramStates._Err,"Prognosis snesor (port "+str(self.portNum+1)+") communication index error.")
                             self.stopThread=True
                             t.join()   
                             return False # terminate processing
@@ -1632,7 +1635,7 @@ class prognosis(multiprocessing.Process):
                     freshFsEnd = dataStartTime
                     newFs = freshFsCount/(freshFsEnd-freshFsStart)
                     self.realFs = self.realFs*0.9+newFs*0.1
-                    print("Prognosis sensor (port "+str(self.portNum+1)+") Fs=",(freshFsEnd-freshFsStart),freshFsCount,newFs,self.realFs)
+                    print("Prognosis snesor (port "+str(self.portNum+1)+") Fs=",(freshFsEnd-freshFsStart),freshFsCount,newFs,self.realFs)
                     freshFsCount=0
                     freshFsStart=freshFsEnd
                 
