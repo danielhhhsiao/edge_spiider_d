@@ -297,6 +297,9 @@ def _API_systemConfig(method,path,data={}):
             
         if "ftpTest" in data.keys():
             ret["ftp_test"] = popen_retry([ "python3" ,"/home/pi/server/Library/ftpCheck.py" , data["ftpTest"]["ip"], data["ftpTest"]["name"], data["ftpTest"]["pwd"]],10,3)
+           
+        if "mqttTest" in data.keys():
+            ret["mqtt_test"] = popen_retry([ "python3" ,"/home/pi/server/Library/mqttCheck.py" , data["mqttTest"]["ip"], data["mqttTest"]["port"], data["mqttTest"]["name"], data["mqttTest"]["pwd"]],10,4)
         
         networkUpdate = False
         eth0ip = "--"
