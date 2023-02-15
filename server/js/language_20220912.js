@@ -519,9 +519,10 @@ function _language_english(){
 	language.sample.seg_FE_upload =				"Upload feature extraction result:";
 	language.sample.seg_FE_upload_file =		"Setting upload";
 	language.sample.seg_FE_upload_file_btn =	"Select file";
-	language.sample.seg_default_FE_btn =    	"default features";
-	language.sample.seg_default_FE_baseFreq =   "Please set the base frequency:";
-	language.sample.basefreq_format=			"Base frequency should bigger than 0";
+	language.sample.seg_default_FE_btn =    	"Default features";
+	language.sample.seg_manual_FE_btn =         "Manual feature";
+	language.sample.seg_default_FE_baseFreq =   "Please enter the RPM of the pump:";
+	language.sample.basefreq_format=			"RPM format error\nThe cause of the error may be:\n 1.RPM is smaller than 0.\n 2.RPM is not a Int format.\n 3.RPM is not a multiple of 60 sec.";
 	language.sample.seg_remove =				"Remove this setting:";
 	language.sample.seg_remove_btn =			"Remove";
 	language.sample.seg_edit =					"edit. . . ";
@@ -1022,8 +1023,9 @@ function _language_chinese(){
 	language.sample.seg_FE_upload_file =		"上传特征设定档";
 	language.sample.seg_FE_upload_file_btn =	"选择档案";
 	language.sample.seg_default_FE_btn =    	"使用预设特徵";
-	language.sample.seg_default_FE_baseFreq =   "请设定监控机台之主频率:";
-	language.sample.basefreq_format=			"主频率需大于0";
+	language.sample.seg_manual_FE_btn =         "手动选择特征";
+	language.sample.seg_default_FE_baseFreq =   "请输入Pump转速(RPM):";
+	language.sample.basefreq_format=			"转速格式错误\n导致格式错误原因可能为:\n 1.转速小于0\n 2.转速不是整数\n 3.转速不是60的倍数";
 	language.sample.seg_remove =				"删除该切割规则：";
 	language.sample.seg_remove_btn =			"删除";
 	language.sample.seg_edit =					"正在编辑. . . ";
@@ -1525,8 +1527,9 @@ function _language_t_chinese(){
 	language.sample.seg_FE_upload_file =		"上傳特徵設定檔";
 	language.sample.seg_FE_upload_file_btn =	"選擇檔案";
 	language.sample.seg_default_FE_btn =    	"使用預設特徵";
-	language.sample.seg_default_FE_baseFreq =   "請設定監控機台之主頻率:";
-	language.sample.basefreq_format=			"主頻率需大於0";
+	language.sample.seg_manual_FE_btn =         "手動選擇特徵";
+	language.sample.seg_default_FE_baseFreq =   "請輸入Pump轉速(RPM):";
+	language.sample.basefreq_format=			"轉速格式錯誤\n導致格式錯誤原因可能為:\n 1.轉速小於0\n 2.轉速不是整數\n 3.轉速不是60的倍數";
 	language.sample.seg_remove =				"刪除該切割規則：";
 	language.sample.seg_remove_btn =			"刪除";
 	language.sample.seg_edit =					"正在編輯. . . ";
