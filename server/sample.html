@@ -9,7 +9,7 @@
     <script type="text/javascript" src="js/language_20220912.js"></script>
     <script type="text/javascript" src="js/topBar_20220706.js"></script>
     <script type="text/javascript" src="js/form_20220706.js"></script>
-    <script type="text/javascript" src="js/sample_20220831.js"></script>
+    <script type="text/javascript" src="js/sample_20230130.js"></script>
     <script>
         $(function(){
             //initTopBar("Sample parameter");
@@ -31,6 +31,31 @@
     <div class="bottomInfo mainColor"></div>
     <div id="popWindowMask"></div>
     <div id="popRegisterBox" class="nestBox"></div>
+    <div id="popManuelFeatureBox" class="nestBox">
+		<div class="subTitle">Choose Your Features</div>
+		<div class="subTitle">(Click item to enable 'blue')</div>
+		<div class="nestBox featureSelectLsit">
+			<div class="subTitle">Time domain</div>
+			<div id="targetFeatureMean" type="button" value="MEAN" class="btn nestBtn targetFeature" enable="0">mean</div>
+			<div id="targetFeatureMax" type="button" value="MAX" class="btn nestBtn targetFeature" enable="0">max</div>
+			<div id="targetFeatureMin" type="button" value="MIN" class="btn nestBtn targetFeature" enable="0">min</div>
+			<div id="targetFeatureP2P" type="button" value="P2P" class="btn nestBtn targetFeature" enable="0">P2P</div>
+			<div id="targetFeatureRms" type="button" value="RMS" class="btn nestBtn targetFeature" enable="0">RMS</div>
+			<div id="targetFeatureStd" type="button" value="STD" class="btn nestBtn targetFeature" enable="0">STD</div>
+		</div>
+		<div id="featureSelectLsitID" class="nestBox featureSelectLsit">
+			<div class="subTitle">Vibrational Velocity (for PUMP)</div>
+			<div id="targetFeatureVelRms" type="button" value="Velocity_RMS" class="btn nestBtn targetFeatureVelRms" enable="0">Velocity RMS</div>
+			<div id="targetFeatureLowPsdRms" type="button" value="Velocity_RMS" class="btn nestBtn targetFeatureVelRms" enable="0">Low PSD RMS</div>
+			<div id="targetFeatureMidPsdRms" type="button" value="Velocity_RMS" class="btn nestBtn targetFeatureVelRms" enable="0">Mid PSD RMS</div>
+			<div id="targetFeatureHighPsdRms" type="button" value="Velocity_RMS" class="btn nestBtn targetFeatureVelRms" enable="0">High PSD RMS</div>
+		</div>
+		<div style="text-align:center">
+			<div class="btn BelowBtn manualFeatureDefaultBtn" id="ManualFeatureUseDefault">Apply Default</div>
+			<div class="btn BelowBtn manualFeatureSubmitBtn" id="ManualFeatureOK">Submit</div>
+			<div class="btn BelowBtn popFeatureOKBtn" id="ManualFeatureCancel">Cancel</div>
+		</div>
+    </div>
     <input id="ImportSubmitSelect" type="file" accept=".ini" style="position:fixed;top:-100rem;" onchange="importFiles(this.files)">
     <input id="FEjsonFileBtn" type="file" accept=".json" style="position:fixed;top:-100rem;" onchange="importFEFiles(this.files)">
     <div id="view">
