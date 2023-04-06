@@ -189,6 +189,9 @@ def run():
         else:
             returnErr("Board scan error. (type)")
     
+    #************Backup old config
+    popen_retry(["cp",'/home/pi/program/system.ini','/home/pi/system.ini'])
+    
     #replace file
     print("\nreplace file")
     for fileName in fileList:
