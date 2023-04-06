@@ -200,6 +200,16 @@ var _inputCheckList=[{
         "min":0.1,
         "max":600
     },
+    //20230130
+    {
+		"preObj":"",
+        "isTrue":"",
+        "default":"",
+        "class":".segOperationLenForRawFilter",
+        "min":0.1,
+        "max":1
+	},
+	//
     {
         "preObj":"",
         "isTrue":"",
@@ -248,6 +258,24 @@ var _inputCheckList=[{
         "min":0.01,
         "max":900
     },
+    //20230130
+    {
+        "preObj":"",
+        "isTrue":"",
+        "default":"",
+        "class":".captureLengthSec",
+        "min":0.01,
+        "max":900
+    },
+    {
+        "preObj":".motionLength",
+        "isTrue":"",
+        "default":"",
+        "class":".motionLengthSec",
+        "min":0.01,
+        "max":900
+    },
+    //
     {
         "preObj":".signalFilter",
         "isTrue":"Yes",
@@ -1372,9 +1400,10 @@ $(document).on("click","#segSubmit",function(){
 
 
 
-//displaySelect displayBox event 
-var _displaySelectClass=[".triggerEnable",".subOperation",".signalFilter",".uploadResultSeg",".uploadResultFE",".centerFrequencySelect",".loopModeForRule"];
-var _displaySelectTarget=["Yes","Yes","Yes","Yes","Yes","Yes","Yes"]; 
+//displaySelect displayBox event
+//20230130
+var _displaySelectClass=[".triggerEnable", ".motionLength", ".subOperation",".signalFilter",".uploadResultSeg",".uploadResultFE",".centerFrequencySelect",".loopModeForRule"];
+var _displaySelectTarget=["Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes"]; 
 for(let i =0;i<_displaySelectClass.length;i++){
     let className = _displaySelectClass[i];
     let value = _displaySelectTarget[i];
@@ -2079,6 +2108,11 @@ function creatSegSetting(name,
         SGclass = "SGdiable";
         SGflag=false;
     }
+    //20230301
+    else if(rule == "4"){
+        insertSubTitle(mainDiv,_language.sample.rule_rawfilter);
+        insertImg(mainDiv,"/example/segRawFilter.png");
+    }
     
     insertSubTitle(mainDiv,_language.sample.rule_name,true);
     insertInputBox(mainDiv,"input_1_1 segRuleName",name);
@@ -2139,23 +2173,29 @@ function creatSegSetting(name,
     insertInputBox(subMainDiv,"input_1_1 triggerShift","0");
 
     insertDashed(mainDiv,SGclass);
-    
-    if(rule != "0" && rule != "3" ){
+    //20230301
+    if(rule != "0" && rule != "3" && rule != "4"){
         insertImg(mainDiv,"/example/signalOperation.png");
-         insertSubTitle(mainDiv,_language.sample.seg_window_size+"(0.1~600 "+_language.sample.time_unit+"):",true);
+        insertSubTitle(mainDiv,_language.sample.seg_window_size+"(0.1~600 "+_language.sample.time_unit+"):",true);
     }
+    else if(rule == "4"){
+		insertImg(mainDiv,"/example/signalOperation.png");
+		insertSubTitle(mainDiv,_language.sample.seg_window_size+"(0.1~1 "+_language.sample.time_unit+"):", true);
+	}
     else{
         insertSubTitle(mainDiv,_language.sample.seg_capture_length+"(0.1~600 "+_language.sample.time_unit+"):",true);
     }
     if(rule == "3")
         insertInputBox(mainDiv,"input_1_1 segOperationLen","10");
+    else if(rule == "4")
+		insertInputBox(mainDiv,"input_1_1 segOperationLenForRawFilter","0.1");
     else
         insertInputBox(mainDiv,"input_1_1 segOperationLen","1");
         
     insertSubTitle(mainDiv,_language.sample.seg_ignore_length+"(0~N "+_language.sample.time_unit+"):",true);
     insertInputBox(mainDiv,"input_1_1 segIgnoreLen","0");
 
-    if(rule != "0" && rule != "3"){
+    if(rule != "0" && rule != "3" && rule != "4"){
         
         insertDashed(mainDiv);
         if(rule == "1"){ //segTime.
@@ -2253,6 +2293,29 @@ function creatSegSetting(name,
         */
 
     }
+    
+    //20230301
+    if(rule == "4"){
+		insertDashed(mainDiv);
+		insertImg(mainDiv, "/example/CaptureLength.png");
+		insertSubTitle(mainDiv, _language.sample.seg_filter_threshold, true);
+		insertInputBox(mainDiv, "input_1_1 segThreshold", "0");
+		insertSubTitle(mainDiv, _language.sample.seg_capture_length+"(0.01~900 sec):", true);
+		insertInputBox(mainDiv, "input_1_1 captureLengthSec", "0.01");
+		insertImg(mainDiv, "/example/MotionLength.png");
+		insertSubTitle(mainDiv, _language.sample.seg_motion_length+"(sec):", true);
+		
+		insertRadio(mainDiv, "leftLabel", "motionLength",
+				["No", "Yes"],
+				[_language.sample.seg_sub_mot_use_cap, _language.sample.seg_sub_mot_use_manual+"(0.01~900 sec)"], true);
+		subMainDiv = insertDisplayBox(mainDiv);
+		insertInputBox(subMainDiv, "input_1_1 motionLengthSec", "0.01");
+		var useFilterExceptionSwitch = insertRadio(mainDiv, "leftLabel", "useFilterException", 
+			["No", "Yes"],
+			["No", "Yes"], true, true, _language.sample.seg_motion_exception+":");
+		
+	}
+    
     insertDashed(mainDiv,SGclass);
     //insertSubTitle(mainDiv,"Upload segmentation result:",true,SGclass);
     var uploadResultSegSwitch = insertRadio(mainDiv,"leftLabel "+SGclass,"uploadResultSeg",
@@ -2331,8 +2394,12 @@ function creatSegSetting(name,
             }
         }
     }
+    //20230301
     if(operation_count){
-        mainDiv.find(".segOperationLen").val(operation_count);
+        if(rule == "4")
+			mainDiv.find(".segOperationLenForRawFilter").val(operation_count);
+        else
+			mainDiv.find(".segOperationLen").val(operation_count);
     }
     if(ignore_time){
         mainDiv.find(".segIgnoreLen").val(ignore_time);
@@ -2353,21 +2420,34 @@ function creatSegSetting(name,
     if(operation_shift){
         mainDiv.find(".segShift").val(operation_shift);
     }
+    //20230301
     if(sub_operation_count){
         if(parseFloat(sub_operation_count)>0){
-            mainDiv.find(".leftLabel").children(".subOperation[value='Yes']").prop('checked',true);
-            mainDiv.find(".leftLabel").children(".subOperation").parent().nextAll(".displayBox").eq(0).show();
-            mainDiv.find(".subOperationSec").val(sub_operation_count);
-            
+			if(rule=="4"){
+				mainDiv.find(".captureLengthSec").val(sub_operation_count);
+			}
+			else{
+				mainDiv.find(".leftLabel").children(".subOperation[value='Yes']").prop('checked',true);
+				mainDiv.find(".leftLabel").children(".subOperation").parent().nextAll(".displayBox").eq(0).show();
+				mainDiv.find(".subOperationSec").val(sub_operation_count);
+            }
         }
     }
+    //20230301
     if(operation_filter){
         if(parseFloat(operation_filter)>0){
-            mainDiv.find(".leftLabel").children(".signalFilter[value='Yes']").prop('checked',true);
-            mainDiv.find(".leftLabel").children(".signalFilter").parent().nextAll(".displayBox").eq(0).show();
-            mainDiv.find(".signalFilterSec").val(operation_filter);
-            $(signalFilterSwitch).find(".switchOut").attr("data-enable","1");
-            $(signalFilterSwitch).find(".switchOut").attr("class","switchOut switchFocus");
+			if(rule=="4"){
+				mainDiv.find(".leftLabel").children(".motionLength[value='Yes']").prop('checked',true);
+				mainDiv.find(".leftLabel").children(".motionLength").parent().nextAll(".displayBox").eq(0).show();
+				mainDiv.find(".signalFilterSec").val(operation_filter);
+			}
+			else{
+				mainDiv.find(".leftLabel").children(".signalFilter[value='Yes']").prop('checked',true);
+				mainDiv.find(".leftLabel").children(".signalFilter").parent().nextAll(".displayBox").eq(0).show();
+				mainDiv.find(".signalFilterSec").val(operation_filter);
+				$(signalFilterSwitch).find(".switchOut").attr("data-enable","1");
+				$(signalFilterSwitch).find(".switchOut").attr("class","switchOut switchFocus");
+			}
         }
     }
     if(useFilterException && useFilterException)
@@ -4331,9 +4411,13 @@ function segRuleLoad(obj,form,sensor_form,useDefault,segCnt){
     }
     obj.type=(parseInt(form.attr("rule"))+1)+"";
     obj.basis_column = form.find(".SegSource").val();
+    //20230301
     if(obj.type=="1")
         obj.basis_column = "";
-    obj.operation_count = form.find(".segOperationLen").val();
+    if(obj.type=="5")
+		obj.operation_count = form.find(".segOperationLenForRawFilter").val();
+	else
+		obj.operation_count = form.find(".segOperationLen").val();
     obj.ignore_time = form.find(".segIgnoreLen").val();
     if(form.find(".segThreshold").length>0)
         obj.operation_threshold = form.find(".segThreshold").val();
@@ -4349,10 +4433,26 @@ function segRuleLoad(obj,form,sensor_form,useDefault,segCnt){
         obj.smart_grid = redio.children(".sgSelect:checked").val();
     if(form.find(".segShift").length>0)
         obj.operation_shift = form.find(".segShift").val();
-    if(redio.children(".subOperation:checked").val()=="Yes")
-        obj.sub_operation_count = form.find(".subOperationSec").val();
-    if(redio.children(".signalFilter:checked").val()=="Yes")
-        obj.operation_filter = form.find(".signalFilterSec").val();
+    //20230301    
+    if(redio.children("motionLength:checked").val()=="Yes")
+		obj.motionLength = form.find(".motionLengthSec").val();
+    if(obj.type=="5"){
+		obj.sub_operation_count = form.find(".captureLengthSec").val();
+	}
+    else{
+		if(redio.children(".subOperation:checked").val()=="Yes")
+			obj.sub_operation_count = form.find(".subOperationSec").val();
+    }
+    if(obj.type=="5"){
+		if(redio.children(".motionLength:checked").val()=="Yes")
+			obj.operation_filter = form.find(".motionLengthSec").val();
+		else
+			obj.operation_filter = form.find(".captureLengthSec").val();
+	}
+    else{
+		if(redio.children(".signalFilter:checked").val()=="Yes")
+			obj.operation_filter = form.find(".signalFilterSec").val();
+    }
     if(redio.children(".useFilterException:checked").val()=="Yes")
         obj.use_filter_exception = "1";
     if(redio.children(".signalReverse:checked").val()=="Yes")

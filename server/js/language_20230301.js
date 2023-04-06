@@ -118,6 +118,7 @@ function _lang_sample_page(){
 	putHtml("option[value='1']",_language.html.sample.rule_strangth);
 	putHtml("option[value='2']",_language.html.sample.rule_freq);
 	putHtml("option[value='3']",_language.html.sample.rule_sg);
+	putHtml("option[value='4']",_language.html.sample.rule_rf);
 	putHtml("#lang_sample_seg_TDMA",_language.html.sample.rule_tdma);
 	putHtml("#lang_sample_seg_TDMA_remind",_language.html.sample.rule_tdma_remind);
 	putHtml(".lang_radio_no",_language.html.sample.rule_tdma_n);
@@ -475,8 +476,9 @@ function _language_english(){
 	language.sample.sensor_remove_btn = 		"Remove";
 	language.sample.rule_normal = 				"Rule: Normal";
 	language.sample.rule_strength = 			"Rule: By Strength";
-	language.sample.rule_frequency = 			"Rule: By Frequency.";
-	language.sample.rule_smart_grid = 			"Rule: Smar grid.";
+	language.sample.rule_frequency = 			"Rule: By Frequency";
+	language.sample.rule_smart_grid = 			"Rule: Smart grid";
+	language.sample.rule_rawfilter = 			"Rule: By RawFilter";
 	language.sample.rule_name = 				"Rule Name:";
 	language.sample.rule_name_unit = 			"Unit Name: (allow empty)";
 	language.sample.rule_name_subunit = 		"Subunit Name: (allow empty)";
@@ -493,10 +495,14 @@ function _language_english(){
 	language.sample.trigger_thrshold = 			"Trigger Threshold";
 	language.sample.trigger_shift = 			"start point shift";
 	language.sample.time_unit = 				"sec.";
-	language.sample.seg_window_size = 			"Window size.";
+	language.sample.seg_window_size = 			"Window size";
 	language.sample.seg_capture_length =		"Capture length";
+	language.sample.seg_motion_length =  		"Motion length";
+	language.sample.seg_sub_mot_use_cap =  		"Same as Capture Length";
+	language.sample.seg_sub_mot_use_manual =  	"Manual setting";
 	language.sample.seg_ignore_length =			"Ignore length";
 	language.sample.seg_threshold =				"Segmentation Threshold:";
+	language.sample.seg_filter_threshold =		"Filter Threshold:";
 	language.sample.seg_shift =					"Start point shift";
 	language.sample.seg_sub_cap_use_windows =	"Use window size.";
 	language.sample.seg_sub_cap_use_manual =	"Manual setting";
@@ -512,6 +518,7 @@ function _language_english(){
 	language.sample.seg_filter_disable =		"Disable";
 	language.sample.seg_filter_remain =			"Condition";
 	language.sample.seg_filter_exception =		"Use exception data between 5% to 95% of filter size";
+	language.sample.seg_motion_exception =		"Use exception data between 5% to 95% of Motion Length";
 	language.sample.seg_upload =				"Upload segmentation result";
 	language.sample.seg_upload_interval =		"Upload interval";
 	language.sample.seg_upload_remain =			"(When Feature extraction enable)";
@@ -569,7 +576,7 @@ function _language_english(){
 	language.sample.check_input_empty =			"The input cannot empty.";
 	language.sample.check_input_num =			"Please input number.";
 	language.sample.check_input_range_L =		"The input value less than range.";
-	language.sample.check_input_range_H =		"The input value heigher than range.";
+	language.sample.check_input_range_H =		"The input value greater than range.";
 	
 	language.test={}
 	language.test.alert_done = 					"Testing done.";
@@ -679,6 +686,7 @@ function _language_english(){
 	language.html.sample.rule_strangth = 		"By strength";
 	language.html.sample.rule_freq = 			"By frequency";
 	language.html.sample.rule_sg = 				"Smart Grid";
+	language.html.sample.rule_rf = 				"By RawFilter";
 	language.html.sample.rule_tdma = 			"Run only one rule at a time:";
 	language.html.sample.rule_tdma_remind =		"Work time for a rule ( 60~N Sec.):";
 	language.html.sample.rule_tdma_n = 			"No";
@@ -980,6 +988,7 @@ function _language_chinese(){
 	language.sample.rule_strength = 			"规则：信号时域强度模式";
 	language.sample.rule_frequency = 			"规则：信号时频域模式";
 	language.sample.rule_smart_grid = 			"规则：Smart grid";
+	language.sample.rule_rawfilter = 			"规则：信号时域过滤模式";
 	language.sample.rule_name = 				"规则名称：";
 	language.sample.rule_name_unit = 			"规则单元名称(允许留空)：";
 	language.sample.rule_name_subunit= 		    "规则子单元名称(允许留空)：";
@@ -998,8 +1007,12 @@ function _language_chinese(){
 	language.sample.time_unit = 				"秒";
 	language.sample.seg_window_size = 			"移动窗格大小";
 	language.sample.seg_capture_length =		"切割长度";
+	language.sample.seg_motion_length =			"动作长度";
+	language.sample.seg_sub_mot_use_cap =  		"同切割长度";
+	language.sample.seg_sub_mot_use_manual =  	"手动设定";
 	language.sample.seg_ignore_length =			"忽略长度";
 	language.sample.seg_threshold =				"强度阀值";
+	language.sample.seg_filter_threshold =		"过滤阀值";
 	language.sample.seg_shift =					"切割起始点位移";
 	language.sample.seg_sub_cap_use_windows =	"使用移动窗格大小";
 	language.sample.seg_sub_cap_use_manual =	"手动设定";
@@ -1182,6 +1195,7 @@ function _language_chinese(){
 	language.html.sample.rule_strangth = 		"信号时域强度模式";
 	language.html.sample.rule_freq = 			"信号时频域模式";
 	language.html.sample.rule_sg = 				"Smart grid";
+	language.html.sample.rule_rf = 				"信号时域过滤模式";
 	language.html.sample.rule_tdma = 			"分时轮流执行切割规则";
 	language.html.sample.rule_tdma_remind =		"规则持续运行时间( 60~N 秒)：";
 	language.html.sample.rule_tdma_n = 			"不使用";
@@ -1484,6 +1498,7 @@ function _language_t_chinese(){
 	language.sample.rule_strength = 			"規則：信號時域強度模式";
 	language.sample.rule_frequency = 			"規則：信號時頻域模式";
 	language.sample.rule_smart_grid = 			"規則：Smart grid";
+	language.sample.rule_rawfilter = 			"規則：信號時域過濾模式";
 	language.sample.rule_name = 				"規則名稱：";
 	language.sample.rule_name_unit = 			"規則單元名稱(允許留空)：";
 	language.sample.rule_name_subunit = 		"規則子單元名稱(允許留空)：";
@@ -1502,8 +1517,12 @@ function _language_t_chinese(){
 	language.sample.time_unit = 				"秒";
 	language.sample.seg_window_size = 			"移動窗格大小";
 	language.sample.seg_capture_length =		"切割長度";
+	language.sample.seg_motion_length =			"動作長度";
+	language.sample.seg_sub_mot_use_cap =  		"同切割長度";
+	language.sample.seg_sub_mot_use_manual =  	"手動设定";
 	language.sample.seg_ignore_length =			"忽略長度";
 	language.sample.seg_threshold =				"強度閥值";
+	language.sample.seg_filter_threshold =		"過濾閥值";
 	language.sample.seg_shift =					"切割起始點位移";
 	language.sample.seg_sub_cap_use_windows =	"使用移動窗格大小";
 	language.sample.seg_sub_cap_use_manual =	"手動設定";
@@ -1686,6 +1705,7 @@ function _language_t_chinese(){
 	language.html.sample.rule_strangth = 		"信號時域強度模式";
 	language.html.sample.rule_freq = 			"信號時頻域模式";
 	language.html.sample.rule_sg = 				"Smart grid";
+	language.html.sample.rule_rf = 				"信號時域過濾模式";
 	language.html.sample.rule_tdma = 			"分時輪流執行切割規則";
 	language.html.sample.rule_tdma_remind =		"規則持續運行時間( 60~N 秒)：";
 	language.html.sample.rule_tdma_n = 			"不使用";

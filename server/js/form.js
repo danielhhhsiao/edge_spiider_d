@@ -14,7 +14,7 @@ $(document).on("click",".autoClean",function(){
     $(this).val("");
 });
 $(document).on("keydown",".autoClean",function(e){
-    let _code =  e.keyCode 
+    let _code =  e.keyCode;
     if ( (_code < 48 || _code > 57) && _code != 190 && _code != 8){
         e.preventDefault();
     }
