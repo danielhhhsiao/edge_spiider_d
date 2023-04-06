@@ -7,7 +7,7 @@ import queue
 import RPi.GPIO as GPIO
 from urllib.parse import urlparse
 from datetime import datetime
-from Library.StatusServerLib import staticInfoTrans,dynamicInfoTrans,writeConfig,loadConfig,getDictItem,IoTInfoTrans,getWifiIP,getLanIP,getLan2IP,getMacID,getBoardVersion,getMappingProxy,getApStatus,reset,shutdown
+from Library.StatusServerLib import staticInfoTrans,dynamicInfoTrans,writeConfig,loadConfig,getDictItem,IoTInfoTrans,getWifiIP,getLanIP,getLan2IP,getMacID,getBoardVersion,getMappingProxy,getApStatus,reset,shutdown,checkConfigOTA
 import requests
 import ftplib
 import multiprocessing
@@ -425,22 +425,22 @@ class LED_Blink(multiprocessing.Process):
 					AP_OnOff_Count=0
 			elif(APMode == 1):
 				GPIO.output(self.apLed,1^self.reverse)
-			
-			#Check AP status
-			apCheckCount+=1
-			if apCheckCount == 100:
-				apCheckCount = 0
-				APMode = getApStatus(checkSPIIDER)
-			#Check shutdown button
-			if GPIO.input(self.shutdownPin) == 0:
-				shutdown()
-			#Check reset button
-			if GPIO.input(self.resetPin) == 0:
-				resetCount+=1
-				if resetCount == 20:
-					reset()
-			else:
-				resetCount = 0
+			if checkSPIIDER:
+				#Check AP status
+				apCheckCount+=1
+				if apCheckCount == 100:
+					apCheckCount = 0
+					APMode = getApStatus(checkSPIIDER)
+				#Check shutdown button
+				if GPIO.input(self.shutdownPin) == 0:
+					shutdown()
+				#Check reset button
+				if GPIO.input(self.resetPin) == 0:
+					resetCount+=1
+					if resetCount == 20:
+						reset()
+				else:
+					resetCount = 0
 			time.sleep(0.1)
 					
 class FTP_status_upload(multiprocessing.Process):
@@ -589,12 +589,17 @@ class API_status_upload(multiprocessing.Process):
 		self.exit = multiprocessing.Event()
 		self.deviceConfigPath = 'd'
 		self.systemConfigPath = 's'
+		
 		#upload status count
 		manager=multiprocessing.Manager()
 		self.queueData=manager.Queue()
+		
 		#Check Flag
 		self.states=manager.dict()
 		self.states["connectMode"] = 0
+		
+		#API request timeout
+		self.apiTimeout = 5
 		
 		print("Server API upload create")
 		
@@ -611,11 +616,19 @@ class API_status_upload(multiprocessing.Process):
 		#Read config data
 		configDict = loadConfig(self.deviceConfigPath)
 		systemConfig = loadConfig(self.systemConfigPath)
-		check_API_Count = 0
+		check_API_Time = time.time()
 		upload_data = ''
+		
 		#API params
 		API_URL = getDictItem(systemConfig,"status","ip","")
 		API_PROXY = getDictItem(systemConfig,"status","proxy","")
+        
+		#For myIoT platform
+		API_URL_myIoT = "http://myiot:8080/api/CIotPhmdevices/updateStatus2"
+        
+        #For PHM platform
+		API_URL_PHM = "http://tcapcphmd02:8000/daq/update_status"
+		API_PHM_FLAG = False
 		
 		#Check Wifi connect
 		checkIPFlag = False
@@ -624,6 +637,7 @@ class API_status_upload(multiprocessing.Process):
 			checkIPFlag = False
 			time.sleep(3)
 		checkIPFlag = True
+		
 		#Check IP first
 		checkAuoFlag = False
 		ipFirstByte = getWifiIP().split(".")[0]
@@ -638,16 +652,7 @@ class API_status_upload(multiprocessing.Process):
 				checkAuoFlag = True
 			else:
 				checkAuoFlag = False
-			"""
-			#Check internet to decide Auo or not
-			recordPath = os.path.abspath(os.getcwd())
-			if(os.path.exists("proxy_search_record")):
-				os.remove("proxy_search_record")
-				print("Remove proxy_search_record")
-			checkIPFlag = False
-			checkIPFlag = IoTInfoTrans(0,0)
-			print(checkIPFlag)
-			"""
+			
 			if checkAuoFlag:
 				#self.states["connectMode"] = 1
 				print("New format for Auo.")
@@ -664,8 +669,11 @@ class API_status_upload(multiprocessing.Process):
 			try:
 				if checkAuoFlag:
 					if API_URL == "":
-						API_URL = "http://myiot:8080/api/CIotPhmdevices/updateStatus2"
+						API_URL = API_URL_myIoT
+						API_PHM_FLAG = True
 					API_PROXY = auoProxy
+				else:
+					API_PHM_FLAG = False
 				if not self.queueData.empty() or upload_data != '':
 					if self.queueData.qsize() > 100:
 						self.queueData.get()
@@ -683,7 +691,8 @@ class API_status_upload(multiprocessing.Process):
 								API_URL, #iot platform ip
 								headers={"Content-Type":"application/json"},
 								data=upload_data,
-								timeout = 10)
+								timeout = self.apiTimeout)
+                            
 						elif API_URL[0:5] == "https":
 							print("HTTPS")
 							d=requests.request("POST",
@@ -691,7 +700,7 @@ class API_status_upload(multiprocessing.Process):
 								headers={"Content-Type":"application/json"},
 								proxies={"https":API_PROXY},
 								data=upload_data,
-								timeout = 10)
+								timeout = self.apiTimeout)
 						else:
 							print("HTTP")
 							print(API_PROXY)
@@ -700,13 +709,27 @@ class API_status_upload(multiprocessing.Process):
 								headers={"Content-Type":"application/json"},
 								proxies={"http":API_PROXY},
 								data=upload_data,
-								timeout = 10)
-							
-							
+								timeout = self.apiTimeout)
 						print(d.status_code)
 						print(d.text)
-						#return_code = d.text[8:11]
-						if(d.status_code == 200):
+                        #**************New for PHM******************
+						d_phm_status = 0
+						if API_PHM_FLAG:
+							print("API_PHM")
+							print(API_PROXY)
+							d_phm=requests.request("POST",
+								API_URL_PHM, #phm platform ip
+								headers={"Content-Type":"application/json"},
+								proxies={"http":API_PROXY},
+								data=upload_data,
+								timeout = self.apiTimeout)
+							print("PHM")
+							print(d_phm.status_code)
+							print(d_phm.text)
+							d_phm_status = d_phm.status_code
+							
+						#MyIoT & PHM check status
+						if(d.status_code == 200) or (d_phm_status == 200):
 							upload_data = ''
 							if (getDictItem(configDict,'environment','server_connect',"0") == "0"):
 								writeConfig(self.deviceConfigPath,'environment','server_connect',"1")
@@ -714,15 +737,14 @@ class API_status_upload(multiprocessing.Process):
 						else:
 							if (getDictItem(configDict,'environment','server_connect',"0") == "1"):
 								writeConfig(self.deviceConfigPath,'environment','server_connect',"0")
-							time.sleep(15)
+							time.sleep(10)
 					else:
 						if (getDictItem(configDict,'environment','server_connect',"0") == "1"):
 							writeConfig(self.deviceConfigPath,'environment','server_connect',"0")
 
-				#1min check API_URL
-				check_API_Count+=1
-				if check_API_Count == 600:
-					check_API_Count = 0
+                #1min check API_URL
+				if(time.time() - check_API_Time) >= 60:
+					check_API_Time = time.time()
 					#check IP
 					if (getWifiIP() == '' and getLanIP() == '' and getLan2IP() == ''):
 						checkIPFlag = False
@@ -753,7 +775,7 @@ class API_status_upload(multiprocessing.Process):
 				API_URL = getDictItem(systemConfig,"status","ip","")
 				API_PROXY = getDictItem(systemConfig,"status","proxy","")
 				gc.collect()
-				time.sleep(15)
+				time.sleep(10)
                 
 def release(self):
 	if self.is_alive():
@@ -789,6 +811,7 @@ if __name__ == "__main__":
 	handler_object = MyHttpRequestHandler
 	PORT = 81
 	try:
+		checkConfigOTA()
 		httpd = socketserver.TCPServer(("", PORT), handler_object) 
 		print("Server is running at 127.0.0.1:%s" %PORT)
 		LED_Thread = LED_Control(my_queue)
