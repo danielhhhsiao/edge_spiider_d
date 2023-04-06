@@ -374,49 +374,7 @@ def getBoardVersion():
 			boardType.append("")
 			boardVersion.append("")
 	return boardVersion, boardType
-
-def checkConfigOTA():
-	try:
-		backupConfigPath = '/home/pi/system.ini'
-		if os.path.isfile(backupConfigPath):
-			print("Find backup config.")
-			systemConfig = configparser.ConfigParser()
-			systemConfig.read(backupConfigPath)
-			
-			#************Write old config
-			writeConfig("s","ntp","ip",getDictItem(systemConfig,"ntp","ip",""))
-			writeConfig("s","ap","name",getDictItem(systemConfig,"ap","name",""))
-			writeConfig("s","ap","passwd",getDictItem(systemConfig,"ap","passwd",""))
-			writeConfig("s","mqtt","ip",getDictItem(systemConfig,"mqtt","ip",""))
-			writeConfig("s","mqtt","port",getDictItem(systemConfig,"mqtt","port",""))
-			writeConfig("s","mqtt","topic",getDictItem(systemConfig,"mqtt","topic",""))
-			writeConfig("s","mqtt","name",getDictItem(systemConfig,"mqtt","name",""))
-			writeConfig("s","mqtt","passwd",getDictItem(systemConfig,"mqtt","passwd",""))
-			writeConfig("s","lan","ip",getDictItem(systemConfig,"lan","ip",""))
-			writeConfig("s","lan","mask",getDictItem(systemConfig,"lan","mask",""))
-			writeConfig("s","lan","gateway",getDictItem(systemConfig,"lan","gateway",""))
-			writeConfig("s","lan2","ip",getDictItem(systemConfig,"lan2","ip",""))
-			writeConfig("s","lan2","mask",getDictItem(systemConfig,"lan2","mask",""))
-			writeConfig("s","lan2","gateway",getDictItem(systemConfig,"lan2","gateway",""))
-			writeConfig("s","wifi","ip",getDictItem(systemConfig,"wifi","ip",""))
-			writeConfig("s","wifi","mask",getDictItem(systemConfig,"wifi","mask",""))
-			writeConfig("s","wifi","gateway",getDictItem(systemConfig,"wifi","gateway",""))
-			writeConfig("s","server","ip",getDictItem(systemConfig,"server","ip",""))
-			writeConfig("s","server","type",getDictItem(systemConfig,"server","type",""))
-			writeConfig("s","server","proxy",getDictItem(systemConfig,"server","proxy",""))
-			writeConfig("s","status","ip",getDictItem(systemConfig,"status","ip",""))
-			writeConfig("s","status","proxy",getDictItem(systemConfig,"status","proxy",""))
-			writeConfig("s","ftp","ip",getDictItem(systemConfig,"ftp","ip",""))
-			writeConfig("s","ftp","name",getDictItem(systemConfig,"ftp","name",""))
-			writeConfig("s","ftp","pwd",getDictItem(systemConfig,"ftp","pwd",""))
-			writeConfig("s","ftp","type",getDictItem(systemConfig,"ftp","type",""))
-			writeConfig("s","ftp","proxy",getDictItem(systemConfig,"ftp","proxy",""))
-			os.remove(backupConfigPath)
-		else:
-			print("Nothing.")
-	except Exception as e:
-		print(e)
-
+	
 def staticInfoTrans(boardVersion, boardType):
 	payload_dict = dict()
 	payload_dict.setdefault('trxName','basic')
