@@ -1,4 +1,4 @@
-import pandas as pd
+import pandas as pd #20220825 Daniel
 import numpy as np
 from scipy.fftpack import fft
 from scipy.signal import welch
@@ -105,15 +105,65 @@ def get_wavedec(parm):
 def get_time_domain_values(parm):
     return None, parm['data']
 
-#20220825 Daniel
-def get_psd_vel_values(parm):  
+
+def get_time_domain_diff_values(parm):
     y_values = parm['data']
-    fs=parm['samplerate']
+    y = [t - s for s, t in zip(y_values, y_values[1:])]
+    x = [i for i in range(len(y))]
+    return x, y
+
+
+#20230210 ErwinJSLiang(copy from PHM Platform code)
+def get_iso(parm):
+    data = pd.DataFrame(parm['data'].copy())
+    sampling_rate = parm['samplerate']
+    period = 1 / sampling_rate
+    data = data * 101.9
+    data = data - data.mean()
+    data = data * period
+    data = data.cumsum()
+    value = (data ** 2).mean() ** (1 / 2)
+    return None, float(value)
+
+#20220825 Daniel
+#20230213 ErwinJSLiang(revise from PHM Platform code)
+def get_psd_vel_values(parm):
+    y_values = parm['data']
+    fs = parm['samplerate']
     # df = df - (sum(df)/len(df))
-    
-    bin_width = fs/len(y_values)
-    f, psd = welch(y_values, fs=fs, nperseg=fs/bin_width,window='hanning',axis=0)
-    psd_rms = psd*bin_width
-    psd_rms = psd_rms.cumsum()**0.5
-    df_psd = pd.DataFrame(psd,index=f)
-    return psd_rms, df_psd, bin_width
+    bin_width = fs / len(y_values)
+    f, psd = welch(y_values, fs=fs, nperseg=fs / bin_width, window='hanning', axis=0)
+    psd_rms = psd * bin_width
+    psd_rms = psd_rms.cumsum() ** 0.5
+    df_psd = pd.DataFrame(psd, index=f)
+    # df_psd = [f, psd]
+    return psd_rms, df_psd, bin_width  # 計算後RMS/原始PSD/資料頻率解析度
+
+
+#20230213 ErwinJSLiang(revise from PHM Platform code)
+def get_base_frequency_values(parm):
+    y_values = parm['data']
+    fs = parm['samplerate']
+    # df = df - (sum(df)/len(df))
+    bin_width = fs / len(y_values)
+    f, psd = welch(y_values, fs=fs, nperseg=fs / bin_width, window='hanning', axis=0)
+    # psd_rms = psd * bin_width
+    # psd_rms = psd_rms.cumsum() ** 0.5
+    df_psd = pd.DataFrame(psd, index=f)
+    # df_psd = [f, psd]
+
+    base_freq = parm['base_freq']
+    max_base_freq = parm['max_base_freq']
+
+    y_list = np.where(df_psd.index.values > max_base_freq)
+    y_idx = int(y_list[0].min())
+
+    if len(y_list[0]) > 0:
+        tmp = max(df_psd.iloc[:y_idx].values)
+        tmp_idx_list = np.where(df_psd.iloc[:y_idx].values == tmp)
+        tmp_idx = int(tmp_idx_list[0].min())
+        real_base_freq = df_psd.index.tolist()[tmp_idx]
+    else:
+        real_base_freq = base_freq
+
+    return df_psd, base_freq, real_base_freq
