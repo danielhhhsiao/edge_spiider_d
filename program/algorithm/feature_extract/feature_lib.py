@@ -67,6 +67,11 @@ def get_p2p(list_values):
     pass
     result = max(list_values) - max(list_values)
     return result
+    
+def get_min_max(list_values):
+    pass
+    result = max(list_values) - min(list_values)
+    return result
 
 
 def get_crest(list_values):
@@ -118,33 +123,79 @@ def get_features(x_values, y_values, mph):
     indices_peaks = detect_peaks(y_values, mph=mph)
     peaks_x, peaks_y = get_first_n_peaks(x_values[indices_peaks], y_values[indices_peaks])
     return peaks_x + peaks_y
-#=====================================================================================================
+
+
 #20220825 Danielhhhsiao
+#20230213 ErwinJSLiang(revise from PHM Platform code)
+#20230215 ErwinJSLiang(add bin width condition)
 def get_vel_psd_rms(df_psd, bin_width):
     bin_width = bin_width
     df_vel_psd = df_psd.copy()
-    df_vel_psd = df_vel_psd[0]/((df_vel_psd[0].index*2*np.pi)**2)
-    vel_rms = df_vel_psd.values[int(10//bin_width):]*bin_width
-    vel_rms = vel_rms.cumsum()**0.5
-    return vel_rms[-1]*9.81*1000
+    df_vel_psd = df_vel_psd[0] / ((df_vel_psd[0].index * 2 * np.pi) ** 2)
+    # df_vel_psd = df_vel_psd.iloc[1, 0:] / ((df_vel_psd.iloc[0, 0:] * 2 * np.pi) ** 2)
+    # df_vel_psd.iloc[0] = 0
+    if bin_width <= 10:
+        vel_rms = df_vel_psd.values[int(10 // bin_width):] * bin_width
+    else:
+        vel_rms = df_vel_psd.values[1:] * bin_width
+    vel_rms = vel_rms.cumsum() ** 0.5
+    return vel_rms[-1] * 9.81 * 1000
 
+
+#20220825 Danielhhhsiao
 def get_low_psd_rms(psd_rms, base_freq, fs, bin_width):
-    lower=0
-    upper=int(base_freq//bin_width)
+    lower = 0
+    upper = int(base_freq // bin_width)
     if lower == 0:
         result = psd_rms[upper]
     else:
-        result = psd_rms[upper] - psd_rms[lower-1]
-    return result
-    
-def get_mid_psd_rms(psd_rms, base_freq, fs, bin_width):
-    lower = int(base_freq//bin_width)
-    upper = int(base_freq//bin_width*5)
-    result = psd_rms[upper] - psd_rms[lower-1]
+        result = psd_rms[upper] - psd_rms[lower - 1]
     return result
 
-def get_high_psd_rms(psd_rms, base_freq, fs, bin_width):
-    lower = int(base_freq//bin_width*5)
-    upper = len(psd_rms)-1
-    result = psd_rms[upper] - psd_rms[lower-1]
+
+#20220825 Danielhhhsiao
+def get_mid_psd_rms(psd_rms, base_freq, fs, bin_width):
+    lower = int(base_freq // bin_width)
+    upper = int(base_freq // bin_width * 5)
+    result = psd_rms[upper] - psd_rms[lower - 1]
     return result
+
+
+#20220825 Danielhhhsiao
+def get_high_psd_rms(psd_rms, base_freq, fs, bin_width):
+    lower = int(base_freq // bin_width * 5)
+    upper = len(psd_rms) - 1
+    result = psd_rms[upper] - psd_rms[lower - 1]
+    return result
+
+
+#20230210 ErwinJSLiang(copy from PHM Platform code)
+def get_multipe_rms(df_psd, base_freq, feature_param):
+    min_freq = feature_param['freq'] * base_freq - feature_param['range']
+    max_freq = feature_param['freq'] * base_freq + feature_param['range']
+
+    y_list = np.where((df_psd.loc[0] >= min_freq) & (df_psd.loc[0] <= max_freq))
+    if len(y_list[0]) > 0:
+        min_idx = int(y_list[0].min())
+        max_idx = int(y_list[0].max())
+        result = np.sqrt(df_psd.loc[1][min_idx:max_idx].pow(2).mean())
+        return result
+    else:
+        return 0
+
+
+#20230210 ErwinJSLiang(copy from PHM Platform code)
+def get_multipe_max(df_psd, base_freq, feature_param):
+    min_freq = feature_param['freq'] * base_freq - feature_param['range']
+    max_freq = feature_param['freq'] * base_freq + feature_param['range']
+
+    y_list = np.where((df_psd.loc[0] >= min_freq) & (df_psd.loc[0] <= max_freq))
+    if len(y_list[0]) > 0:
+        min_idx = int(y_list[0].min())
+        max_idx = int(y_list[0].max())
+        result = df_psd.loc[1][min_idx:max_idx].max()
+        return result
+    else:
+        return 0
+    
+    

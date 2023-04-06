@@ -4,9 +4,50 @@ from scipy.stats import skew, kurtosis
 import traceback
 import pandas as pd
 
-
 # Entropy , Quantile_5 , Quantile_25 , Quantile_50 , Quantile_75
 # Quantile_95 , Mean , Std ,Var , Rms ,Skewness ,Kurtusis
+
+#20230210 ErwinJSLiang(add model-based)
+class Build_defect_frequency_model():
+    def __init__(self):
+        self.PHM_main_dict = {
+            'MultipleMax': feature_lib.get_multipe_max,
+            'MultipleRms': feature_lib.get_multipe_rms
+        }
+    def run(self, parm):
+        self.parm = parm
+
+        try:
+            # spectrum = self.parm["Setting"]
+            return self._run_spectrum()
+
+        except Exception as e:
+            print(traceback.print_exc())
+            print("PHM_main_dict fail", e)
+            raise
+    def _run_spectrum(self):
+        feature_type = self.parm["Setting"]["Feature"]
+        df_psd = self.parm['RawData']['df_psd']  # self.data
+
+        if 'BaseFrequency' in feature_type:
+            real_base_freq = self.parm['Setting']['real_base_freq']
+            val = real_base_freq
+        else:
+            base_freq = self.parm['Setting']['base_freq']
+            params = self.parm['Setting']['params']
+            sta_list = feature_type.split('_')
+            feature_name = sta_list[len(sta_list)-1]
+
+            for item in params:
+                if item in feature_type:
+                    feature_param = params[item]
+                    break
+
+            val = self.PHM_main_dict[feature_name](df_psd, base_freq, feature_param)
+        return val
+
+
+#20220825 Danielhhhsiao
 class Build_psd_vel_model():
     def __init__(self):
         self.PHM_main_dict = {
@@ -38,10 +79,8 @@ class Build_psd_vel_model():
             fs = self.parm["Setting"]["fs"]
             val = self.PHM_main_dict[feature_type](psd_rms, base_freq, fs, bin_width)
         return val
-        
-    
-    
-    
+
+
 class Build_model():
     def __init__(self):
         self.PHM_main_dict = {
@@ -64,6 +103,7 @@ class Build_model():
             'Clearance': feature_lib.get_clearance,
             'Shape': feature_lib.get_shape,
             'Impulse': feature_lib.get_impulse,
+            'MinMax': feature_lib.get_min_max,
         }
 
     def run(self, parm):
