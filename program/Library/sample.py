@@ -789,7 +789,7 @@ class modbus_process(multiprocessing.Process):
                 if lastRegisterDiff == 0:
                     lastRegisterDiff = -1
                 if date['register']-lastRegister!=lastRegisterDiff or lastDeviceAddress != date['address']:
-                    print("11111111111111111111111111111111111111111")
+                    #print("11111111111111111111111111111111111111111")
                     print(date['register'],lastRegister)
                     d = dict()
                     d["address"]=date['address']
@@ -805,7 +805,7 @@ class modbus_process(multiprocessing.Process):
                     lastRegister = date['register']
                     lastDeviceAddress = date['address']
                 else:
-                    print("2222222222222222222222222222222222222222222222")
+                    #print("2222222222222222222222222222222222222222222222")
                     print(date['register'],lastRegister)
                     self.batch[-1]["count"] +=lastRegisterDiff
                     self.batch[-1]["delay"] = max(self.batch[-1]["delay"],date['delay'])
@@ -1471,8 +1471,8 @@ class prognosis(multiprocessing.Process):
         if L>0:
             arr = arr+self.port.read(L)
             
-        if onlyBuffer:
-            return arr
+        #if onlyBuffer:
+            #return arr
             
         serialBufferLen = len(arr)
         bufferStartTime -= serialBufferLen*self.offsetRatioForTx

@@ -790,7 +790,7 @@ class upload(multiprocessing.Process):
                     time.sleep(minProcT-(endTime-startTime))
                 gc.collect()
             except Exception as e:
-                pass
+                print(e)
                 #errTime = datetime.strftime(datetime.now(),'%Y_%m_%d_%H_%M_%S')
                 #pickle.dump(data,open("/home/pi/program/Err_" + errTime,'wb'),protocol=pickle.HIGHEST_PROTOCOL)
 
@@ -1023,7 +1023,7 @@ class FTP_upload(multiprocessing.Process):
         try:
             splitName = name.split("@",2)
             self.FTPToolID = splitName[0]
-            self.FTPnamePath = splitName[0]+"_"+splitName[1]+splitName[2]
+            self.FTPnamePath = splitName[0]+"_"+splitName[1]
         except:
             self.FTPToolID = "Unknown"
             self.FTPnamePath = "Unknown"

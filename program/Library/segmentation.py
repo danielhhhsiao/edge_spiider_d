@@ -280,7 +280,17 @@ class segRule(multiprocessing.Process):
         self.test = test
         self.testStartTime = 0
         
-        self.minProcTime = min(minProcTime,self.param["operation_count"],max(self.param["sub_operation_count"],10),max(self.param["operation_filter"],10))
+        if(self.param["type"] == 5):
+            self.minProcTime = min(max(minProcTime, self.param["operation_count"]),
+                                   max(self.param["sub_operation_count"], 10),
+                                   max(self.param["operation_filter"], 10)
+                                   )
+        else:
+            self.minProcTime = min(minProcTime, 
+                                   self.param["operation_count"],
+                                   max(self.param["sub_operation_count"], 10),
+                                   max(self.param["operation_filter"], 10)
+                                   )
         if self.test:
             self.minProcTime = min(self.minProcTime,3)
         if(exhibition!=0):
@@ -399,7 +409,231 @@ class segRule(multiprocessing.Process):
             
         ret = dict()
         return self.cutAllColumnByTime(obj,target_column,[],startTime,endTime,ret)
+     
+    def segByRawFilter(self, obj):
         
+        # editor: Kasper at 08:00:00 01/09/2023
+        # Function Describition: 
+        #     A segmentation rule which is designed for user-friendly parameter setting.
+        #     The input signal will be filterd by the filter_threshold to exclude the signal noise,
+        #     then a rolling sum process will be excuted on the filtered signal to obtain the
+        #     cutting start/end points by diff and thus forms multiple temporal segments. 
+        #     Finally, the official segments will be confirmed by 4 checking rules to avoid overlap or 
+        #     unwanted segmentations.
+        
+        focusColumn = self.param["focusColumn"]
+        basis_column = self.param["basis_column"]
+        keys = searchChannelKey(obj,basis_column)
+        if len(keys)==2:
+            targetObj = obj[keys[0]][keys[1]]
+        elif len(keys)==1:
+            targetObj = obj[keys[0]]
+        else:
+            return {}
+        
+        filter_threshold = self.param['operation_threshold']
+        fs = targetObj['fs']
+        motion_time = self.param['operation_filter']
+        operation_filter = int(self.param['operation_filter'] * fs)
+        capture_time = self.param['sub_operation_count']
+        num_filter = (int(motion_time * fs * 0.95), int(motion_time * fs * 1.05))
+        shift_len = int(capture_time * fs * 0.5)
+        shift_len_half = int(shift_len/2)
+        window_size = int(self.param['operation_count'] * fs)
+        
+        isExceptionRange=False
+        enable_filter = True
+        if operation_filter == 0:
+            enable_filter=False
+            operation_filter = int(shift_len * 2)
+        
+        data_pd = pd.DataFrame()
+        data_pd[basis_column] = targetObj["data"][basis_column]
+        data_filtered = np.where(data_pd[basis_column]<filter_threshold, 0, data_pd[basis_column])
+        data_rolling = pd.DataFrame(data_filtered).rolling(window_size).sum().dropna()
+        rolling_sum_arr = np.array(data_rolling).ravel()
+        rolling_sum_arr = np.where(rolling_sum_arr < 1e-06, 0, rolling_sum_arr)
+        zero_value_idx = np.argwhere(rolling_sum_arr==0).ravel()
+        
+        if len(zero_value_idx) < len(rolling_sum_arr)*0.05:
+            msg = "[WARNING] The rolling results have few zero value, try to 'INCREASE' the 'Filter Threshold'"
+            print(msg)
+            return {}
+        elif len(zero_value_idx) == len(rolling_sum_arr):
+            msg = "[WARNING] The rolling results are all zero value, try to 'DECREASE' the 'Filter Threshold'"
+            print(msg)
+            return {}
+        
+        diff_idx = np.diff(np.where(rolling_sum_arr > 0, 1, rolling_sum_arr)).astype(np.int)
+        cut_index_arr, cut_index_val = list(data_rolling.index[1:][diff_idx!=0]-1), list(diff_idx[diff_idx!=0])
+        for i in range(len(cut_index_arr)):
+             if cut_index_val[i] == -1:
+                 cut_index_arr[i] -= window_size
+        
+        print("****** cut_index_arr ******:\n", cut_index_arr)
+        print("****** cut_index_val ******:\n", cut_index_val)
+
+        """
+        start_points, end_points = list(rolling_sum.index[1:][diff_idx==1]-1), list(rolling_sum.index[1:][diff_idx==-1]-1)
+        if start_points == [] or end_points == []:
+            msg = "[INFO] This signal has no complete motion."
+            print(msg)
+            return {}
+        if start_points[0] > end_points[0]:
+            start_points = [0] + start_points
+        if len(start_points) < len(end_points):
+            start_points = [0] + start_points
+        elif len(start_points) > len(end_points)
+            end_points.append(len(data)-1)
+    
+        start_points, end_points = np.array(start_points), np.array(end_points)
+        seg_len = end_points - start_points
+        
+        pass_seg_idx = np.argwhere((seg_len>=num_filter[0]) & (seg_len<=num_filter[1])).ravel()
+        if np.size(pass_seg_idx) == 0:
+            msg = "[WARNING] No pass segment, try to tune the 'Motion Time'"
+            return {}
+            
+        pass_start_points, pass_end_points = start_points[pass_seg_idx], end_points[pass_seg_idx]
+        official_mid_seg_idx = np.array((pass_start_points + pass_end_points)/2, dtype=int)
+        official_start_seg_idx, official_end_seg_idx = official_mid_seg_idx - shift_len, official_mid_seg_idx + shift_len
+        temp_start_seg_idx, temp_end_seg_idx = np.concatenate([official_start_seg_idx, [len(data_filtered)]]), np.concatenate([[0], official_end_seg_idx])
+        
+        # Check whether official segments have overlaps with themself
+        rule_1 = np.size(np.where(temp_start_seg_idx[1:-1] - temp_end_seg_idx[1:-1] < 0)) == 0
+        if not rule_1:
+            overlap_idx = np.argwhere(temp_start_seg_idx - temp_end_seg_idx < 0).ravel(0)
+            overlap_points = [(temp_start_seg_idx[i], temp_end_seg_idx[i]) for i in overlap_idx]
+            msg = "[WARNING] The 'Capture Time' is too long so the captured signal may contain redundant signal, try to 'DECREASE' the 'Capture Time'"
+            print(msg)
+            return {}
+        
+        # Check whethere official segments have overlaps with temp segments
+        next_start_point_idx = []
+        for i in pass_seg_idx + 1:
+            if i < len(start_points):
+                next_start_point_idx.append(i)
+        next_end_point_idx = []
+        for i in pass_seg_idx - 1:
+            if i >= 0:
+                next_end_point_idx.append(i)
+        
+        if len(next_start_point_idx) != len(official_end_seg_idx):
+            next_start_point = np.concatenate([start_points[next_start_point_idx], [len(data_filtered)]])
+        else:
+            next_start_point = start_points[next_start_point_idx]
+        
+        if len(next_end_point_idx) != len(official_start_seg_idx):
+            next_start_point = np.concatenate([[len(data_filtered)], end_points[next_end_point_idx]])
+        else:
+            next_start_point = end_points[next_end_point_idx]
+            
+        rule_2 = np.size(np.where(official_end_seg_idx - next_start_point > 0)) == 0
+        rule_3 = np.size(np.where(official_start_seg_idx - next_end_point < 0)) == 0
+        if not (rule_2 and rule_3):
+            overlap_idx = np.argwhere(official_end_seg_idx - next_start_point < 0).ravel()
+            overlap_points = [(official_end_seg_idx[i], next_start_point[i]) for i in overlap_idx]
+            overlap_idx = np.argwhere(official_start_seg_idx - next_end_point < 0).ravel()
+            overlap_points += [(official_start_seg_idx[i], next_end_point[i]) for i in overlap_idx]
+            msg = "[WARNING] The 'Capture Time' is too long so the captured signal may contain redundant signal, try to 'DECREASE' the 'Capture Time'"
+            print(msg)
+            return {}
+            
+        rule_4 = np.size(np.where(pass_start_points - official_start_seg_idx < 0)) == 0
+        if not rule_4:
+            overlap_idx = np.argwhere(pass_start_points - official_start_seg_idx < 0).ravel()
+            overlap_points = [(pass_start_points[i], official_start_seg_idx[i]) for i in overlap_idx]
+            msg = "[WARNING] The 'Motion Time' is too long so the captured signal may contain redundant signal, try to 'DECREASE' the 'Capture Time'"
+            print(msg)
+            return {}
+        
+        """
+        
+        ind_o = 0
+        cut_s = 0
+        overlap_s = 0
+        startIndex=-1
+        for j, ind, value in zip(range(len(cut_index_arr)), cut_index_arr, cut_index_val):
+            if ind_o == 0 or (ind - ind_o) > operation_filter*0.05:
+                if value == 1:  # means this point is cut start point
+                    cut_s = ind
+                else:
+                    if ind_o == 0:
+                        overlap_s = ind  # means this point is the first point and is down, which value = -1
+                    if cut_s > window_size:  # cut start point index larger than 1 window size 
+                        #排除突波
+                        cut_len = ind - cut_s   # temp segment length
+                        print("****** judge ******\n:",cut_s,ind,cut_len,operation_filter * 0.95)
+                        if cut_len > (operation_filter*0.05):
+                            if enable_filter:
+                                if cut_len < (operation_filter * 0.95) or cut_len > (operation_filter * 1.05):  # segment too short or long
+                                    if cut_len < (operation_filter*0.95) and self.param["use_filter_exception"] == 1:
+                                        isExceptionRange=True  # whether need to save the short segment data
+                                    else:
+                                        continue
+                            
+                            print("****** isExceptionRange ******: ", isExceptionRange)
+                            startIndex = int(cut_s)
+                            endIndex = int(ind)
+                            midIndex = int((startIndex+endIndex)/2)
+                            print(f"****** startIndex:{startIndex}/endIndex:{endIndex}/midIndex:{midIndex} ******")
+
+                            """
+                            if isExceptionRange:
+                                startIndex = int(cut_s)
+                                endIndex = int(ind)
+                                #print('ExceptionRange startIndex',startIndex,':',endIndex,':',cut_len)
+                            else:
+                                startIndex = int(cut_s)
+                                endIndex = int(ind)
+                                #print('startIndex',startIndex,':',cut_len)
+                            """
+            
+                            if startIndex != -1:  # means this segment is needed to be segmented
+                                ret = dict()
+                                if isExceptionRange:
+                                    #print(self.param["name"],"point",startIndex-operation_quarter , endIndex-operation_quarter,len(targetObj["time"]))
+                                    if midIndex-shift_len_half >= 0 and midIndex+shift_len_half <= len(targetObj["time"]):
+                                        startTime = targetObj["time"][midIndex-shift_len_half]
+                                        endTime = targetObj["time"][midIndex+shift_len_half]
+                                        print(f"****** midIndex-shift_len_half:{midIndex-shift_len_half}\nmidIndex+shift_len_half:{midIndex+shift_len_half}\n ******")
+
+                                        overlap_startTime, overlap_endTime = [], []
+                                        if midIndex-shift_len_half < overlap_s:
+                                            overlap_startTime.append(targetObj["time"][midIndex-shift_len_half])
+                                            overlap_endTime.append(targetObj["time"][overlap_s])
+                                        if j != len(cut_index_arr)-1: 
+                                            if midIndex+shift_len_half > cut_index_arr[j+1]:
+                                                overlap_startTime.append(targetObj["time"][cut_index_arr[j+1]])
+                                                overlap_endTime.append(targetObj["time"][midIndex+shift_len_half])
+                                        print(f"****** startTime:{startTime}\nendTime:{endTime}\noverlap_startTime:{overlap_startTime}\n/overlap_endTime:{overlap_endTime} ******")
+
+                                        return self.cutAllColumnByTime(obj,focusColumn,[],startTime,endTime,ret,overlap_startTime,overlap_endTime) 
+                                else:
+                                    #print(self.param["name"],"point",startIndex-final_operation_half , startIndex+final_operation_half,len(targetObj["time"]))
+                                    if midIndex-shift_len >= 0 and midIndex+shift_len <= len(targetObj["time"]):  # to check whether the startIndex(which will be the final segment's middle points) forward 1 and backward 1 half capture length will exceed the input signal 
+                                        startTime = targetObj["time"][midIndex-shift_len]
+                                        endTime = targetObj["time"][midIndex+shift_len]
+                                        print(f"****** midIndex-shift_len:{midIndex-shift_len}\nmidIndex+shift_len:{midIndex+shift_len}\n ******")
+
+                                        overlap_startTime, overlap_endTime = [], []
+                                        if midIndex-shift_len < overlap_s:
+                                            overlap_startTime.append(targetObj["time"][midIndex-shift_len])
+                                            overlap_endTime.append(targetObj["time"][overlap_s])
+                                        if j != len(cut_index_arr)-1: 
+                                            if midIndex+shift_len > cut_index_arr[j+1]:
+                                                overlap_startTime.append(targetObj["time"][cut_index_arr[j+1]])
+                                                overlap_endTime.append(targetObj["time"][midIndex+shift_len])
+                                        print(f"****** startTime:{startTime}\nendTime:{endTime}\noverlap_startTime:{overlap_startTime}\noverlap_endTime:{overlap_endTime}\n******")
+
+                                        
+                                        return self.cutAllColumnByTime(obj,focusColumn,[],startTime,endTime,ret,overlap_startTime,overlap_endTime) 
+            ind_o = ind
+        
+        
+        
+        return {}
+    
     def segByStrength(self,obj):
         focusColumn = self.param["focusColumn"]
         basis_column = self.param["basis_column"]
@@ -803,7 +1037,7 @@ class segRule(multiprocessing.Process):
                     return None,int(f_peaks[0]),f_range
         return None,int(f_peaks[0]),None
 
-    def cutAllColumnByTime(self,obj,focusColumn,ignore_column,startTime,endTime,ret):
+    def cutAllColumnByTime(self,obj,focusColumn,ignore_column,startTime,endTime,ret,ovelap_startTime=[],overlap_endTime=[]):
         for column in focusColumn:
             if column in ignore_column:
                 continue
@@ -814,22 +1048,36 @@ class segRule(multiprocessing.Process):
                 targetObj = obj[keys[0]]
             else:
                 return {}
-            ret[column]=[]
-            point = dict()
-            
+                
+            ret[column] = []
+            point = dict()            
             startIndex = np.argwhere(targetObj["time"] >= startTime)
             endIndex = np.argwhere(targetObj["time"] >= endTime)
+            
             
             if len(startIndex)>0 and len(endIndex)>0:
                 point["start"] = startIndex[0][0]
                 point["startTime"] = targetObj["time"][startIndex[0][0]]
                 point["end"] = endIndex[0][0]
                 point["endTime"] = targetObj["time"][endIndex[0][0]]
+                # Kasper add for segByRawFilter at 2023/01/13 10:00:00
+                if len(ovelap_startTime)>0 and len(overlap_endTime)>0:
+                    overlap_startIndex = []
+                    overlap_endIndex = []
+                    for i in range(len(ovelap_startTime)):
+                        overlap_startIndex.append(np.argwhere(targetObj["time"] >= ovelap_startTime[i])[0][0])
+                        overlap_endIndex.append(np.argwhere(targetObj["time"] >= overlap_endTime[i])[0][0])
+                    point["overlap_start"] = overlap_startIndex
+                    point["overlap_startTime"] = targetObj["time"][overlap_startIndex]
+                    point["overlap_end"] = overlap_endIndex
+                    point["overlap_endTime"] = targetObj["time"][overlap_endIndex]
                 ret[column].append(point)
             else:
                 return {}
+            
         return ret
-        
+      
+    # 2023/01/10 16:00:00 Kasper: Add one elif for segByRawFilter if self.param["type"] == 5
     def getCutIndex(self,obj,testResult):
         if(self.param["type"] == 1):
             return self.segByNormal(obj)
@@ -837,6 +1085,8 @@ class segRule(multiprocessing.Process):
             return self.segByStrength(obj)
         elif(self.param["type"] == 3):
             return self.segByFreq(obj,testResult)
+        elif(self.param["type"] == 5):
+            return self.segByRawFilter(obj)
         else:
             return []
             
@@ -1429,6 +1679,190 @@ class segRule(multiprocessing.Process):
                     
                     self.drawQueue.put(draw)
             
+            # 2023/01/10 16:00:00 Kasper: Add for segByRawFilter
+            if self.param["type"] == 5:
+                
+                print("draw rolling.")
+                basis_column = self.param["basis_column"]
+                keys = searchChannelKey(testRaw,basis_column)
+                targetObj = None
+                if len(keys)==2:
+                    targetObj = copy.deepcopy(testRaw[keys[0]][keys[1]])
+                elif len(keys)==1:
+                    targetObj = copy.deepcopy(testRaw[keys[0]])
+                    
+                if targetObj != None:
+                    print("process start.")
+                
+                    filter_threshold = self.param['operation_threshold']
+                    fs = targetObj['fs']
+                    motion_time = self.param['operation_filter']
+                    capture_time = self.param['sub_operation_count']
+                    num_filter = (int(motion_time * fs * 0.95), int(motion_time * fs * 1.05))
+                    
+                    shift_len = int(capture_time * fs * 0.5)
+                    window_ratio = self.param['operation_count']
+                    window_size = int(fs*window_ratio)
+                    overlap_points = []
+                    msg = ""
+                    
+                    data_pd = pd.DataFrame()
+                    data_pd[basis_column] = targetObj["data"][basis_column]
+                    data_filtered = np.where(data_pd[basis_column]<filter_threshold, 0, data_pd[basis_column])
+                    rolling_sum = pd.DataFrame(data_filtered).rolling(window_size).sum().dropna()
+                    rolling_sum_arr = np.array(rolling_sum).ravel()
+                    rolling_sum_arr = np.where(rolling_sum_arr < 1e-06, 0, rolling_sum_arr)
+                    zero_value_idx = np.array(rolling_sum.index)[np.argwhere(rolling_sum_arr==0).ravel()]
+                    
+                    #print("****** data_filtered ******:\n", data_filtered.ravel()[3000:9000])
+                    print("****** rolling_sum ******:\n", rolling_sum)
+
+                    #print("****** rolling_sum_arr ******:\n", rolling_sum_arr.ravel()[3000:9000])
+
+                    
+                    if len(zero_value_idx) < len(rolling_sum_arr)*0.05:
+                        msg = "\n[Warning] The rolling results have few zero value, try to 'INCREASE' the Filter Threshold"
+                    elif len(zero_value_idx) == len(rolling_sum_arr):
+                        msg = "\n[Warning] The rolling results are all zero value, try to 'DECREASE' the Filter Threshold"
+                    
+                    diff_idx = np.diff(np.where(rolling_sum_arr > 0, 1, rolling_sum_arr)).astype(np.int)
+                    start_points, end_points = list(rolling_sum.index[1:][diff_idx==1]-1), list(rolling_sum.index[1:][diff_idx==-1]-1)
+                    if start_points == [] or end_points == []:
+                        pass
+                        # msg = "\n[INFO] This signal has no complete motion."
+                    else:
+                        new_end_points = list(np.array(end_points)-window_size)
+                        new_rolling_sum = []
+                        start_idx = 0
+                        for old_idx, new_idx in zip(end_points, new_end_points):
+                            new_rolling_sum += np.ones(new_idx-start_idx, dtype=int).tolist()
+                            new_rolling_sum += np.zeros(old_idx-new_idx, dtype=int).tolist()
+                            start_idx = old_idx
+                        new_rolling_sum = new_rolling_sum[window_size:]
+                        new_rolling_sum += np.ones(len(rolling_sum_arr)-start_idx+window_size, dtype=int).tolist()
+                        rolling_sum_arr *= new_rolling_sum
+                        # rolling_sum_arr = pd.DataFrame(rolling_sum_arr)
+                        # rolling_sum_arr.index = rolling_sum.index
+                        
+                        end_points = new_end_points
+                            
+                        print("****** diff_idx ******:\n", len(diff_idx[diff_idx!=0]))
+                        print("****** start_points ******:\n", start_points)
+                        print("****** end_points ******:\n", end_points)
+
+                    
+                        if start_points[0] > end_points[0]:
+                            start_points = [0] + start_points
+                        if len(start_points) < len(end_points):
+                            start_points = [0] + start_points
+                        elif len(start_points) > len(end_points):
+                            end_points.append(len(data_pd[basis_column])-1)
+
+                        start_points, end_points = np.array(start_points), np.array(end_points)
+                        seg_len = end_points - start_points
+                        print("****** seg_len ******:\n", seg_len)
+                        print("****** num_filter ******:\n", num_filter)
+                        pass_seg_idx = np.argwhere((seg_len>=num_filter[0]) & (seg_len<=num_filter[1])).ravel()
+                        print("****** pass_seg_idx ******:\n", pass_seg_idx)
+
+                        if np.size(pass_seg_idx) == 0:
+                            msg = "\n[WARNING] No pass segment, try to tune the 'Motion Time'"
+                        else:
+                            pass_start_points, pass_end_points = start_points[pass_seg_idx], end_points[pass_seg_idx]
+                            official_mid_seg_idx = np.array((pass_start_points + pass_end_points)/2, dtype=int)
+                            official_start_seg_idx, official_end_seg_idx = official_mid_seg_idx - shift_len, official_mid_seg_idx + shift_len
+                            temp_start_seg_idx, temp_end_seg_idx = np.concatenate([official_start_seg_idx, [len(data_filtered)]]), np.concatenate([[0], official_end_seg_idx])
+                            
+                            """ Check whether official segments have overlaps with themself """
+                            rule_1 = np.size(np.where(temp_start_seg_idx[1:-1] - temp_end_seg_idx[1:-1] < 0)) == 0
+                            print("****** rule_1 ******:", rule_1)
+                            print("****** temp_start_seg_idx ******:", temp_start_seg_idx)
+                            print("****** temp_end_seg_idx ******:", temp_end_seg_idx)
+                            if not rule_1:
+                                overlap_idx = np.argwhere(temp_start_seg_idx - temp_end_seg_idx < 0).ravel()
+                                overlap_points = [(temp_start_seg_idx[i], temp_end_seg_idx[i]) for i in overlap_idx]
+                                msg = "\n[Warning] The Capture Time is too long so the captured signal may contain redundant signal, try to 'DECREASE' the Capture Time"
+                            
+                            """ Check whethere official segments have overlaps with temp segments """
+                            next_start_point_idx = []
+                            for i in pass_seg_idx + 1:
+                                if i < len(start_points):
+                                    next_start_point_idx.append(i)
+                            next_end_point_idx = []
+                            for i in pass_seg_idx - 1:
+                                if i >= 0:
+                                    next_end_point_idx.append(i)
+                            print("****** next_end_point_idx ******:", next_end_point_idx)
+                            
+                            if len(next_start_point_idx) != len(official_end_seg_idx):
+                                next_start_point = np.concatenate([start_points[next_start_point_idx], [len(data_filtered)]])
+                            else:
+                                next_start_point = start_points[next_start_point_idx]
+                            
+                            if len(next_end_point_idx) != len(official_start_seg_idx):
+                                next_end_point = np.concatenate([[0], end_points[next_end_point_idx]])
+                            else:
+                                next_end_point = end_points[next_end_point_idx]
+                                
+                            rule_2 = np.size(np.where(official_end_seg_idx - next_start_point > 0)) == 0
+                            rule_3 = np.size(np.where(official_start_seg_idx - next_end_point < 0)) == 0
+                            print("****** rule_2 ******:", rule_2)
+                            print("****** rule_3 ******:", rule_3)
+                            print("****** official_end_seg_idx ******:", official_end_seg_idx)
+                            print("****** next_start_point ******:", next_start_point)
+                            print("****** official_start_seg_idx ******:", official_start_seg_idx)
+                            print("****** next_end_point ******:", next_end_point)
+                            print("****** pass_start_points ******:", pass_start_points)
+                            print("****** pass_end_points ******:", pass_end_points)
+
+                            
+                            if not (rule_2 and rule_3):
+                                overlap_idx = np.argwhere(official_end_seg_idx - next_start_point < 0).ravel()
+                                overlap_points = [(official_end_seg_idx[i], next_start_point[i]) for i in overlap_idx]
+                                overlap_idx = np.argwhere(official_start_seg_idx - next_end_point < 0).ravel()
+                                overlap_points += [(official_start_seg_idx[i], next_end_point[i]) for i in overlap_idx]
+                                msg = "\n[Warning] The Capture Time is too long so the captured signal may contain redundant signal, try to 'DECREASE' the Capture Time"
+                            
+                            rule_4 = np.size(np.where(pass_start_points - official_start_seg_idx < 0)) == 0
+                            if not rule_4:
+                                overlap_idx = np.argwhere(pass_start_points - official_start_seg_idx < 0).ravel()
+                                overlap_points = [(pass_start_points[i], official_start_seg_idx[i]) for i in overlap_idx]
+                                msg = "\n[Warning] The Capture Time is too short so the captured signal may loss signal, try to 'INCREASE' the Capture Time"
+
+                    print("data process.")
+                    minTime = min(targetObj["time"])
+                    print("data process. (isnull)")
+                    rollingIndex = rolling_sum.isnull()==False
+                        
+                    # for drawing raw data information
+                    draw=dict()
+                    draw['title'] = "Rule("+self.param["name"]+")Result rolling" + msg
+                    draw['data'] = dict()
+                    draw['data']['input_item'] = targetObj["data"][basis_column]
+                    draw['time'] = targetObj["time"]-minTime
+                    
+                    # for drawing rolling infomation
+                    draw['dataR'] = dict()
+                    draw['timeR'] = targetObj["time"][rolling_sum.index]-minTime
+                    draw['dataR']['Strength value'] = rolling_sum_arr
+                    draw['dataR']['Filter Threshold'] = np.ones(len(draw['timeR'])) * filter_threshold
+                    draw['S_E points'] = np.concatenate((start_points, end_points), axis=None)/fs
+
+                    draw['dataRtext'] = "Strength"
+
+                    """
+                    TODO: Draw the segmentation results from overall view, which can show precise overlap results
+                    # for drawing ovelaping information
+                    if overlap_points != []:
+                        draw['ovelap'] = dict()
+                        draw['ovelap']['overlap_points'] = overlap_points
+                    """
+                    
+                    if type(targetObj["unit"])==dict:
+                        draw['unit']=targetObj["unit"][basis_column]
+                    else:
+                        draw['unit']=targetObj["unit"]
+                    self.drawQueue.put(draw)
                 
             maxSec=9999999
             if self.param["workTime"]>0:
@@ -1437,19 +1871,25 @@ class segRule(multiprocessing.Process):
             name_array = self.param["name"].split("@")
             fTitle = "Rule("+name_array[0]+"@"+name_array[1]+name_array[2]+")Result "
             
-            drawList=[]
-            for k in testResult.keys():
-                full=[]
+            # plot segmentation result
+            drawList = []
+            for k in testResult.keys():  # testResult is the segmentation results, if it is empty, then it won't draw anything
+                full = []  # if full is empty, then it won't plot
+                overlap_full = []
                 for t in testResult[k]:
                     startTime = t["startTime"]
                     endTime = t["endTime"]
                     full.append([startTime,endTime])
+                    if "overlap_startTime" in t:
+                        for o_sT, o_eT in zip(t["overlap_startTime"], t["overlap_endTime"]):
+                            overlap_full.append([o_sT, o_eT])
+                        
                 obj = keepChannelName(testRaw,[k])
+                
                 if self.testType == "2":
-                    drawList=drawList+dataObj2drawList(obj,99999999,fTitle,full)
+                    drawList = drawList+dataObj2drawList(obj,99999999,fTitle,full,overlap_full)
                 else:
-                    drawList=drawList+dataObj2drawList(obj,maxSec,fTitle,full)
-                print(k)
+                    drawList = drawList+dataObj2drawList(obj,maxSec,fTitle,full,overlap_full)
             
             for d in drawList:
                 self.drawQueue.put(d)

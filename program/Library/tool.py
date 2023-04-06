@@ -259,7 +259,7 @@ def transFormatUpload(dataObj,work_ini,name,Type):
     #payload element
     API_id = name.split('@',2)
     tool_id = API_id[0]
-    chamber_id = API_id[1]+API_id[2]
+    chamber_id = API_id[1]
     sampleRate = 0
     data_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     #dataframe param
@@ -475,18 +475,21 @@ def cutItenByTime(d,startTime,keep=False):
             else:
                 d["data"][cName]=d["data"][cName][maxIndex:]
     return d
-            
-def dataObj2drawList(dataObj,maxSec=9999999,fTitle="",full=None):
+ 
+def dataObj2drawList(dataObj,maxSec=9999999,fTitle="",full=None, overlap_full=[]):
     #print("\n\n dataObj2drawList ******************************")
     #testPrintStructure(dataObj)
     
+    print("type of full: ", type(full))
+    print("full: ", full)
+
     ret = []
     if maxSec==-1:
         maxSec=9999999
         
     #print("MaxSec",maxSec)
     for sensor in dataObj.keys():
-        if sensor=="bus" or  sensor=="usb":
+        if sensor=="bus" or sensor=="usb":
             for d in dataObj[sensor]:
                 if "type" in d.keys() and d["type"]!="NONE":
                     keylist = []
@@ -519,7 +522,7 @@ def dataObj2drawList(dataObj,maxSec=9999999,fTitle="",full=None):
                         sub["time"]=sub["time"][:maxIndex]
                         sub["data"] = dict()
                         if full != None:
-                            full=full-min(d["time"])
+                            full=full-min(d["time"])  # beacuse min(d["time"]) is a np.float so it is legal
                             sub["full"]=[]
                             for f in full:
                                 if f[1]<maxSec:
@@ -527,9 +530,20 @@ def dataObj2drawList(dataObj,maxSec=9999999,fTitle="",full=None):
                                 else:
                                     print(name,"kipt!!",f)
                                     break
-                            if len(sub["full"])==0:
+                            if len(sub["full"])==0:  # if no pass segment then do not plot result.
                                 return ret
-                            
+                        
+                            # Kasper, 2023/01/13 10:00:00, add for segByRawFilter
+                            if overlap_full != []:
+                                overlap_full = overlap_full-min(d["time"])
+                                sub["overlap_full"]=[]
+                                for o_f in overlap_full:
+                                    if o_f[1]<maxSec:
+                                        sub["overlap_full"].append(o_f)
+                                    else:
+                                        print(name,"kipt!!",o_f)
+                                        break
+                        
                         if "VIBRATION" in d["type"]:
                             sub["title"]="Vibration "+sub["title"]
                             if "aX_"+name in d["data"].keys():
@@ -566,7 +580,10 @@ def dataObj2drawList(dataObj,maxSec=9999999,fTitle="",full=None):
                             sub["unit"] = d["unit"]
                             #print(sub)
                             ret.append(sub)
+                        
+                    
                             
+                        
         elif sensor=="Digital":
             startTime = datetime.fromtimestamp(dataObj[sensor]["time"][0]).strftime("%y/%m/%d %H:%M:%S.%f")
             
@@ -595,6 +612,17 @@ def dataObj2drawList(dataObj,maxSec=9999999,fTitle="",full=None):
                             break
                     if len(sub["full"])==0:
                         return ret
+                    # Kasper, 2023/01/13 10:00:00, add for segByRawFilter
+                    if overlap_full != []:
+                        overlap_full = overlap_full-min(d["time"])
+                        sub["overlap"]=[]
+                        for o_f in overlap_full:
+                            if o_f[1]<maxSec:
+                                sub["overlap_full"].append(o_f)
+                            else:
+                                print(name,"kipt!!",o_f)
+                                break    
+                    
                 ret.append(sub)
         elif sensor=="distance":
             startTime = datetime.fromtimestamp(dataObj[sensor]["time"][0]).strftime("%y/%m/%d %H:%M:%S.%f")
@@ -620,11 +648,22 @@ def dataObj2drawList(dataObj,maxSec=9999999,fTitle="",full=None):
                         break
                 if len(sub["full"])==0:
                     return ret
+                # Kasper, 2023/01/13 10:00:00, add for segByRawFilter
+                if overlap_full != []:
+                    overlap_full = overlap_full-min(d["time"])
+                    sub["overlap"]=[]
+                    for o_f in overlap_full:
+                        if o_f[1]<maxSec:
+                            sub["overlap_full"].append(o_f)
+                        else:
+                            print(name,"kipt!!",o_f)
+                            break    
             for item in dataObj[sensor]["data"].keys():
                 sub["data"][item]=dataObj[sensor]["data"][item][:maxIndex]
             ret.append(sub)
-    return ret 
     
+    return ret 
+
 def conponerObj(objList,ret):
     for obj in objList:
         if type(obj)==dict:
@@ -746,7 +785,7 @@ class drawListMuti_proc(multiprocessing.Process):
         #plt.tight_layout(h_pad=3)
         fig, ax = plt.subplots(figsize=(size,size//4))
         #fig.subplots_adjust(left=0.07,right=0.95,top=0.9,bottom=0.2)
-        fig.subplots_adjust(left=0.07,right=0.92,top=0.9,bottom=0.2)
+        fig.subplots_adjust(left=0.085,right=0.92,top=0.825,bottom=0.15)
         for i,d in enumerate(data):
         
             
@@ -781,7 +820,11 @@ class drawListMuti_proc(multiprocessing.Process):
                 for item in d["dataR"].keys():
                     minlength = min(len(d["timeR"]),len(d["dataR"][item]))
                     newX,newY = self.downSample(np.array(d["timeR"][:minlength]),np.array(d["dataR"][item][:minlength]))
-                    L, = axR.plot(newX,newY,alpha=alpha,linewidth=0.5,label = item)
+                    
+                    if item == "Filter Threshold":
+                        L, = ax.plot(newX,newY,alpha=alpha,linewidth=0.5,label = item)
+                    else:
+                        L, = axR.plot(newX,newY,alpha=alpha,linewidth=0.5,label = item)
                     #L, = axR.plot(d["timeR"][:minlength],d["dataR"][item][:minlength],alpha=alpha,linewidth=0.5,label = item)
                     if(len(d["dataR"][item])>0):
                         axRmax = max(axRmax,max(d["dataR"][item]))
@@ -790,6 +833,13 @@ class drawListMuti_proc(multiprocessing.Process):
                 if "dataRtext" in d.keys():
                     axR.set_ylabel(d["dataRtext"])
                 
+                if "S_E points" in d.keys():
+                    for p in d["S_E points"]:
+                        if p <= math.floor(max(d["time"])):
+                            axR.scatter(p, 0, color='black', s=20, label=None)
+                            plt.text(p, axR.get_ylim()[1]*0.04, "{0:.2f}".format(p), color='black', ha='center')
+                        else:
+                            pass
             #print("limitDataTime",limitDataTime)
             minData,maxData=plt.ylim()
             centerData = (minData+maxData)/2
@@ -821,14 +871,24 @@ class drawListMuti_proc(multiprocessing.Process):
                     #t.set_bbox(dict(facecolor='gold',edgecolor=None,boxstyle='Round,pad=0.1',alpha=alpha/4))
                     plt.fill_between((text['l'],text['r']),text['y'],text['y']+dataRange/20,alpha=alpha/4,facecolor="green")
                     
-            ax.set_title(d["title"]+'  (Mean:%2f)'%DataMean)
-            ax.axhline(DataMean,color="royalblue")
-            sensor_name = d["title"].split('Sensor(')[1].split(') start')[0]
-            #ax.text(math.ceil(max(d["time"])),DataMean,f"{sensor_name}'s Mean=%.2f"%DataMean,color="blue",horizontalalignment="right",verticalalignment="bottom")
+            if "overlap_full" in d.keys():
+                for o_f in d["overlap_full"]:
+                    if o_f[1]>limitDataTime:
+                        continue
+                    plt.axvline(x=o_f[0],alpha=alpha,color="red", linestyle='--')
+                    if o_f[1]<maxTime:
+                        plt.axvline(x=o_f[1],alpha=alpha,color="red", linestyle='--')
+                        plt.fill_between((o_f[0],o_f[1]),minData,maxData,alpha=alpha/4,facecolor="red")
+                    else:
+                        plt.fill_between((o_f[0],maxTime),minData,maxData,alpha=alpha/4,facecolor="red")
+                    L = plt.fill_between((o_f[0],o_f[0]),minData,maxData,alpha=alpha/4,facecolor="red", label="overlap")
+                    labels.append(L)
+                    
+            ax.set_title(d["title"])
             ax.set_xlabel("Time(s)")
             ax.set_ylabel("Value("+d["unit"]+")")
-            #ax.set_xlim(0,math.ceil(max(d["time"])))  #math.ceil return the >= miniest int
-            ax.set_xlim(0,math.floor(max(d["time"])))  #math.floor return the <= biggiest int
+            ax.set_xlim(0,math.floor(max(d["time"])))
+            
             newRange = (abs(newMaxData*1.0-newMinData*1.0)/3.0*4.0)/2.0
             newCenter = (newMaxData+newMinData)/2.0
             newMaxData = newCenter+newRange
@@ -864,7 +924,7 @@ class drawListMuti_proc(multiprocessing.Process):
                 axR.cla()
                 fig, ax = plt.subplots(figsize=(size,size//4))
                 #fig.subplots_adjust(left=0.07,right=0.95,top=0.9,bottom=0.2)
-                fig.subplots_adjust(left=0.07,right=0.92,top=0.9,bottom=0.2)
+                fig.subplots_adjust(left=0.085,right=0.92,top=0.825,bottom=0.15)
             gc.collect()
             _test_endTime=time.time()
         plt.close(fig)
