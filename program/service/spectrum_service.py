@@ -5,8 +5,12 @@ import numpy as np
 
 from algorithm.frequency_transform import transform_lib
 from service.config_services import get_feature_config_by_id, get_parameter_list_by_id
-from service.statistical_service import transform_statistical,transform_psd_vel
+#20220825 Danielhhhsiao
+#20230213 ErwinJSLiang(add model-based)
+from service.statistical_service import transform_statistical,transform_psd_vel,transform_defect_frequency
 from algorithm.frequency_transform.build_model import Build_model
+from algorithm.feature_extract import defined_recipe 
+#20230210 ErwinJSLiang(add multi-regime)
 
 
 def transform_spectrum(project_id, df: pandas):
@@ -63,14 +67,21 @@ def _cal_spectrum(raw_data, parameter, config_spectrum_list):
         # 1.Freq_Transform
         for par_key in (spectrum_obj['spectrum_param']).keys():
             obj['Setting']['Spectrum'][par_key] = spectrum_obj['spectrum_param'][par_key]
-        
-        if spectrum_obj['item']=='VibVelocity':
-            psd_rms, df_psd, bin_width = spectrum_model.run(data=raw_data, parm=obj)
+
+        if spectrum_obj['item'] == 'VibVelocity': #20220825 Danielhhhsiao
+            spectrum_data = {}
+            spectrum_data['psd_rms'], spectrum_data['df_psd'], spectrum_data['bin_width'] = spectrum_model.run(data=raw_data, parm=obj) #20230210 ErwinJSLiang(revise parameter)
+            
+        elif spectrum_obj['item'] == 'DefectFrequency': #20230210 ErwinJSLiang(add model-based)
+            spectrum_data = {}
+            spectrum_data['df_psd'], spectrum_data['base_freq'], spectrum_data['real_base_freq'] = spectrum_model.run(data=raw_data, parm=obj)
+            spectrum_data["params"] = spectrum_obj['spectrum_param']['params']
         else:
-            x_val, y_val = spectrum_model.run(data=raw_data, parm=obj)
-        
+            if spectrum_obj['item'] != 'recipe': #20230210 ErwinJSLiang(add multi-regime)
+                x_val, y_val = spectrum_model.run(data=raw_data, parm=obj)
+                
         spectrum_wp_dwt_name_list = None
-#===========================================================================================================
+
         if spectrum_obj['item'] in ['WP', 'DWT']:
             bin_spec_data_list = y_val
 
@@ -87,26 +98,49 @@ def _cal_spectrum(raw_data, parameter, config_spectrum_list):
 
         elif spectrum_obj['item'] == 'Time_Domain':
             bin_spec_data_list = [y_val]
-        
-        elif spectrum_obj['item'] == 'VibVelocity':
+
+        elif spectrum_obj['item'] == 'VibVelocity': #20220825 Danielhhhsiao
             bin_spec_data_list = []
+            
+        elif spectrum_obj['item'] == 'DefectFrequency': #20230210 ErwinJSLiang(add model-based)
+            bin_spec_data_list = []
+            
         else:
-            bin_spec_data_list = np.array_split(y_val, spectrum_obj['bin'], axis=0)
-#===========================================================================================================
+            if spectrum_obj['item'] != 'recipe': #20230210 ErwinJSLiang(add multi-regime)
+                bin_spec_data_list = np.array_split(y_val, spectrum_obj['bin'], axis=0)
+        
+        #20220825 Danielhhhsiao
         for statistical_item in spectrum_obj['statistical']:
-            if spectrum_obj['item']=='VibVelocity':
+            if spectrum_obj['item'] == 'VibVelocity': #20220825 Danielhhhsiao
                 statistical_result=transform_psd_vel(parameter,
                                                      spectrum_obj['item'],
                                                      statistical_item,
-                                                     psd_rms, 
-                                                     df_psd, 
-                                                     spectrum_obj['spectrum_param']['base_freq'],
-                                                     spectrum_obj['spectrum_param']['samplerate'],
-                                                     bin_width)
+                                                     spectrum_data,
+                                                     spectrum_obj)
                 if math.isnan(statistical_result):
                     statistical_result = 0
                 feature_val_list.append(statistical_result)
                 column_name_list.append(f'{parameter}_{spectrum_obj["item"]}_{statistical_item}_1')
+            
+            elif spectrum_obj['item'] == 'DefectFrequency': #20230210 ErwinJSLiang(add model-based)
+                if statistical_item == 'MultipleMax' or statistical_item == 'MultipleRms':
+                    for sta_item in spectrum_obj['spectrum_param']['params']:
+                        new_statistical_item = sta_item + '_' + statistical_item
+                        
+                        statistical_result = transform_defect_frequency(parameter,
+                                                                        spectrum_obj['item'],
+                                                                        new_statistical_item,
+                                                                        spectrum_data)
+                        if math.isnan(statistical_result):
+                            statistical_result = 0
+                        feature_val_list.append(statistical_result)
+                        column_name_list.append(f'{parameter}_{spectrum_obj["item"]}_{new_statistical_item}_1')
+            
+            elif spectrum_obj['item']=='recipe': #20230210 ErwinJSLiang(add multi-regime)
+                recipe_name = defined_recipe.run(data=raw_data, fs=spectrum_obj['spectrum_param']['samplerate'])
+                feature_val_list.append(recipe_name)
+                column_name_list.append(f'{parameter}_{spectrum_obj["item"]}_name_1')
+            
             else:
                 for i, v_val in enumerate(bin_spec_data_list):
                     # 2.Feature_Statistical
