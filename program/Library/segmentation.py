@@ -990,7 +990,10 @@ class segRule(multiprocessing.Process):
         f_max_diff_abs[np.abs(f_max_diff_abs)>10*resol]=0 # V2.1
         acc_mid = pd.Series(f_max_diff_abs).idxmax()+shift # V2.1
         dec_mid = pd.Series(f_max_diff_abs).idxmin()+shift # V2.1
-        freq_counts = pd.Series(f_max)[acc_mid:dec_mid].value_counts() # V2.1
+        if acc_mid == dec_mid:
+            freq_counts = pd.Series(f_max).value_counts()
+        else:
+            freq_counts = pd.Series(f_max)[acc_mid:dec_mid].value_counts() # V2.1
         f_peaks = int(freq_counts.index[0])
         #print("new stft##########################","Acc F=",f_max[acc_mid],", Dec F=",f_max[dec_mid],", best F=",int(f_peaks))
         if f_peaks == 0:
@@ -1644,7 +1647,11 @@ class segRule(multiprocessing.Process):
                         f_max_diff_abs[np.abs(f_max_diff_abs)>10*resol]=0 # V2.1
                         acc_mid = pd.Series(f_max_diff_abs).idxmax()+shift # V2.1
                         dec_mid = pd.Series(f_max_diff_abs).idxmin()+shift # V2.1
-                        freq_counts = pd.Series(f_max)[acc_mid:dec_mid].value_counts() # V2.1
+                        if acc_mid == dec_mid:
+                            freq_counts = pd.Series(f_max).value_counts()
+                        else:
+                            freq_counts = pd.Series(f_max)[acc_mid:dec_mid].value_counts() # V2.1
+                        
                         f_peaks = int(freq_counts.index[0])
                         if f_peaks == 0:
                             f_peaks = int(freq_counts.index[1])
